@@ -1,0 +1,67 @@
+#!/usr/bin/env perl
+use strict;
+use FindBin qw($RealBin);
+use lib "$RealBin/..";
+use lib "$RealBin/../..";
+use lib "$RealBin/../src";
+use lib "$RealBin/../src/deps";
+use lib "$RealBin/../../src";
+use lib "$RealBin/../../src/deps";
+use lib "$RealBin/src";
+use lib "$RealBin/src/deps";
+use Utils;
+use Utils::TextReader;
+
+
+sub parsePortals1 {
+	my $file = shift;
+	my $reader = new Utils::TextReader($file);
+	open (PORTALS2, '>:encoding(UTF-8)', 'portals.txt');
+	while (!$reader->eof()) {
+		my $line = $reader->readLine();
+		if ($line =~ /^#/) {
+			print PORTALS2 $line;
+			next;
+		}
+		$line =~ s/\cM|\cJ//g;
+		$line =~ s/\s+/ /g;
+		$line =~ s/^\s+|\s+$//g;
+		$line =~ s/(.*)[\s\t]+#.*$/$1/;
+		
+		if ($line =~ /^([\w|@|-]+)\s(\d{1,3})\s(\d{1,3})\s([\w|@|-]+)\s(\d{1,3})\s(\d{1,3})\s?(.*)/) {
+		my ($source_map, $source_x, $source_y, $dest_map, $dest_x, $dest_y, $misc) = ($1, $2, $3, $4, $5, $6, $7);
+			my $portal = "$source_map $source_x $source_y";
+			my $dest = "$dest_map $dest_x $dest_y";
+			my ($cost, $ticket, $steps);
+			if ($misc =~ /^(\d+)\s(\d)\s(.*)$/) { # [cost] [allow_ticket] [talk sequence]
+				$cost = $1;
+				$ticket = $2;
+				$steps = $3;
+			} elsif ($misc =~ /^(\d+)\s(.*)$/) { # [cost] [talk sequence]
+				$cost = $1;
+				$steps = $2;
+			} else { # [talk sequence]
+				$steps = $misc;
+			}
+			if ($cost || $ticket || $steps) {
+				print PORTALS2 "$portal $dest {\n";
+				print PORTALS2 "\tcost: $cost\n" if $cost;
+				print PORTALS2 "\tticket: $ticket\n" if $ticket;
+				print PORTALS2 "\tsteps: $steps\n" if $steps;
+				print PORTALS2 "}\n";
+			} else {
+				print PORTALS2 "$portal $dest\n";
+			}
+			
+		}
+		
+		
+		
+	}
+	close PORTALS2;
+	return 1;
+}
+
+parsePortals1($RealBin."/portalsold.txt");
+
+system('pause');
