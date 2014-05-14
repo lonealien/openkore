@@ -456,7 +456,7 @@ sub processServerSettings {
 	}
 	
 	foreach my $serverOption ('storageEncryptKey', 'gameGuard','paddedPackets','paddedPackets_attackID',
-				'paddedPackets_skillUseID') {
+				'paddedPackets_skillUseID', 'vipPortals') {
 		if ($master->{$serverOption} ne '' && !(defined $config{$serverOption})) {
 			# Delete Wite Space
 			# why only one, if deleting any?
@@ -528,7 +528,7 @@ sub finalInitialization {
 	StdHttpReader::init();
 	initStatVars();
 	initRandomRestart();
-	initUserSeed();
+	# initUserSeed(); not used atm
 	initConfChange();
 	Log::initLogFiles();
 	$eventsManager = new Events();

@@ -551,4 +551,5 @@ sub mapChanged {
 	$self->{mapChanged} = 1;
 }
 
+
 1;

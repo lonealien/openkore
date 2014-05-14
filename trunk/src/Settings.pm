@@ -74,11 +74,11 @@ use enum qw(CONTROL_FILE_TYPE TABLE_FILE_TYPE);
 # The version number of this program.
 
 # Translation Comment: Strings for the name and version of the application
-our $NAME = 'OpenKore';
-our $VERSION = 'what-will-become-2.1';
+our $NAME = 'BetaKore';
+our $VERSION = 'undefined';
 # Translation Comment: Version String
 #our $SVN = T(" (SVN Version) ");
-our $WEBSITE = 'http://www.openkore.com/';
+our $WEBSITE = 'http://betakore.googlecode.com/';
 # Translation Comment: Version String
 our $versionText = "*** $NAME ${VERSION} ( r" . (getSVNRevision() || '?') . ' ) - ' . T("Custom Ragnarok Online client") . " ***\n***   $WEBSITE   ***\n";
 our $welcomeText = TF("Welcome to %s.", $NAME);
@@ -156,6 +156,9 @@ sub parseArguments {
 	undef $sys_file;
 	undef $interface;
 	undef $lockdown;
+	
+	my $chat_log_folder;
+	my $storage_log_folder;
 
 	local $SIG{__WARN__} = sub {
 		ArgumentException->throw($_[0]);
@@ -172,8 +175,8 @@ sub parseArguments {
 		'mon_control=s',      \$mon_control_file,
 		'items_control=s',    \$items_control_file,
 		'shop=s',             \$shop_file,
-		'chat-log=s',         \$chat_log_file,
-		'storage-log=s',      \$storage_log_file,
+		'chat-log=s',         \$chat_log_folder,
+		'storage-log=s',      \$storage_log_folder,
 		'sys=s',              \$sys_file,
 
 		'interface=s',        \$interface,
@@ -202,8 +205,12 @@ sub parseArguments {
 	$fields_folder = "fields" if (!defined $fields_folder);
 	$logs_folder = "logs" if (!defined $logs_folder);
 	$maps_folder = "map" unless defined $maps_folder;
-	$chat_log_file = File::Spec->catfile($logs_folder, "chat.txt");
-	$storage_log_file = File::Spec->catfile($logs_folder, "storage.txt");
+	
+	$chat_log_folder ||= $logs_folder;
+	$storage_log_folder ||= $logs_folder;
+	
+	$chat_log_file = File::Spec->catfile($chat_log_folder, "chat.txt");
+	$storage_log_file = File::Spec->catfile($storage_log_folder, "storage.txt");
 	$shop_log_file = File::Spec->catfile($logs_folder, "shop_log.txt");
 	$monster_log_file = File::Spec->catfile($logs_folder, "monster_log.txt");
 	$item_log_file = File::Spec->catfile($logs_folder, "item_log.txt");
@@ -216,12 +223,15 @@ sub parseArguments {
 	}
 
 	return 0 if ($options{help});
-	if (! -d $logs_folder) {
-		#if (!mkdir($logs_folder)) {
-		if (! make_path($logs_folder)) {
-			IOException->throw("Unable to create folder $logs_folder ($!)");
+	foreach my $folder ($logs_folder, $chat_log_folder, $storage_log_folder) {
+		if (! -d $folder) {
+			#if (!mkdir($logs_folder)) {
+			if (! make_path($folder)) {
+				IOException->throw("Unable to create folder $folder ($!)");
+			}
 		}
 	}
+	
 	return 1;
 }
 

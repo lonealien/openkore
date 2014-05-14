@@ -55,6 +55,7 @@ use Task::Teleport;
 use Time::HiRes qw(time usleep);
 use Translation;
 use Utils::Exceptions;
+use List::Util qw(shuffle);
 
 our @EXPORT = (
 	# Config modifiers
@@ -160,6 +161,7 @@ our @EXPORT = (
 	top10Listing
 	whenGroundStatus
 	writeStorageLog
+	readStorageLog
 	getBestTarget
 	isSafe
 	isSafeActorQuery/,
@@ -201,7 +203,9 @@ our @EXPORT = (
 	openShop
 	closeShop
 	inLockMap
-	parseReload/
+	parseReload
+	canMoveTo
+	nearestWalkableCell/
 	);
 
 
@@ -3139,6 +3143,39 @@ sub writeStorageLog {
 	my $f;
 
 	if (open($f, ">:utf8", $Settings::storage_log_file)) {
+		my $msg = TF("---------- Storage %s -----------\n", getFormattedDate(int(time)));
+		my %storage_h;	
+		for (my $i = 0; $i < @storageID; $i++) {
+			next if ($storageID[$i] eq "");
+			my $item = $storage{$storageID[$i]};
+			push @{$storage_h{$item->{type}}}, $item;		
+		}
+		
+		foreach my $storage_type (sort keys %storage_h) {
+			$msg .= sprintf("-- %s --\n", $itemTypes_lut{$storage_type});
+			foreach my $item (@{$storage_h{$storage_type}}) {
+				my $binID = $item->{binID};
+				my $display = $item->{name};
+				$display .= " x $item->{amount}" unless $item->equippable;
+				$display .= " -- " . T("Not Identified") if !$item->{identified};
+				$display .= " -- " . T("Broken") if $item->{broken};
+				$msg .= " $display\n";
+				# why would we store binID?
+				# $msg .= swrite(
+					# "@>>> @<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<",
+					# [$binID, $display]);
+			}
+		}
+		$msg .= "-------------------------------\n";
+		$msg .=  TF("Capacity: %d/%d\n", $storage{items}, $storage{items_max});
+		$msg .=  "-------------------------------\n";
+		print $f $msg;
+		close $f;
+		
+		message T("Storage logged\n"), "success";
+		
+# old storage log
+=pod		
 		print $f TF("---------- Storage %s -----------\n", getFormattedDate(int(time)));
 		for (my $i = 0; $i < @storageID; $i++) {
 			next if (!$storageID[$i]);
@@ -3157,10 +3194,24 @@ sub writeStorageLog {
 		close $f;
 
 		message T("Storage logged\n"), "success";
-
+=cut
 	} elsif ($show_error_on_fail) {
 		error TF("Unable to write to %s\n", $Settings::storage_log_file);
 	}
+}
+
+sub readStorageLog {
+	my ($show_error_on_fail) = @_;
+	if (open(my $f, "<:utf8", $Settings::storage_log_file)) {
+		my @storage_log = <$f>;
+		foreach my $line (@storage_log) {
+			message "$line", "info";
+		}
+		return 1;
+	} elsif ($show_error_on_fail) {
+		error TF("Unable to read from %s\n", $Settings::storage_log_file);
+	}
+	return 0;
 }
 
 ##
@@ -4448,6 +4499,53 @@ sub buyingstoreitemdelete {
 	$item->{amount} -= $amount;
 	$char->inventory->remove($item) if ($item->{amount} <= 0);
 	$itemChange{$item->{name}} -= $amount;
+}
+
+# boolean canMoveTo(int $x, int $y)
+# Checks for an Actor(only players and npcs I suppose) on the (x,y) coordinates  (only players and npcs I suppose)
+# Return: 1 if there's someone on the spot, 0 otherwise.
+sub canMoveTo {
+	my ($x,$y) = @_;
+	debug "Looking for obstacles on ($x,$y)\n", 2;
+	foreach (@{$playersList->getItems()}) {
+		return 0 if ($_->{pos_to}{x} == $x && $_->{pos_to}{y} == $y);
+	}
+	foreach (@{$npcsList->getItems()}) {
+		return 0 if ($_->{pos_to}{x} == $x && $_->{pos_to}{y} == $y);
+	}
+	return 1;
+}
+
+# Array nearestWalkableCell(int $old_x_target, int $old_y_target)
+# Look for a new -nearest- free cell around the old targeted coordinates
+# Return: Array (int $free_x_coord, int $free_y_coord)
+sub nearestWalkableCell {
+	my ($x, $y) = @_;
+	debug "Calculating nearest free cell around ($x, $y)...\n";
+	
+	# spiral search algorithm
+	# TODO: randomize and make the selected cell less preditable. currently it always start calculating by the top-right cell
+	# X is the occupied cell, the numbers represent the algorithm sequence
+	# [7][8][1]
+	# [6][X][2]
+	# [5][4][3]
+	# TODO: cleaner, more understandable code
+	for (my $distance = 1; $distance < 10; $distance++) {
+		my $vx = $distance;
+		my $vy = $distance;
+		# This foreach loop will add some randomness to the code, but it's also very ugly and still not the desirable code
+		foreach my $code_order (shuffle (1, 2, 3, 4)) {
+			if ($code_order == 1) {
+				for (my $vy = $vx; $vy >= -$vx; $vy--) { return ($vx+$x, $vy+$y) if ($field->isWalkable($vx+$x, $vy+$y) && canMoveTo($vx+$x, $vy+$y)); }
+			} elsif ($code_order == 2) {
+				for (my $vx = $vy-1; $vx > -$vy; $vx--) { return ($vx+$x, $vy+$y) if ($field->isWalkable($vx+$x, $vy+$y) && canMoveTo($vx+$x, $vy+$y)); }
+			} elsif ($code_order == 3) {
+				for (my $vy = -$vx; $vy <= $vx; $vy++) { return (-$vx+$x, $vy+$y) if ($field->isWalkable(-$vx+$x, $vy+$y) && canMoveTo(-$vx+$x, $vy+$y)); }
+			} elsif ($code_order == 4) {
+				for (my $vx = -$vy+1; $vx < $vy; $vx++) { return ($vx+$x, -$vy+$y) if ($field->isWalkable($vx+$x, -$vy+$y) && canMoveTo($vx+$x, -$vy+$y)); }
+			}
+		}
+	}
 }
 
 return 1;

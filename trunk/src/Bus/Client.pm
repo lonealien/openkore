@@ -142,7 +142,7 @@ sub iterate {
 		# Send queued messages.
 		while (@{$self->{sendQueue}} > 0) {
 			my $message = shift @{$self->{sendQueue}};
-			last if (!$self->send($message->[0], $message->[1]));
+			last if (!$self->send($message->[0], $message->[1], $message->[2]));
 		}
 
 		if ($self->{state} == CONNECTED) {
@@ -267,14 +267,14 @@ sub readNext {
 # If you expect a reply for this message then you should use
 # $Bus_Client->query() instead.
 sub send {
-	my ($self, $MID, $args) = @_;
+	my ($self, $MID, $args, $no_queue) = @_;
 	if ($self->{state} == CONNECTED) {
 		eval {
 			$self->{client}->send($MID, $args);
 		};
 		if (caught('IOException')) {
 			$self->handleIOException();
-			push @{$self->{sendQueue}}, [$MID, $args];
+			push @{$self->{sendQueue}}, [$MID, $args, $no_queue] unless $no_queue;
 			return 0;
 		} elsif ($@) {
 			die $@;
@@ -282,7 +282,7 @@ sub send {
 			return 1;
 		}
 	} else {
-		push @{$self->{sendQueue}}, [$MID, $args];
+		push @{$self->{sendQueue}}, [$MID, $args, $no_queue] unless $no_queue;
 		return 0;
 	}
 }

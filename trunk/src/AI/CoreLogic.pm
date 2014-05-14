@@ -1050,7 +1050,7 @@ sub processAutoStorage {
 		my $i;
 		Misc::checkValidity("AutoStorage part 1");
 		for ($i = 0; exists $config{"getAuto_$i"}; $i++) {
-			next unless ($config{"getAuto_$i"});
+			next unless ($config{"getAuto_$i"} && !$config{"getAuto_${i}_disabled"});
 			if ($storage{opened} && findKeyString(\%storage, "name", $config{"getAuto_$i"}) eq '') {
 				foreach (keys %items_lut) {
 					if ((lc($items_lut{$_}) eq lc($config{"getAuto_$i"})) && ($items_lut{$_} ne $config{"getAuto_$i"})) {
@@ -1315,7 +1315,7 @@ sub processAutoStorage {
 			if (defined($args->{getStart}) && $args->{done} != 1) {
 				Misc::checkValidity("AutoStorage part 3");
 				while (exists $config{"getAuto_$args->{index}"}) {
-					if (!$config{"getAuto_$args->{index}"}) {
+					if (!$config{"getAuto_$args->{index}"} || $config{"getAuto_$args->{index}_disabled"}) {
 						$args->{index}++;
 						next;
 					}
@@ -1383,7 +1383,7 @@ sub processAutoStorage {
 			}
 
 			$messageSender->sendStorageClose() unless $config{storageAuto_keepOpen};
-			if (percent_weight($char) >= $config{'itemsMaxWeight_sellOrStore'} && ai_storageAutoCheck()) {
+			if (percent_weight($char) >= $config{'itemsMaxWeight_sellOrStore'} && ai_storageAutoCheck() && (AI::args->{forcedBySell} || !$config{sellAuto})) {
 				error T("Character is still overweight after storageAuto (storage is full?)\n");
 				if ($config{dcOnStorageFull}) {
 					error T("Disconnecting on storage full!\n");
@@ -1529,6 +1529,16 @@ sub processAutoSell {
 				my %hookArgs;
 				Plugins::callHook("AI_sell_done", \%hookArgs);
 				undef $args->{done} if ($hookArgs{return});
+				
+				# TODO: proper check
+				if (percent_weight($char) >= $config{'itemsMaxWeight_sellOrStore'} && ai_sellAutoCheck() && (AI::args->{forcedByStorage} || !$config{storageAuto})) {
+					error T("Character is still overweight after storageAuto and sellAuto (storage is full?)\n");
+					if ($config{dcOnStorageFull}) {
+						error T("Disconnecting on storage full!\n");
+						chatLog("k", T("Disconnecting on storage full!\n"));
+						quit();
+					}
+				}
 			}
 		}
 	}
@@ -1773,8 +1783,8 @@ sub processAutoCart {
 				}
 			}
 			cartGet(\@getItems);
+			$AI::Timeouts::autoCart = time;
 		}
-		$AI::Timeouts::autoCart = time;
 	}
 }
 

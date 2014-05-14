@@ -78,6 +78,14 @@ our @EXPORT = qw(
 sub parseArrayFile {
 	my $file = shift;
 	my $r_array = shift;
+	
+	my %ret = (
+		file => $file,
+		array => $r_array
+	    );
+	Plugins::callHook("FileParsers::ArrayFile", \%ret);
+	return if ($ret{return});
+	
 	undef @{$r_array};
 
 	my @lines;
@@ -164,6 +172,13 @@ sub parseCommandsDescription {
 	my $file = shift;
 	my $r_hash = shift;
 	my $no_undef = shift;
+	
+	my %ret = (
+		file => $file,
+		hash => $r_hash
+	    );
+	Plugins::callHook("FileParsers::CommandsDescription", \%ret);
+	return if ($ret{return});
 
 	undef %{$r_hash} unless $no_undef;
 	my ($key, $commentBlock, $description);
