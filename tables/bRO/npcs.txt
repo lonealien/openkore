@@ -1,1 +1,9 @@
-veins 210 109 Agente VIP
+geffen 109 61 dolangmal#geffen
+geffen 103 55 Engenheiro Mecatrônico#
+geffen 111 48 Senhora
+geffen 119 48 Fonte#s
+geffen 100 55 Domador de Feras
+geffen 109 66 Emissária de Maroll
+geffen 126 64 Agente VIP
+geffen 120 62 Funcionária Kafra
+geffen 124 65 Quadro de Avisos#geffen
