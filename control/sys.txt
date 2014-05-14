@@ -1,31 +1,25 @@
-﻿#############################################################################################
-# A Codificação do texto está correta?
-# Codificação:  ANSI -> UTF8 Without boom
-# Se você não está vendo a acentuação corretamente, seu arquivo está no formato incorreto.
-# Créditos tradução: Duds, Draigonz, Sayd, Temaki' e Kepler  ---          www.openkore.com.br
-#############################################################################################
-###### Localizar Definições (português do Brasil deixe pt_br) ######
+###### Localization settings ######
 locale
- 
-###### Localizar Compatibilidade ######
-# Ativar a compatibilidade do Kore para utilizar versões antigas 2.0 de configs.
+
+###### Localization compatibility ######
+# Enable to make Kore compatible with old 2.0 configs.
 locale_compat 0
- 
-###### Definições de Interface Wx ######
+
+###### Wx interface settings ######
 wxHideConsole 1
- 
- 
-###### Definições de Sistema Bus ######
-# Ativar o bus.
+
+
+###### Bus system settings ######
+# Whether to enable the bus system.
 bus 0
- 
-# Se quiser conectar a um server já a decorrer ou a um computador diferente,
-# especifique-o em baixo.
+
+# If you want to connect to an already running bus server on a different
+# computer, specify the host and port here.
 bus_server_host
 bus_server_port
- 
- 
-###### Definições de Interface Vx ######
+
+
+###### Vx interface settings ######
 panelTwo_domains publicchat, pm, guildchat, partychat, pm/sent, list, info, selfchat, schat, error, warning
 panelOne_lineLimit 900
 panelTwo_lineLimit 100
@@ -40,27 +34,26 @@ panelTwo_height 4
 panelTwo_width 40
 panelTwo_side bottom
 panelTwo_fontsize 8
- 
- 
-###### Definições de Plugin(s) ######
-# Carrega os Plugins <0|1|2|3>
-#   Esta opção controla o carregamento dos plugins ao inicar ou quando carrega todos através do comando "plugin load all".
-#   0 : Não carrega nenhum plugin.
-#   1 : Carrega todos os plugins.
-#   2 : So carrega os plugins que estiverem no loadPlugins_list
-#   3 : Carrega todos os plugins exceto os estão listados no skipPlugins_list
+
+
+###### Plugin settings ######
+# loadPlugins <0|1|2|3>
+#   this option controls loading of plugins at startup or when the "plugin load all" command is used.
+#   0 : do not load plugins
+#   1 : load all plugins
+#   2 : only load plugins that are listed in loadPlugins_list
+#   3 : load all plugins except those listed in skipPlugins_list
 loadPlugins 1
- 
+
 # loadPlugins_list <list>
-# Se o loadPlugins é definido como 2, esta lista ficará separada por vírgulas de nomes dos plugins (nome do arquivo sem a extensão)
-# Especifica quais os arquivos do plugin vão ser carregados na inicialização ou quando o comando "plugin carregar todos" é usado.
+#   if loadPlugins is set to 2, this comma-separated list of plugin names (filename without the extension)
+#   specifies which plugin files to load at startup or when the "plugin load all" command is used.
 loadPlugins_list macro
- 
- 
+
 # skipPlugins_list <list>
-# Se o loadPlugins é definido como 2, esta lista ficará separada por vírgulas de nomes dos plugins (nome do arquivo sem a extensão)
-# Especifica quais os arquivos do plugin vão ser carregados na inicialização ou quando o comando "plugin carregar todos" é usado.
+#   if loadPlugins is set to 3, this comma-separated list of plugin names (filename without the extension)
+#   specifies which plugin files to skip at startup or when the "plugin load all" command is used.
 skipPlugins_list
- 
-###### Diversos ######
+
+###### Miscellaneous ######
 sendAnonymousStatisticReport 0
