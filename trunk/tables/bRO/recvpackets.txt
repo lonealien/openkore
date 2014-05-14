@@ -7,7 +7,6 @@
 # MID Encryption keys are K: 1871789998 M: 1316558710 A: 405831149
 # PIN addfactor: 0x881234 and multfactor: 0x3498
 # Storage Encryption keys are K: 050B6F79, 0202C179, 0E20120, 04FA43E3, 0179B6C8, 05973DF2, 07D8D6B, 08CB9ED9
-# VÃO TOMAR NO CU SPAMMERS INCONSEQUENTES
 
 # Packet ID | Packet Length | Packet Min Length | Repeat Factor | Packet Description
 08A9 7 7 0		send::actor_action
