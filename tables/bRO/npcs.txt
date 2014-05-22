@@ -1,9 +1,4 @@
-geffen 109 61 dolangmal#geffen
-geffen 103 55 Engenheiro Mecatrônico#
-geffen 111 48 Senhora
-geffen 119 48 Fonte#s
-geffen 100 55 Domador de Feras
-geffen 109 66 Emissária de Maroll
-geffen 126 64 Agente VIP
-geffen 120 62 Funcionária Kafra
-geffen 124 65 Quadro de Avisos#geffen
+new_2-2 33 172 Chocolati#newbe06
+new_2-2 30 176 Funcionária Kafra#newbe
+new_2-2 33 176 Funcionário Zonda#newbe
+new_2-2 36 176 Soldado
