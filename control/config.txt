@@ -1,4 +1,4 @@
-﻿#############################################################################################
+#############################################################################################
 # A Codificação do texto está correta?
 # Codificação:  ANSI -> UTF8 Without boom
 # Se você não está vendo a acentuação corretamente, seu arquivo está no formato incorreto.
@@ -16,12 +16,12 @@
 
 ######## Opções de login e especificação do servidor ########
 
-master
-server
-username
-password
-loginPinCode
-char
+master Brazil - bRO: Thor
+server 0
+username clementelone04
+password Clemente*23
+loginPinCode 7152
+char 0
 
 # Opções do Poseidon (http://wiki.openkore.com/index.php/PoseidonServer)
 # Essas configurações devem ser as mesmas do Poseidon.txt
@@ -47,7 +47,7 @@ XKore_publicIp 127.0.0.1
 
 # Não é aconselhável usar secureAdminPassword se você estiver usando Xkore 2
 secureAdminPassword 1
-adminPassword wrefrari
+adminPassword zeabubra
 callSign
 commandPrefix ;
 
