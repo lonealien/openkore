@@ -1,86 +1,92 @@
-# This file allows specific AI control for certain monsters
+﻿#############################################################################################
+# A Codificação do texto está correta?
+# Codificação:  ANSI -> UTF8 Without boom
+# Se você não está vendo a acentuação corretamente, seu arquivo está no formato incorreto.
+# Créditos tradução: Duds, Draigonz, Sayd, Temaki' e Kepler  ---          www.openkore.com.br
+#############################################################################################
+# Esse arquivo permite controlar a AI específicamente para cada monstro
 #
-# Syntax:
+# Sintaxe:
 # <monster> <attack> <teleport> <search> <skillcancel> <lv> <joblv> <hp> <sp> <weight>
 #
-# <monster>:  Name of monster as found in monsters.txt (not case sensitive)
+# <monster>: Nome ou ID do monstro encontrado no monsters.txt (não é case sensitive)
 #
 # <attack>:
-# -1 means to leave the monster alone, even if it attacks you.
-#  0 means to leave the monster alone, unless it attacks you.
-#  1 means to always auto-attack this monster.
-#  2 means always aggressive, auto-attack this monster when it appears, even if sitting.
-#  3 means to attack the monster once (provoke) then leave it, useful for mobbing.
+# -1 para nunca ataque esse monstro, mesmo que ele ataque o bot.
+#  0 para não ataca o monstro por padrão, mas caso ele ataque, o bot o bot irá revidar.
+#  1 para sempre atacar esse monstro caso encontre-o no campo de visão.
+#  2 para sempre atacar esse monstro caso encontre-o no campo de visão, mesmo se o bot estiver sentado.
+#  3 para atacar o monstro uma vez (provocar), em seguida, deixá-lo, útil para mobar.
 #
 # <teleport>:
-# < 0 (-1, -2, etc.) to set exact critical distance for this monster. Teleport, if the monster reaches it.
-# 1 to teleport if the monster is on the screen.
-# 2 to teleport if the monster attacks you.
-#  -> This is only used in auto-attack mode!
-# 3 to disconnect for 30 seconds if the monster is on your screen.
-# >= 4 (4, 5, etc.) to set the time that will be disconnected (in seconds) if the monster is on your screen.
+# < 0 (-1, -2, etc.) para definir a distância crítica exata para esse monstro. Teletransporta se o monstro atingir.
+# 1 para teletransportar caso o monstro apareça em seu campo de visão.
+# 2 para teletransportar caso o monstro atacar.
+#  -> Isso só é ativado em modo de auto-ataque.
+# 3 para desconectar por 30 segundos caso o monstro apareça em seu campo de visão.
+# >= 4 (4, 5, etc.) para definir o tempo que ficará desconectado (em segundos) caso o monstro apareça em seu campo de visão.
 #
-# <search>: Put a 1 to only attack the monster in the search mode.
-# This is only used in auto-attack mode.
+# <search>: Configure para 1 para teleportar em busca do monstro.
+# Auto-ataque precisa estar habilitado.
 #
-# <skillcancel>: Set to 1 if you want to interrupt spells casted by this
-# monster.
+# <skillcancel>: Configure para 1 se você quiser interromper casts dos
+# monstros
 #
-# <lv>: Only auto-attack this monster if your level is higher than the
-# specified level.
+# <lv>: Somente atacar automaticamente esse monstro se o seu nível for maior
+# que o valor especificado.
 #
-# <joblv>: Only auto-attack this monster if your job level is higher than
-# the specified level.
+# <joblv>: Somente atacar automaticamente esse monstro se o seu job for maior
+# que o valor especificado.
 #
-# <hp>: Only auto-attack this monster if your HP is higher than the
-# specified amount. The HP is not specified in percentage.
+# <hp>: Somente atacar automaticamente esse monstro se o seu HP for maior
+# que o valor especificado. O HP é especificada em números absolutos.
 #
-# <sp>: Only auto-attack this monster if your SP is higher than the
-# specified amount. The SP is not specified in percentage.
+# <sp>: Somente atacar automaticamente esse monstro se o seu SP for maior
+# que o valor especificado. O SP é especificada em números absolutos.
 #
-# <weight>: Counts this monster as the specified amount aggressives. Supports floating point numbers (eg 1.8237402).
-# Example:
-#	(config.txt)
-#	teleportAuto_minAggressives 6
-#	teleportAuto_minAggressivesInLock 6
+# <weight>: Peso dos monstros aggressivos para ativar as funções na config. Suporta números quebrados (ex 1.8237402).
+# Exemplos:
+#       (config.txt)
+#       teleportAuto_minAggressives 6
+#       teleportAuto_minAggressivesInLock 6
 #
-#	(mon_control.txt)
-#	Hydra 1 0 0 0 0 0 0 0 0.2
-#	Merman 1 0 0 0 0 0 0 0 2
+#       (mon_control.txt)
+#       Hidra 1 0 0 0 0 0 0 0 0.2
+#       Peixe espada 1 0 0 0 0 0 0 0 2
 #
-#	If there's five hydras and two sword fish attacks the bot, it won't
-#	teleport away since the aggressives are counted as 5*0.2 + 2*1 = 3
-#	However, two marcs and two merman will make it tele away because
-#	it sees 2*1* + 2*2 = 6 aggressives.
+# Se houver cinco hidras e um peixe espada atacando o bot,
+# ele não vai teleportar pois o valor não é igual ou maior que o teleportAuto_minAggressives (5 * 0,2 + 1 * 2 = 4).
+# No entanto, três pexies espadas fará o bot teletransportar, pois
+# 0 * 0,2 + 2 * 3 = 6
 #
 #
-# Monsters not found in this file, or flags not specified will default to:
+# Monstros não especificados neste arquivo terá por padrão:
 # <attack> = 1
-
-
-##### Eggs #####
+ 
+ 
+##### Ovos #####
 Ant's Egg 0 0 0
 PecoPeco's Egg 0 0 0
 Pupa 0 0 0
 Thief Bug's Egg 0 0 0
-
-##### Alchemist Summons ####
-# Summoned Parasite
-1555 0 0 0 
-
-# Summoned Flora
-1575 0 0 0 
-
-# Summoned Hydra
-1579 0 0 0 
-
-# Summoned Mandragora
-1589 0 0 0 
-
-# Summoned Geographer
-1590 0 0 0 
-
-##### Plants #####
+ 
+##### Invocados por alquimistas ####
+# Parasita invocada
+1555 0 0 0
+ 
+# Flora invocada
+1575 0 0 0
+ 
+# Hidra invocada
+1579 0 0 0
+ 
+# Mandragora invocada
+1589 0 0 0
+ 
+# Planta Carnívora invocada
+1590 0 0 0
+ 
+##### Plantas #####
 Black Mushroom 0 0 0
 Blue Plant 0 0 0
 Green Plant 0 0 0
@@ -89,8 +95,8 @@ Red Plant 0 0 0
 Shining Plant 0 0 0
 White Plant 0 0 0
 Yellow Plant 0 0 0
-
-
+ 
+ 
 ##### Homunculus #####
 6001 -1 0 0
 6002 -1 0 0
@@ -108,8 +114,8 @@ Yellow Plant 0 0 0
 6014 -1 0 0
 6015 -1 0 0
 6016 -1 0 0
-
-##### Mercenary #####
+ 
+##### Assistentes #####
 6017 -1 0 0
 6018 -1 0 0
 6019 -1 0 0
@@ -140,22 +146,22 @@ Yellow Plant 0 0 0
 6044 -1 0 0
 6045 -1 0 0
 6046 -1 0 0
-
-##### Monster Mercenary #####
-# Mimic (Monster)
+ 
+##### Monstros assistentes #####
+# Mímico (Monstro)
 1191 -1 0 0
-# Disguise (Monster)
+# Mascarado (Monstro)
 1506 -1 0 0
-# Alice (Monster)
+# Alice (Monstro)
 1275 -1 0 0
-# Wild Rose (Mercenary version, M_WILD_ROSE)
+# Rosa Selvagem (Versão assistente, M_WILD_ROSE)
 1965 -1 0 0
-# Doppelganger (Mercenary version, M_DOPPELGANGER)
+# Doppelganger (Versão assistente, M_DOPPELGANGER)
 1966 -1 0 0
-# Egnigem Cenia (Mercenary version, M_YGNIZEM)
+# Egnigem Cenia (Versão assistente, M_YGNIZEM)
 1967 -1 0 0
-
-##### MVPs and Dangerous Monsters #####
+ 
+##### MVPs e mini-boss #####
 Amon Ra 0 1 0
 Archangeling 0 1 0
 Baphomet 0 1 0

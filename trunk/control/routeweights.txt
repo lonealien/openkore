@@ -1,36 +1,43 @@
+#############################################################################################
+# A Codificação do texto está correta?
+# Codificação:  ANSI -> UTF8 Without boom
+# Se você não está vendo a acentuação corretamente, seu arquivo está no formato incorreto.
+# Créditos tradução: Duds, Draigonz, Sayd, Temaki' e Kepler  ---          www.openkore.com.br
+#############################################################################################
 #
-# Map routing weights
+# Pesos para rota de mapas
 #
-# This control file allows you to modify Kore's map routing by specifying
-# weights for maps that Kore is walking through to reach the destination.
-# Kore generally tries to use the shortest path to get to the desired
-# destination map. The path is counted in number of steps (tiles) the
-# character would have to walk.
-# Map routing weights can be seen as additional steps that Kore thinks
-# it would have to do on a specific map. Positive weights makes Kore
-# avoid a map, negative weights makes it prefer a map.
+# Este arquivo de controle permite que você modifique os mapas que o kore irar caminhar.
+# Especificando Pesos para os mapas que Kore está caminhando para chegar ao destino.
+# O kore geralmente tenta usar o caminho mais curto para chegar ao map destino.
+# O caminho é contado em número de passos (celulas) que o personagem teria de caminhar.
+# Pesos Mapa de roteamento pode ser visto como passos adicionais que o Kore irar ignorar.
+# Pesos positivos faz com que Kore evite o mapa, pesos negativos faz com que o kore prefira o mapa.
 #
-# Example:
-# Specifying a weight of 500 for prt_fild08 makes Kore avoid walking
-# through prt_fild08, as long as there is an alternative path that has
-# not more than 500 additional steps.
-# Therefore you could say Kore prefers to walk up to 500 additional steps
-# rather than walking through prt_fild08
+# Exemplo:
+# Especificando um peso de 500 para prt_fild08 faz Kore evitar andar através prt_fild08, contanto que não existe um caminho alternativo que não seja
+# mais de 500 passos adicionais.
+# Portanto, você poderia dizer ao Kore que e melhor andar até 500 passos adicionais ao invés de caminhar através prt_fild08
 #
-# Using a weight of 10000 makes it pretty sure to completely avoid a map.
+# Usando um peso de 10000 o kore evitar completamente um mapa.
 #
 
-# Portal weight. This can be used to make Kore avoid/prefer walking through
-# map portals. Only change this, if you exactly know what you're doing!
+# Portal peso.
+#Isso pode ser usado para fazer Kore evitar / preferir percorrer.
+
+#Mapa portais.
+#. Apenas mude isso, se você sabe exatamente o que você está fazendo!
 PORTAL 20
 
-# NPC weight. This can be used to avoid/prefer going to the destination
-# by using a NPC. Only change this, if you exactly know what you're doing!
+# Peso NPC.
+# Isto pode ser usado para evitar / preferir ir para o destino
+# Usando um NPC. Apenas mude isso, se você sabe exatamente o que você está fazendo!
 NPC 200
 
-# Maps where you can exit to the same place you came from,
-# which confuses routing if added to portals thoughtlessly.
+# Mapas onde você pode sair para o mesmo lugar que você veio,
+# que confundem a rota se forem adicionados ao portal(.txt) de qualquer forma.
 bat_room 10000
 moc_para01 10000
 
-# Add your map weights here. Format: <mapname> <weight>
+# Adicione seus pesos e mapas aqui.
+# Formato: <map name> <weight>
