@@ -2,3 +2,21 @@ new_2-2 33 172 Chocolati#newbe06
 new_2-2 30 176 Funcionária Kafra#newbe
 new_2-2 33 176 Funcionário Zonda#newbe
 new_2-2 36 176 Soldado
+new_1-3 100 50 Vendedor#newbe09
+new_1-3 103 50 Treinador
+new_1-3 97 41 Espadachim#newbe10
+new_1-3 101 41 Noviço#newbe10
+new_1-3 105 41 Gatuno#newbe10
+new_1-3 109 41 Mercador#newbe10
+new_1-3 96 30 Brade#newbe04
+cmd_fild07 94 134 Samir
+cmd_fild07 136 134 Funcionária Kafra
+cmd_fild07 250 98 Vendedor de Armas
+cmd_fild07 257 126 Vendedor de Ferramentas
+cmd_fild07 192 58 Ramadi
+cmd_fild07 192 58 Ramadi
+cmd_fild07 257 126 Vendedor de Ferramentas
+cmd_fild07 277 85 Vendedor de Armaduras
+cmd_fild07 277 85 Vendedor de Armaduras
+cmd_fild07 299 83 Zain
+cmd_fild07 277 85 Vendedor de Armaduras
