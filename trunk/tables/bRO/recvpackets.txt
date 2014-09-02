@@ -1,10 +1,10 @@
 # http://openkore-brasil.com 
 # http://revok.com.br/ 
-# RO packet extractor v0 Revok [13:58 (UTC -03:00) 26-08-2014] 
+# RO packet extractor v0 Revok [14:01 (UTC -03:00) 02-09-2014] 
 # Unpacked or Unknown .exe Packer 
-# Target: 2014-26-08aRagexe.exe 
+# Target: 2014-02-09aRagexe.exe 
 # MD5: ?  CRC32: ? 
-# MID Encryption keys are K: 2009413307 M: 2034854618 A: 887302880
+# MID Encryption keys are K: 579613738 M: 2028732437 A: 1141384023
 # PIN addfactor: 0x881234 and multfactor: 0x3498
 # Storage Encryption keys are K: 050B6F79, 0202C179, 0E20120, 04FA43E3, 0179B6C8, 05973DF2, 07D8D6B, 08CB9ED9
 
@@ -13,31 +13,31 @@
 083C 10 10 0	send::skill_use
 0437 5 5 0		send::character_move
 035F 6 6 0		send::sync
-0281 5 5 0		send::actor_look_at
-094E 6 6 0		send::item_take
-0865 6 6 0		send::item_drop
-093A 8 8 0		send::storage_item_add
-092F 8 8 0		send::storage_item_remove
+0861 5 5 0		send::actor_look_at
+0941 6 6 0		send::item_take
+092E 6 6 0		send::item_drop
+091F 8 8 0		send::storage_item_add
+0888 8 8 0		send::storage_item_remove
 0438 10 10 0	send::skill_use_location
 0366 90 90 0	send::skill_use_with_text
 096A 6 6 0		send::actor_info_request
-02C4 6 6 0		send::actor_name_request
+0368 6 6 0		send::actor_name_request
 0838 12 12 0	CZ_SSILIST_ITEM_CLICK
 0835 2 2 0		PACKET_CZ_SEARCH_STORE_INFO_NEXT_PAGE
 0819 -1 15 0	PACKET_CZ_SEARCH_STORE_INFO
 0811 -1 12 0
-0885 6 6 0
+0360 6 6 0
 0817 2 2 0
 0815 -1 89 0
-0884 18 18 0
-0877 8 8 0
-0955 -1 12 0	PACKET_CZ_ITEMLISTWIN_RES
-094D 19 19 0	send::map_login
-0368 26 26 0	send::party_join_request_by_name
-0870 4 4 0
-087E 26 26 0	friend request?
-0364 5 5 0		send::homunculus_command
-023B 36 36 0	send::storage_packet
+087C 18 18 0
+0878 8 8 0
+0867 -1 12 0	PACKET_CZ_ITEMLISTWIN_RES
+086D 19 19 0	send::map_login
+0939 26 26 0	send::party_join_request_by_name
+0956 4 4 0
+091D 26 26 0	friend request?
+087A 5 5 0		send::homunculus_command
+0365 36 36 0	send::storage_packet
 0367 2 2 0		receive::sync_request_ex
 085A 2 2 0		receive::sync_request_ex
 085B 2 2 0		receive::sync_request_ex
@@ -46,36 +46,36 @@
 085E 2 2 0		receive::sync_request_ex
 085F 2 2 0		receive::sync_request_ex
 0860 2 2 0		receive::sync_request_ex
-0861 2 2 0		receive::sync_request_ex
+0361 2 2 0		receive::sync_request_ex
 0862 2 2 0		receive::sync_request_ex
 0863 2 2 0		receive::sync_request_ex
 0864 2 2 0		receive::sync_request_ex
-0363 2 2 0		receive::sync_request_ex
+0865 2 2 0		receive::sync_request_ex
 0866 2 2 0		receive::sync_request_ex
-0867 2 2 0		receive::sync_request_ex
+0889 2 2 0		receive::sync_request_ex
 0868 2 2 0		receive::sync_request_ex
 0869 2 2 0		receive::sync_request_ex
-086A 2 2 0		receive::sync_request_ex
+0884 2 2 0		receive::sync_request_ex
 086B 2 2 0		receive::sync_request_ex
 086C 2 2 0		receive::sync_request_ex
-086D 2 2 0		receive::sync_request_ex
+0436 2 2 0		receive::sync_request_ex
 086E 2 2 0		receive::sync_request_ex
 086F 2 2 0		receive::sync_request_ex
-0361 2 2 0		receive::sync_request_ex
+0870 2 2 0		receive::sync_request_ex
 0871 2 2 0		receive::sync_request_ex
 0872 2 2 0		receive::sync_request_ex
 0873 2 2 0		receive::sync_request_ex
 0874 2 2 0		receive::sync_request_ex
 0875 2 2 0		receive::sync_request_ex
-0802 2 2 0		receive::sync_request_ex
+0876 2 2 0		receive::sync_request_ex
+0877 2 2 0		receive::sync_request_ex
 07EC 2 2 0		receive::sync_request_ex
-0878 2 2 0		receive::sync_request_ex
 0879 2 2 0		receive::sync_request_ex
-087A 2 2 0		receive::sync_request_ex
+022D 2 2 0		receive::sync_request_ex
 087B 2 2 0		receive::sync_request_ex
-087C 2 2 0		receive::sync_request_ex
+0802 2 2 0		receive::sync_request_ex
 087D 2 2 0		receive::sync_request_ex
-0202 2 2 0		receive::sync_request_ex
+087E 2 2 0		receive::sync_request_ex
 087F 2 2 0		receive::sync_request_ex
 0880 2 2 0		receive::sync_request_ex
 0881 2 2 0		receive::sync_request_ex
@@ -87,9 +87,9 @@
 091A 2 2 0		receive::sync_request_ex
 091B 2 2 0		receive::sync_request_ex
 091C 2 2 0		receive::sync_request_ex
-091D 2 2 0		receive::sync_request_ex
+0202 2 2 0		receive::sync_request_ex
 091E 2 2 0		receive::sync_request_ex
-091F 2 2 0		receive::sync_request_ex
+0364 2 2 0		receive::sync_request_ex
 0920 2 2 0		receive::sync_request_ex
 0921 2 2 0		receive::sync_request_ex
 0922 2 2 0		receive::sync_request_ex
@@ -97,15 +97,15 @@
 0924 2 2 0		receive::sync_request_ex
 0925 2 2 0		receive::sync_request_ex
 0926 2 2 0		receive::sync_request_ex
-0927 2 2 0		receive::sync_request_ex
+0886 2 2 0		receive::sync_request_ex
 0928 2 2 0		receive::sync_request_ex
 0929 2 2 0		receive::sync_request_ex
 092A 2 2 0		receive::sync_request_ex
 092B 2 2 0		receive::sync_request_ex
 092C 2 2 0		receive::sync_request_ex
 092D 2 2 0		receive::sync_request_ex
-092E 2 2 0		receive::sync_request_ex
-0365 2 2 0		receive::sync_request_ex
+0363 2 2 0		receive::sync_request_ex
+092F 2 2 0		receive::sync_request_ex
 0930 2 2 0		receive::sync_request_ex
 0931 2 2 0		receive::sync_request_ex
 0932 2 2 0		receive::sync_request_ex
@@ -115,21 +115,21 @@
 0936 2 2 0		receive::sync_request_ex
 0937 2 2 0		receive::sync_request_ex
 0938 2 2 0		receive::sync_request_ex
-0939 2 2 0		receive::sync_request_ex
-022D 2 2 0		receive::sync_request_ex
+02C4 2 2 0		receive::sync_request_ex
+093A 2 2 0		receive::sync_request_ex
 093B 2 2 0		receive::sync_request_ex
 093C 2 2 0		receive::sync_request_ex
 093D 2 2 0		receive::sync_request_ex
 093E 2 2 0		receive::sync_request_ex
 093F 2 2 0		receive::sync_request_ex
-0876 2 2 0		send::sync_ex_question_reply
-0360 2 2 0		send::sync_ex_question_reply
+086A 2 2 0		send::sync_ex_question_reply
+08A8 2 2 0		send::sync_ex_question_reply
+0927 2 2 0		send::sync_ex_question_reply
+08AA 2 2 0		send::sync_ex_question_reply
+08A6 2 2 0		send::sync_ex_question_reply
+07E4 2 2 0		send::sync_ex_question_reply
+0966 2 2 0		send::sync_ex_question_reply
 088A 2 2 0		send::sync_ex_question_reply
-08AB 2 2 0		send::sync_ex_question_reply
-0887 2 2 0		send::sync_ex_question_reply
-0888 2 2 0		send::sync_ex_question_reply
-0889 2 2 0		send::sync_ex_question_reply
-0886 2 2 0		send::sync_ex_question_reply
 088B 2 2 0		send::sync_ex_question_reply
 088C 2 2 0		send::sync_ex_question_reply
 088D 2 2 0		send::sync_ex_question_reply
@@ -157,15 +157,15 @@
 08A3 2 2 0		send::sync_ex_question_reply
 08A4 2 2 0		send::sync_ex_question_reply
 08A5 2 2 0		send::sync_ex_question_reply
-08A6 2 2 0		send::sync_ex_question_reply
+023B 2 2 0		send::sync_ex_question_reply
 08A7 2 2 0		send::sync_ex_question_reply
-08A8 2 2 0		send::sync_ex_question_reply
+0885 2 2 0		send::sync_ex_question_reply
 08A9 2 2 0		send::sync_ex_question_reply
-0940 2 2 0		send::sync_ex_question_reply
-08AA 2 2 0		send::sync_ex_question_reply
+0887 2 2 0		send::sync_ex_question_reply
+08AB 2 2 0		send::sync_ex_question_reply
 08AC 2 2 0		send::sync_ex_question_reply
 08AD 2 2 0		send::sync_ex_question_reply
-0941 2 2 0		send::sync_ex_question_reply
+0362 2 2 0		send::sync_ex_question_reply
 0942 2 2 0		send::sync_ex_question_reply
 0943 2 2 0		send::sync_ex_question_reply
 0944 2 2 0		send::sync_ex_question_reply
@@ -177,16 +177,16 @@
 094A 2 2 0		send::sync_ex_question_reply
 094B 2 2 0		send::sync_ex_question_reply
 094C 2 2 0		send::sync_ex_question_reply
-0436 2 2 0		send::sync_ex_question_reply
-0362 2 2 0		send::sync_ex_question_reply
+094D 2 2 0		send::sync_ex_question_reply
+094E 2 2 0		send::sync_ex_question_reply
 094F 2 2 0		send::sync_ex_question_reply
 0950 2 2 0		send::sync_ex_question_reply
 0951 2 2 0		send::sync_ex_question_reply
 0952 2 2 0		send::sync_ex_question_reply
 0953 2 2 0		send::sync_ex_question_reply
 0954 2 2 0		send::sync_ex_question_reply
-07E4 2 2 0		send::sync_ex_question_reply
-0956 2 2 0		send::sync_ex_question_reply
+0955 2 2 0		send::sync_ex_question_reply
+0281 2 2 0		send::sync_ex_question_reply
 0957 2 2 0		send::sync_ex_question_reply
 0958 2 2 0		send::sync_ex_question_reply
 0959 2 2 0		send::sync_ex_question_reply
@@ -201,8 +201,8 @@
 0962 2 2 0		send::sync_ex_question_reply
 0963 2 2 0		send::sync_ex_question_reply
 0964 2 2 0		send::sync_ex_question_reply
+0940 2 2 0		send::sync_ex_question_reply
 0965 2 2 0		send::sync_ex_question_reply
-0966 2 2 0		send::sync_ex_question_reply
 0967 2 2 0		send::sync_ex_question_reply
 0968 2 2 0		send::sync_ex_question_reply
 0969 2 2 0		send::sync_ex_question_reply
@@ -418,7 +418,7 @@
 01AA 10 10 1	receive::pet_emotion (PACKET_ZC_PET_ACT)
 01CA 3 3 0		PACKET_CZ_REQMAKINGHOMUN
 01B0 11 11 1	receive::monster_typechange (PACKET_ZC_NPCSPRITE_CHANGE)
-01B1 7 7 1		PACKET_ZC_SHOWDIGIT
+0007 7 1 0
 01BA 26 26 0	PACKET_CZ_REMOVE_AID
 01BB 26 26 0	PACKET_CZ_SHIFT
 01BC 26 26 0	PACKET_CZ_RECALL
@@ -1179,7 +1179,7 @@
 09E4 8 8 1
 09E5 18 18 1
 09E6 22 22 1
-09E7 2 2 1
+09E7 3 3 1
 09E8 11 11 1
 09E9 2 2 1
 09EE 11 11 1
@@ -1199,11 +1199,12 @@
 0A04 6 6 1
 0A05 48 48 1
 0A06 6 6 1
-0A07 7 7 1
+0A07 9 9 1
 0A03 2 2 1
 0A08 26 26 1
 0A12 27 27 1
-0A13 2 2 1
+0A13 26 26 1
+0A14 10 10 1
 09F8 -1 8 1
 09F9 143 143 1
 09FA -1 6 1
@@ -1224,3 +1225,25 @@
 0A10 -1 28 1
 0A11 -1 28 1
 0A0E 14 14 1
+0A15 12 12 1
+0A16 26 26 0
+0A17 6 6 1
+0A18 14 14 1
+0A19 2 2 1
+0A1A 23 23 1
+0A1B 2 2 1
+0A1C -1 8 1
+0A1D 2 2 1
+0A1E 3 3 1
+0A1F 2 2 1
+0A20 21 21 1
+0A21 3 3 1
+0A22 5 5 1
+0A23 -1 12 1
+0A24 36 36 1
+0A25 6 6 1
+0A26 7 7 1
+0A27 8 8 1
+0A28 3 3 1
+0A29 6 6 0
+0A2A 6 6 0
