@@ -23,19 +23,19 @@ sub new {
 		'083C' => ['skill_use', 'v2 a4', [qw(lv skillID targetID)]],
 		'0437' => ['character_move','a3', [qw(coords)]],
 		'035F' => ['sync', 'V', [qw(time)]],
-		'0281' => ['actor_look_at', 'v C', [qw(head body)]],
-		'094E' => ['item_take', 'a4', [qw(ID)]],
-		'0865' => ['item_drop', 'v2', [qw(index amount)]],
-		'093A' => ['storage_item_add', 'v V', [qw(index amount)]],
-		'092F' => ['storage_item_remove', 'v V', [qw(index amount)]],
+		'0861' => ['actor_look_at', 'v C', [qw(head body)]],
+		'0941' => ['item_take', 'a4', [qw(ID)]],
+		'092E' => ['item_drop', 'v2', [qw(index amount)]],
+		'091F' => ['storage_item_add', 'v V', [qw(index amount)]],
+		'0888' => ['storage_item_remove', 'v V', [qw(index amount)]],
 		'0438' => ['skill_use_location', 'v4', [qw(lv skillID x y)]],
 		'096A' => ['actor_info_request', 'a4', [qw(ID)]],
-		'02C4' => ['actor_name_request', 'a4', [qw(ID)]],
-		'0955' => ['item_list_res', 'v V2 a*', [qw(len type action itemInfo)]],
-		'094D' => ['map_login', 'a4 a4 a4 V C', [qw(accountID charID sessionID tick sex)]],
-		'0368' => ['party_join_request_by_name', 'Z24', [qw(partyName)]], #f
-		'0364' => ['homunculus_command', 'v C', [qw(commandType, commandID)]], #f
-		'023B' => ['storage_password'],
+		'0368' => ['actor_name_request', 'a4', [qw(ID)]],
+		'0867' => ['item_list_res', 'v V2 a*', [qw(len type action itemInfo)]],
+		'086D' => ['map_login', 'a4 a4 a4 V C', [qw(accountID charID sessionID tick sex)]],
+		'0939' => ['party_join_request_by_name', 'Z24', [qw(partyName)]], #f
+		'087A' => ['homunculus_command', 'v C', [qw(commandType, commandID)]], #f
+		'0365' => ['storage_password'],
 	);
 	
 	$self->{packet_list}{$_} = $packets{$_} for keys %packets;	
@@ -48,7 +48,7 @@ sub new {
 	
 	while (my ($k, $v) = each %packets) { $handlers{$v->[0]} = $k}
 	$self->{packet_lut}{$_} = $handlers{$_} for keys %handlers;
-	$self->cryptKeys(887302880, 2009413307, 2034854618);
+	$self->cryptKeys(1141384023, 579613738, 2028732437);
 	
 	return $self;
 }
