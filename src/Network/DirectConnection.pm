@@ -468,6 +468,7 @@ sub checkConnection {
 				return;
 			}
 			error T("Timeout on Account Server, reconnecting...\n"), "connection";
+			Plugins::callHook("Network::timeout/account_server");
 			$timeout_ex{'master'}{'time'} = time;
 			$timeout_ex{'master'}{'timeout'} = $timeout{'reconnect'}{'timeout'};
 			$self->serverDisconnect;
@@ -541,12 +542,21 @@ sub checkConnection {
 				return;
 			}
 		} elsif (timeOut($timeout{'gamelogin'}) && ($config{'server'} ne "" || $masterServer->{'charServer_ip'})) {
+			unless ($self->{conRetries}) {
+				error T("Error while connecting, retrying...\n"), "connection";
+				$timeout{'gamelogin'}{'time'} = time;
+				$self->serverDisconnect;
+				$self->{conRetries}++;
+				undef $conState_tries;
+				return;
+			}
 			error TF("Timeout on Character Server, reconnecting. Wait %s seconds...\n", $timeout{'reconnect'}{'timeout'}), "connection";
 			$timeout_ex{'master'}{'time'} = time;
 			$timeout_ex{'master'}{'timeout'} = $timeout{'reconnect'}{'timeout'};
 			$self->serverDisconnect;
 			undef $conState_tries;
 			$self->setState(Network::NOT_CONNECTED);
+			Plugins::callHook("Network::timeout/char_server");
 		}
 	} elsif ($self->getState() == Network::CONNECTED_TO_LOGIN_SERVER) {
 		if(!$self->serverAlive() && $config{'char'} ne "" && !$conState_tries) {
@@ -566,6 +576,8 @@ sub checkConnection {
 		} elsif (timeOut($timeout{'charlogin'}) && $config{'char'} ne "") {
 			unless ($self->{conRetries}) {
 				error T("Error while connecting, retrying...\n"), "connection";
+				$timeout{'charlogin'}{'time'} = time;
+				$self->serverDisconnect;
 				$self->{conRetries}++;
 				undef $conState_tries;
 				return;
@@ -576,6 +588,7 @@ sub checkConnection {
 			$self->serverDisconnect;
 			$self->setState(Network::NOT_CONNECTED);
 			undef $conState_tries;
+			Plugins::callHook("Network::timeout/char_select_server");
 		}
 	} elsif ($self->getState() == Network::CONNECTED_TO_CHAR_SERVER) {
 		if(!$self->serverAlive() && !$conState_tries) {
@@ -611,6 +624,8 @@ sub checkConnection {
 		} elsif (timeOut($timeout{maplogin})) {
 			unless ($self->{conRetries}) {
 				error T("Error while connecting, retrying...\n"), "connection";
+				$timeout{maplogin}{time} = time;
+				$self->serverDisconnect;
 				$self->{conRetries}++;
 				undef $conState_tries;
 				return;
@@ -620,6 +635,7 @@ sub checkConnection {
 			$self->serverDisconnect;
 			$self->setState(Network::NOT_CONNECTED);
 			undef $conState_tries;
+			Plugins::callHook("Network::timeout/map_server");
 		}
 	} elsif ($self->getState() == Network::IN_GAME) {
 		if(!$self->serverAlive()) {

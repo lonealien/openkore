@@ -1,20 +1,7 @@
-#############################################################################################
-# A Codificação do texto está correta?
-# Codificação:  ANSI -> UTF8 Without boom
-# Se você não está vendo a acentuação corretamente, seu arquivo está no formato incorreto.
-#############################################################################################
-# * Wiki do OpenKore em português:
-#     http://w.openkore-brasil.com/
-# * Wiki do OpenKore internacional:
-#     http://openkore.com
-###############################################################################
-# * Fórum internacional do OpenKore:
-#     http://forums.openkore.com
-# * Fórum em português do OpenKore:
-#     http://forums.openkore-brasil.com/
-###############################################################################
+# Please Read the Users Manual
+# The Manual is located at http://wiki.openkore.com/index.php?title=Manual
 
-######## Opções de login e especificação do servidor ########
+######## Login options and server-specific options ########
 
 master
 server
@@ -23,14 +10,14 @@ password
 loginPinCode
 char
 
-# Opções do Poseidon (http://wiki.openkore.com/index.php/PoseidonServer)
-# Essas configurações devem ser as mesmas do Poseidon.txt
+# Poseidon Settings (http://wiki.openkore.com/index.php/PoseidonServer)
+# They must be the same as Query Server config in Poseidon.txt
 poseidonServer 127.0.0.1
 poseidonPort 24390
 
 bindIp
 
-# 1 = rodar dentro do cliente do RO, 2 = usar proxy autônomo, proxy = atua como proxy verdadeiro
+# 1 = hook into RO client, 2 = Act as stand-alone proxy, proxy = act as true proxy
 # http://wiki.openkore.com/index.php/XKore
 XKore 0
 XKore_port 2350
@@ -40,12 +27,12 @@ XKore_silent 1
 XKore_bypassBotDetection 0
 XKore_exeName ragexe.exe
 
-# XKore 2 / Configurações de proxy
+# XKore 2 / Proxy configuration
 XKore_listenIp 127.0.0.1
 XKore_listenPort 6901
 XKore_publicIp 127.0.0.1
 
-# Não é aconselhável usar secureAdminPassword se você estiver usando Xkore 2
+# It is not advised to set secureAdminPassword if you're using Xkore 2
 secureAdminPassword 1
 adminPassword
 callSign
@@ -55,10 +42,11 @@ pauseCharServer 0
 pauseMapServer 0
 ignoreInvalidLogin 0
 secureLogin_requestCode
+whenInGame_requestCashPoints 0
 
 message_length_max 80
 
-######## Configuração principal ########
+######## Main configuration ########
 
 alias_heal sp 28
 
@@ -102,17 +90,17 @@ attackEquip_armor
 attackEquip_shoes
 attackEquip_arrow
 
-#Requer o plugin breakTime: http://wiki.openkore.com/index.php?title=BreakTime
+#You need the breakTime plugin: http://wiki.openkore.com/index.php?title=BreakTime
 autoBreakTime {
-        startTime
-        stopTime
+	startTime
+	stopTime
 }
 
 autoConfChange {
-        minTime
-        varTime
-        lvl
-        joblvl
+	minTime
+	varTime
+	lvl
+	joblvl
 }
 
 autoMakeArrows 0
@@ -155,6 +143,7 @@ dcOnMute 0
 dcOnPM 0
 dcOnZeny 0
 dcOnStorageFull 1
+dcOnStorageMaxItems 1
 dcOnPlayer 0
 dcOnServerShutDown 0
 dcOnServerClose 0
@@ -180,7 +169,6 @@ itemsMaxWeight_sellOrStore 48
 itemsMaxNum_sellOrStore 99
 cartMaxWeight 7900
 itemsTakeAuto_new 0
-
 
 lockMap
 lockMap_x
@@ -223,7 +211,6 @@ sitAuto_over_50 0
 sitAuto_idle 1
 sitAuto_look
 sitAuto_look_from_wall
-
 
 statsAddAuto 0
 statsAddAuto_list
@@ -313,7 +300,7 @@ status_mapType 0
 
 removeActorWithDistance
 
-######## Configurações para Assistente ########
+######## Mercenary Support ########
 
 mercenary_attackAuto 2
 mercenary_attackAuto_party 1
@@ -345,7 +332,7 @@ mercenary_teleportAuto_dropTargetKS 0
 mercenary_teleportAuto_totalDmg 0
 mercenary_teleportAuto_totalDmgInLock 0
 
-######## Configurações para homunculus ########
+######## Homunculus Support ########
 
 homunculus_attackAuto 2
 homunculus_attackAuto_party 1
@@ -377,34 +364,34 @@ homunculus_teleportAuto_dropTargetKS 0
 homunculus_teleportAuto_totalDmg 0
 homunculus_teleportAuto_totalDmgInLock 0
 
-# intimacyMax/Min define um limite de quando vai alimentar seu homunculus, de acordo com a intimidade
-# Se a intimidade é maior que o mínimo ou menor/igual ao máximo, nós não vamos alimenta-lo.
+# intimacyMax / Min sets a threshhold of when not to feed your homunculus
+# If intimacy is HIGHER than the minimum or LOWER/EQUAL to the max, we wont feed.
 homunculus_intimacyMax 999
 homunculus_intimacyMin 911
 
-# Quanto tempo devemos esperar entre a alimentação? Padrão: aleatórios entre 10 e 60 segundos
+# How long should we wait between feeding? default: random between 10 and 60 seconds
 homunculus_hungerTimeoutMax 60
 homunculus_hungerTimeoutMin 10
 
-# Ligar/desligar alimentações automáticas dos homunculus
+# Turn on/off homunculus autofeeding
 homunculus_autoFeed 1
-# Em quais mapas devemos permitir a alitemação? (deixe em branco para qualquer mapa)
+# In Wich maps should we allow feeding? (leave empty for any map)
 homunculus_autoFeedAllowedMaps
 
-# Alimentar homunculus com a fome entre o hungerMin e hungerMax (exemplo: entre 11 e 24)
+# Feed homunculus between MIN and MAX value (example: between 11 and 25)
 homunculus_hungerMin 11
 homunculus_hungerMax 24
 
-# Liga/Desliga alimentação automática do pet
-pet_autoFeed 1=1
-# Alimentar pet quando alcançar o valor de fome
+# Turn on/off pet autofeeding
+pet_autoFeed 1
+# Feed pet when meet the hunger value
 pet_hunger 25
-# Retornar pet ao ovo quando atingir o valor de fome
+# Return pet when meet the hunger value
 pet_return 20
 
-######## Opções de blocos ########
-# Você pode copiar e colar qualquer bloco várias vezes. Então, se você quiser
-# configurar duas habilidades de ataque, apenas duplicar o bloco attackSkillSlot.
+######## Block options ########
+# You can copy & paste any block multiple times. So if you want to
+# configure two attack skills, just duplicate the attackSkillSlot block.
 
 attackSkillSlot {
 	lvl 10
@@ -434,6 +421,7 @@ attackSkillSlot {
 	monstersCount
 	maxAttempts 0
 	maxUses 0
+	target_hp
 	target_whenStatusActive
 	target_whenStatusInactive
 	target_deltaHp
@@ -458,6 +446,7 @@ attackComboSlot {
 	waitBeforeUse
 	dist 1.5
 	isSelfSkill 1
+	target_hp
 	target_deltaHp
 	monsters
 	notMonsters
@@ -492,7 +481,6 @@ doCommand {
 	manualAI 0
 }
 
-
 useSelf_skill {
 	lvl 10
 	maxCastTime 0
@@ -523,7 +511,6 @@ useSelf_skill {
 }
 
 useSelf_skill_smartHeal 1
-
 
 partySkill {
 	lvl 10
@@ -567,23 +554,22 @@ partySkill {
 	isSelfSkill 0
 }
 
-
 autoSwitch_default_rightHand
 autoSwitch_default_leftHand
 autoSwitch_default_arrow
- 
-# NOTA: No caso de armas de duas mãos, ou sem escudo,
-#       duplicar o nome da arma para 'rightHand'.
-# Para atacar com as mãos, especifique "[NONE]" (sem as aspas) no rightHand
- 
+
+# NOTE: In the case of two handed weapons, or no Shield,
+#       duplicate the weapon name for 'rightHand'
+# To attack with bare hands, specify "[NONE]" (without the quotes) for rightHand
+
 autoSwitch {
-        rightHand
-        leftHand
-        arrow
-        distance
-        useWeapon
+	rightHand
+	leftHand
+	arrow
+	distance
+	useWeapon
 }
- 
+
 equipAuto {
 	topHead
 	midHead
@@ -648,25 +634,23 @@ useSelf_item {
 	inInventory
 	manualAI 0
 }
- 
-######## Armazenamento Automático/Venda automática ########
- 
+
+######## Autostorage/autosell ########
+
 buyAuto {
-        npc
-        npc_steps
-        standpoint
-        distance 5
-        price
-        minAmount 2
-        maxAmount 3
+	npc
+	standpoint
+	distance 5
+	price
+	minAmount 2
+	maxAmount 3
 }
- 
+
 sellAuto 0
 sellAuto_npc
-sellAuto_npc_steps
 sellAuto_standpoint
 sellAuto_distance 5
- 
+
 storageAuto 0
 storageAuto_npc
 storageAuto_distance 5
@@ -677,17 +661,17 @@ storageAuto_keepOpen 0
 storageAuto_useChatCommand
 relogAfterStorage 1
 minStorageZeny 50
- 
+
 npcTimeResponse
- 
+
 getAuto {
-        minAmount
-        maxAmount
-        passive
+	minAmount
+	maxAmount
+	passive
 }
- 
-######## Opções de depuração; útil apenas para desenvolvedores ########
- 
+
+######## Debugging options; only useful for developers ########
+
 debug 0
 debugPacket_unparsed 0
 debugPacket_received 0

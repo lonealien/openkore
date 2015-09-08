@@ -1161,4 +1161,16 @@ sub sendHomunculusStandBy {
 	debug "Sent Slave standby\n", "sendPacket", 2;
 }
 
+sub sendEquip {
+	my ($self, $index, $type) = @_;
+	$self->sendToServer($self->reconstruct({
+				switch => 'send_equip',
+				index => $index,
+				type => $type
+			}
+		)
+	);
+	debug "Sent Equip: $index Type: $type\n" , 2;
+}
+
 1;

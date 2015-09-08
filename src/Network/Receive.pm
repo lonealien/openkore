@@ -20,6 +20,7 @@
 package Network::Receive;
 
 use strict;
+use Time::HiRes qw(time);
 use Network::PacketParser; # import
 use base qw(Network::PacketParser);
 use encoding 'utf8';
@@ -1644,7 +1645,7 @@ sub cash_dealer {
 
 	$ai_v{npc_talk}{talk} = 'cash';
 	# continue talk sequence now
-	$ai_v{npc_talk}{time} = time;
+	$ai_v{npc_talk}{time} = Time::HiRes::time;
 
 	message TF("------------CashList (Cash Point: %-5d)-------------\n" .
 		"#    Name                    Type               Price\n", $char->{cashpoint}), "list";
@@ -2176,7 +2177,7 @@ sub emoticon {
 sub equip_item {
 	my ($self, $args) = @_;
 	my $item = $char->inventory->getByServerIndex($args->{index});
-	if (!$args->{success}) {
+	if ((!$args->{success} & $args->{switch} eq "00AA") || ($args->{success} & $args->{switch} eq "0999")) {
 		message TF("You can't put on %s (%d)\n", $item->{name}, $item->{invIndex});
 	} else {
 		$item->{equipped} = $args->{type};
@@ -2898,7 +2899,7 @@ sub npc_sell_list {
 	message T("Ready to start selling items\n");
 
 	# continue talk sequence now
-	$ai_v{npc_talk}{time} = time;
+	$ai_v{npc_talk}{time} = Time::HiRes::time;
 }
 
 sub npc_store_begin {
@@ -2907,7 +2908,7 @@ sub npc_store_begin {
 	$talk{buyOrSell} = 1;
 	$talk{ID} = $args->{ID};
 	$ai_v{npc_talk}{talk} = 'buy';
-	$ai_v{npc_talk}{time} = time;
+	$ai_v{npc_talk}{time} = Time::HiRes::time;
 
 	my $name = getNPCName($args->{ID});
 
@@ -2985,7 +2986,7 @@ sub npc_talk {
 	$talk{msg} =~ s/\^[a-fA-F0-9]{6}//g;
 
 	$ai_v{npc_talk}{talk} = 'initiated';
-	$ai_v{npc_talk}{time} = time;
+	$ai_v{npc_talk}{time} = Time::HiRes::time;
 
 	my $name = getNPCName($talk{ID});
 	Plugins::callHook('npc_talk', {
@@ -3018,7 +3019,7 @@ sub npc_talk_close {
 	}
 
 	$ai_v{npc_talk}{talk} = 'close';
-	$ai_v{npc_talk}{time} = time;
+	$ai_v{npc_talk}{time} = Time::HiRes::time;
 	undef %talk;
 
 	Plugins::callHook('npc_talk_done', {ID => $ID});
@@ -3030,7 +3031,7 @@ sub npc_talk_continue {
 	my $name = getNPCName($ID);
 
 	$ai_v{npc_talk}{talk} = 'next';
-	$ai_v{npc_talk}{time} = time;
+	$ai_v{npc_talk}{time} = Time::HiRes::time;
 
 	if ($config{autoTalkCont}) {
 		message TF("%s: Auto-continuing talking\n", $name), "npc";
@@ -3049,7 +3050,7 @@ sub npc_talk_number {
 
 	my $name = getNPCName($ID);
 	$ai_v{npc_talk}{talk} = 'number';
-	$ai_v{npc_talk}{time} = time;
+	$ai_v{npc_talk}{time} = Time::HiRes::time;
 
 	message TF("%s: Type 'talk num <number #>' to input a number.\n", $name), "input";
 	$ai_v{'npc_talk'}{'talk'} = 'num';
@@ -3114,7 +3115,7 @@ sub npc_talk_text {
 	my $name = getNPCName($ID);
 	message TF("%s: Type 'talk text' (Respond to NPC)\n", $name), "npc";
 	$ai_v{npc_talk}{talk} = 'text';
-	$ai_v{npc_talk}{time} = time;
+	$ai_v{npc_talk}{time} = Time::HiRes::time;
 }
 
 # TODO: store this state
@@ -3156,28 +3157,20 @@ sub party_chat {
 # TODO: itemPickup itemDivision
 sub party_exp {
 	my ($self, $args) = @_;
-	$char->{party}{share} = $args->{type};
-	if ($args->{type} == 0) {
-		message T("Party EXP set to Individual Take\n"), "party", 1;
-	} elsif ($args->{type} == 1) {
-		message T("Party EXP set to Even Share\n"), "party", 1;
-	} else {
-		error T("Error setting party option\n");
-	}
-	if ($args->{itemPickup} == 0) {
-		message T("Party item set to Individual Take\n"), "party", 1;
-	} elsif ($args->{itemPickup} == 1) {
-		message T("Party item set to Even Share\n"), "party", 1;
-	} else {
-		error T("Error setting party option\n");
-	}
-	if ($args->{itemDivision} == 0) {
-		message T("Party item division set to Individual Take\n"), "party", 1;
-	} elsif ($args->{itemDivision} == 1) {
-		message T("Party item division set to Even Share\n"), "party", 1;
-	} else {
-		error T("Error setting party option\n");
-	}
+	$char->{party}{share} = $args->{type}; # backwards compatible
+	$char->{party}{sharing}{exp} = defined $args->{type} ? $args->{type} : -1;
+	$char->{party}{sharing}{item}{pickup} = defined $args->{itemPickup} ? $args->{itemPickup} : -1;
+	$char->{party}{sharing}{item}{division} = defined $args->{itemDivision} ? $args->{itemDivision} : -1;
+	my %options = (
+		-1 => T("unknown"),
+		0 => T("individual"),
+		1 => T("even")
+	);
+	message TF("Party sharing: %s exp, %s item pickup, %s item division\n",
+			$options{$char->{party}{sharing}{exp}},
+			$options{$char->{party}{sharing}{item}{pickup}},
+			$options{$char->{party}{sharing}{item}{division}}
+		), "party", 1;
 }
 
 sub party_hp_info {
@@ -3299,8 +3292,12 @@ sub party_users_info {
 		$char->{party}{users}{$ID}->{ID} = $ID;
 		debug TF("Party Member: %s (%s)\n", $char->{party}{users}{$ID}{name}, $char->{party}{users}{$ID}{map}), "party", 1;
 	}
-
-	if (($config{partyAutoShare} || $config{partyAutoShareItem} || $config{partyAutoShareItemDiv}) && $char->{party} && %{$char->{party}} && $char->{party}{users}{$accountID}{admin}) {
+	if (
+			(
+				(($config{partyAutoShare} || 0) != $char->{party}{sharing}{exp})
+				|| (($config{partyAutoShareItem} || 0) != $char->{party}{sharing}{item}{pickup})
+				|| (($config{partyAutoShareItemDiv} || 0) != $char->{party}{sharing}{item}{division})
+			) && $char->{party} && %{$char->{party}} && $char->{party}{users}{$accountID}{admin}) {
 		$messageSender->sendPartyOption($config{partyAutoShare}, $config{partyAutoShareItem}, $config{partyAutoShareItemDiv});
 	}
 }
@@ -3629,6 +3626,32 @@ sub guild_expulsion {
 		"Reason: %s\n", bytesToString($args->{name}), bytesToString($args->{message})), "schat";
 }
 
+sub search_store_open {
+	my ($self, $args) = @_;
+	message TF("Got type %s, you have %s searches\n", $args->{type}, $args->{searches});
+}
+
+sub search_store_result {
+	my ($self, $args) = @_;
+	message TF("Result len %s, first page: %s next: %s, searches: %s\n", $args->{len}, $args->{first_page}, $args->{has_next_page}, $args->{searches});
+	
+	for (my $offset = 0; ($offset + 106) < $args->{len}; $offset += 106) {
+	my %item;
+		($item{SSI_ID},
+			$item{AID},
+			$item{store_name},
+			$item{item_id},
+			$item{item_type},
+			$item{price},
+			$item{count},
+			$item{refine},
+			$item{card}[0],
+			$item{card}[1],
+			$item{card}[2],
+			$item{card}[3]) = unpack('V2 Z80 v C V v C v4', substr($args->{searchInfo}, $offset, 106));
+		message TF("%s %s %s %s\n", $item{store_name}, $item{item_id},$item{count}, $item{price});
+	}
+}
 
 sub guild_member_online_status {
 	my ($self, $args) = @_;
@@ -4059,6 +4082,21 @@ sub sync_request {
 			warning T("Sync packet requested for wrong ID\n");
 		}
 	}
+}
+
+# 00B3
+# TODO: add real client messages and logic?
+# ClientLogic: LoginStartMode = 5; ShowLoginScreen;
+sub switch_character {
+	my ($self, $args) = @_;
+	# User is switching characters in X-Kore
+	$net->setState(Network::CONNECTED_TO_MASTER_SERVER);
+	$net->serverDisconnect();
+
+	# FIXME better support for multiple received_characters packets
+	undef @chars;
+
+	debug "result: $args->{result}\n";
 }
 
 sub taekwon_rank {
@@ -4650,6 +4688,35 @@ sub storage_item_removed {
 		delete $storage{$index};
 		binRemove(\@storageID, $index);
 	}
+}
+
+sub character_equip {
+	my ($self, $args) = @_;
+
+	my @items;
+	$self->_items_list({
+		class => 'Actor::Item',
+		hook => 'packet_character_equip',
+		debug_str => 'Other Character Equipment',
+		items => [$self->parse_items_nonstackable($args)],
+		adder => sub { push @items, $_[0] },
+	});
+
+	# Sort items by the rough order they'd show up in the official client.
+	my @bits = qw( 8 9 0 10 11 12 4 2 1 5 6 3 7 );
+	foreach my $item ( @items ) {
+		$item->{sort} |= ( ( $item->{equipped} >> $bits[$_] ) & 1 ) << $_ foreach 0 .. $#bits;
+	}
+
+	my $w = 0;
+	$w = max( $w, length $_ ) foreach values %equipTypes_lut;
+
+	my $msg = '';
+	$msg .= T("---------Equipment List--------\n");
+	$msg .= "Name: $args->{name}\n";
+	$msg .= TF("%-${w}s : %s\n", $equipTypes_lut{$_->{equipped}}, $_->{name}) foreach sort { $a->{sort} <=> $b->{sort} } @items;
+	$msg .= "-------------------------------\n";
+	message($msg, "list");
 }
 
 sub storage_items_nonstackable {
@@ -5822,8 +5889,8 @@ sub system_chat {
 	my $color;
 	if ($message =~ s/^ssss//g) {  # forces color yellow, or WoE indicator?
 		$prefix = T('[WoE]');
-	} elsif ($message =~ /^micc.{12,23}\0?([0-9A-F]{6})(.+)/) {
-		($color, $message) = $message =~ /^micc.{12,23}\0?([0-9A-F]{6})(.+)/;
+	} elsif ($message =~ /^micc.{12,24}([0-9a-fA-F]{6})(.*)/) {
+		($color, $message) = $message =~ /^micc.*([0-9a-fA-F]{6})(.*)/;
 		$prefix = T('[S]');
 	} elsif ($message =~ s/^blue//g) {  # forces color blue
 		$prefix = T('[S]');
@@ -5880,6 +5947,10 @@ sub warp_portal_list {
 			"list");
 	}
 	message("--------------------------------------------------\n", "list");
+	unless ($taskManager->isMutexActive('teleport')) {
+		debug "Cancelling unwanted teleport window \n", "teleport";
+		$messageSender->sendWarpTele(27, 'cancel'); 
+	}
 }
 
 
@@ -6167,15 +6238,16 @@ sub login_pin_new_code_result {
 	}
 }
 
-#08FF
-sub actor_status_active2 {
+sub actor_status_active {
 	my ($self, $args) = @_;
-	return unless Network::Receive::changeToInGameState();
-	my ($type, $ID, $tick, $unknown1, $unknown2, $unknown3) = @{$args}{qw(type ID tick unknown1 unknown2 unknown3)};
+	return unless changeToInGameState();
+	my ($type, $ID, $tick, $unknown1, $unknown2, $unknown3, $unknown4) = @{$args}{qw(type ID tick unknown1 unknown2 unknown3 unknown4)};
+	my $flag = (exists $args->{flag}) ? $args->{flag} : 1;
 	my $status = defined $statusHandle{$type} ? $statusHandle{$type} : "UNKNOWN_STATUS_$type";
 	$cart{type} = $unknown1 if ($type == 673 && defined $unknown1 && ($ID eq $accountID)); # for Cart active
 	$args->{skillName} = defined $statusName{$status} ? $statusName{$status} : $status;
-	($args->{actor} = Actor::get($ID))->setStatus($status, 1, $tick == 9999 ? undef : $tick, $args->{unknown1});
+	#($args->{actor} = Actor::get($ID))->setStatus($status, 1, $tick == 9999 ? undef : $tick, $args->{unknown1}); # need test for '08FF'
+	($args->{actor} = Actor::get($ID))->setStatus($status, $flag, $tick == 9999 ? undef : $tick);
 }
 
 
@@ -6374,6 +6446,16 @@ sub player_equipment {
 		}
 		$player->{shoes} = $ID1;
 	}
+}
+
+
+sub disconnect_character {
+	my ($self, $args) = @_;
+	debug "disconnect_character result: $args->{result}\n";
+}
+
+sub character_block_info {
+	#TODO
 }
 
 1;

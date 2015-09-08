@@ -250,8 +250,9 @@ sub onMapChanged {
 	my (undef, $args, $holder) = @_;
 	my $self = $holder->[0];
 	if ($self->getStatus() == Task::RUNNING && $self->{skill}->getHandle eq 'AL_TELEPORT') {
-		$self->setDone();
-		debug "UseSkill - Done (Teleport).\n", "Task::UseSkill" if DEBUG;
+		# $self->setDone();
+		$self->{mapchanged} = 1;
+		# debug "UseSkill - Done (Teleport).\n", "Task::UseSkill" if DEBUG;
 	}
 }
 
@@ -329,8 +330,11 @@ sub iterate {
 		debug "UseSkill - No such skill.\n", "Task::UseSkill" if DEBUG;
 		return;
 	}
-
-	if ($self->{state} == PREPARING) {
+	if ($self->{mapchanged}) {
+		debug "UseSkill - Done (Teleport).\n", "Task::UseSkill" if DEBUG;
+		$self->setDone();
+	
+	} elsif ($self->{state} == PREPARING) {
 		if (!$self->getSubtask()) {
 			my $task = new Task::Chained(tasks => [
 				# TODO: equip here (merge with AI::CoreLogic::processSkillUse)

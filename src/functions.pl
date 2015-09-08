@@ -35,8 +35,6 @@ use I18N;
 use Utils::Benchmark;
 use Utils::HttpReader;
 
-use Events;
-
 
 #######################################
 # PROGRAM INITIALIZATION
@@ -53,6 +51,11 @@ use constant {
 };
 
 our $state;
+
+# is this right? seems hackish....
+$SIG{INT} = $SIG{HUP} = $SIG{KILL} = $SIG{TERM} = $SIG{QUIT} = sub {
+	Misc::quit();
+};
 
 sub mainLoop {
 	Benchmark::begin('mainLoop') if DEBUG;
@@ -531,7 +534,6 @@ sub finalInitialization {
 	# initUserSeed(); not used atm
 	initConfChange();
 	Log::initLogFiles();
-	$eventsManager = new Events();
 	$timeout{'injectSync'}{'time'} = time;
 
 	Log::message("\n");
@@ -589,6 +591,7 @@ sub initConnectVars {
 	undef @skillsID;
 	undef @partyUsersID;
 	undef %cashShop;
+	undef $questList;
 }
 
 # Initialize variables when you change map (after a teleport or after you walked into a portal)

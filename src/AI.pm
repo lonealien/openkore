@@ -298,8 +298,11 @@ sub ai_getAggressives {
 		my $control = Misc::mon_control($monster->name,$monster->{nameID}) if $type || !$wantArray;
 		my $ID = $monster->{ID};
 		next if (!timeOut($monster->{attack_failedLOS}, 6));
+		my $myPos = calcPosition($char);
+		my $pos = calcPosition($monster);
+		my $dist = distance($myPos, $pos);
 
-		if (($type && ($control->{attack_auto} == 2)) ||
+		if (($type && ($control->{attack_auto} == 2)) || ($type && $control->{aggressive_if_dist} && ($control->{aggressive_if_dist} <= $dist) && Misc::checkMonsterCleanness($ID)) ||
 			(($monster->{dmgToYou} || $monster->{missedYou}) && Misc::checkMonsterCleanness($ID)) ||
 			($party && ($monster->{dmgToParty} || $monster->{missedToParty} || $monster->{dmgFromParty})) &&
 			timeOut($monster->{attack_failed}, $timeout{ai_attack_unfail}{timeout}))
@@ -311,8 +314,7 @@ sub ai_getAggressives {
 			# The other parameters are re-checked along, so you can continue to attack a monster who has
 			# already been hit but lost the line for some reason.
 			# Also, check if the forced aggressive is a clean target when it has not marked as "yours".
-			my $myPos = calcPosition($char);
-			my $pos = calcPosition($monster);
+			
 
 			next if (($type && $control->{attack_auto} == 2)
 				&& (($config{'attackCanSnipe'}) ? !Misc::checkLineSnipable($myPos, $pos) : (!Misc::checkLineWalkable($myPos, $pos) || !Misc::checkLineSnipable($myPos, $pos)))

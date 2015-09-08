@@ -649,8 +649,12 @@ sub cmdAuthorize {
 }
 
 sub cmdAutoBuy {
-	message T("Initiating auto-buy.\n");
-	AI::queue("buyAuto");
+	if (!AI::inQueue("buyAuto")) {
+		message T("Initiating auto-buy.\n");
+		AI::queue("buyAuto");
+	} else {
+		error T("Auto-buy is already on course.\n");
+	}
 }
 
 sub cmdAutoSell {
@@ -662,7 +666,7 @@ sub cmdAutoSell {
 		foreach my $item (@{$char->inventory->getItems()}) {
 			next if ($item->{unsellable});
 			
-			my $control = items_control($item->{name});
+			my $control = items_control(itemName($item, {no_broken => 1}));
 
 			if ($control->{'sell'} && $item->{'amount'} > $control->{keep}) {
 				my %obj;
@@ -676,14 +680,43 @@ sub cmdAutoSell {
 		}
 		message("-----------------------------------------------------------\n","list")
 	} elsif (!$arg) {
-		message T("Initiating auto-sell.\n");
-		AI::queue("sellAuto");
+		if(!AI::inQueue("sellAuto")) {
+			message T("Initiating auto-sell.\n");
+			AI::queue("sellAuto");
+		} else {
+			error T("Auto-sell is already on course.\n");
+		}
 	}
 }
 
 sub cmdAutoStorage {
-	message T("Initiating auto-storage.\n");
-	AI::queue("storageAuto");
+	my (undef, $arg) = @_;
+	if ($arg eq 'simulate' || $arg eq 'test' || $arg eq 'debug') {
+		# Simulate list of items to sell
+		my @strgItems;
+		message T("--------------- Items to store (simulation) ---------------\n"), "info";	
+		foreach my $item (@{$char->inventory->getItems()}) {		
+			my $control = items_control(itemName($item, {no_broken => 1}));
+
+			if ($control->{'storage'} && $item->{'amount'} > $control->{keep}) {
+				my %obj;
+				$obj{index} = $item->{index};
+				$obj{amount} = $item->{amount} - $control->{keep};
+				my $item_name = $item->{name};
+				$item_name .= ' (if unequipped)' if ($item->{equipped});
+				message(swrite(
+						"@>>>>>>>> x @<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<", [$item->{amount}, $item_name]),"list");
+			}
+		}
+		message("-----------------------------------------------------------\n","list")
+	} elsif (!$arg) {
+		if(!AI::inQueue("storageAuto")) {
+			message T("Initiating auto-storage.\n");
+			AI::queue("storageAuto");
+		} else {
+			error T("Auto-storage is already on course.\n");
+		}
+	}
 }
 
 sub cmdBangBang {
@@ -1423,7 +1456,7 @@ sub cmdDeal {
 	} elsif (%incomingDeal && $arg[0] =~ /\d+/) {
 		error T("Error in function 'deal' (Deal a Player)\n" .
 			"You must first cancel the incoming deal\n");
-	} elsif ($arg[0] =~ /\d+/ && !$playersID[$arg[0]]) {
+	} elsif ($arg[0] =~ /\d+/ && ($arg[0] < 0 || !$playersID[$arg[0]])) {
 		error TF("Error in function 'deal' (Deal a Player)\n" .
 			"Player %s does not exist\n", $arg[0]);
 	} elsif ($arg[0] =~ /\d+/) {
@@ -2808,6 +2841,11 @@ sub cmdIdentify {
 		message("------------------------------\n", "list");
 	} elsif (!defined @identifyID) {
 		error T("The identify list is empty, please use the identify skill or a magnifier first.\n");
+	} elsif ($arg1 =~ /^byindex (\d+)$/) {
+		my $item = Match::inventoryItem($1);
+		if ($item && !$item->{identified}) {
+			$messageSender->sendIdentify($item->{index});
+		}
 	} elsif ($arg1 =~ /^\d+$/) {
 		if ($identifyID[$arg1] eq "") {
 			error TF("Error in function 'identify' (Identify Item)\n" .
@@ -2964,9 +3002,17 @@ sub cmdInventory {
 	} elsif ($arg1 eq "desc" && $arg2 ne "") {
 		cmdInventory_desc($arg2);
 
+	} elsif ($arg1 eq "log") {
+		open('FH','>:utf8',$Settings::logs_folder.'/inventory_'. $config{username} .'_'. $config{char} .'.txt');
+		print FH TF("Inventory list for %s:\n",$char->{name});		
+		foreach my $item (@{$char->inventory->getItems()}) {
+			$item->{name} .= " -- ". TF("Not Identified") unless ($item->{identified});
+			printf(FH "%-3d %s x %d\n",$item->{invIndex},$item->{name},$item->{amount});
+		}
+		close(FH);
 	} else {
 		error T("Syntax Error in function 'i' (Inventory List)\n" .
-			"Usage: i [<u|eq|neq|nu|desc>] [<inventory item>]\n");
+			"Usage: i [<u|eq|neq|nu|desc|log>] [<inventory item>]\n");
 	}
 }
 
@@ -4503,7 +4549,7 @@ sub cmdStorage {
 			cmdStorage_addfromcart($items);
 		} elsif ($switch eq 'get'  && $storage{opened}) {
 			cmdStorage_get($items);
-		} elsif ($switch eq 'gettocart'  && $storage{opened}) {
+		} elsif ($switch eq 'gettocart' && $storage{opened}) {
 			cmdStorage_gettocart($items);
 		} elsif ($switch eq 'close'  && $storage{opened}) {
 			cmdStorage_close();
@@ -4594,7 +4640,11 @@ sub cmdStorage_get {
 
 sub cmdStorage_gettocart {
 	my $items = shift;
-
+	if (!$char->cartActive) {
+		error T("Error in function 'storage gettocart' (Storage Functions)\n" .
+			"You do not have a cart.\n");
+		return;
+	}
 	my ($name, $amount) = $items =~ /^(.*?)(?: (\d+))?$/;
 	my $item = Match::storageItem($name);
 	if (!$item) {
@@ -5677,7 +5727,7 @@ sub cmdAuction {
 }
 
 sub cmdQuest {
-	if (!$net || $net->getState() != Network::IN_GAME) {
+	if (!$questList) {
 		error TF("You must be logged in the game to use this command '%s'\n", shift);
 		return;
 	}

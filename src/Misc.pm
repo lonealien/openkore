@@ -1144,7 +1144,7 @@ sub charSelectScreen {
 		next unless ($chars[$num] && %{$chars[$num]});
 		if (0) {
 			# The old (more verbose) message
-			swrite(
+			message swrite(
 				T("-------  Character \@< ---------\n" .
 				"Name: \@<<<<<<<<<<<<<<<<<<<<<<<<\n" .
 				"Job:  \@<<<<<<<      Job Exp: \@<<<<<<<\n" .
@@ -1155,11 +1155,11 @@ sub charSelectScreen {
 				"SP:   \@||||/\@||||   Dex: \@<<<<<<<<\n" .
 				"zeny: \@<<<<<<<<<<  Luk: \@<<<<<<<<\n" .
 				"-------------------------------"),
-				$num, $chars[$num]{'name'}, $jobs_lut{$chars[$num]{'jobID'}}, $chars[$num]{'exp_job'},
+				[$num, $chars[$num]{'name'}, $jobs_lut{$chars[$num]{'jobID'}}, $chars[$num]{'exp_job'},
 				$chars[$num]{'lv'}, $chars[$num]{'str'}, $chars[$num]{'lv_job'}, $chars[$num]{'agi'},
 				$chars[$num]{'exp'}, $chars[$num]{'vit'}, $chars[$num]{'hp'}, $chars[$num]{'hp_max'},
 				$chars[$num]{'int'}, $chars[$num]{'sp'}, $chars[$num]{'sp_max'}, $chars[$num]{'dex'},
-				$chars[$num]{'zeny'}, $chars[$num]{'luk'});
+				$chars[$num]{'zeny'}, $chars[$num]{'luk'}]);
 		}
 
 		my $messageDeleteDate;
@@ -1787,14 +1787,14 @@ sub itemNameSimple {
 }
 
 ##
-# itemName($item)
+# itemName($item, [options])
 #
 # Resolve the name of an item. $item should be a hash with these keys:
 # nameID  => integer index into %items_lut
 # cards   => 8-byte binary data as sent by server
 # upgrade => integer upgrade level
 sub itemName {
-	my $item = shift;
+	my ($item, $options) = @_;
 
 	my $name = itemNameSimple($item->{nameID});
 
@@ -1845,12 +1845,12 @@ sub itemName {
 	my $numSlots = $itemSlotCount_lut{$item->{nameID}} if ($prefix eq "");
 
 	my $display = "";
-	$display .= "BROKEN " if $item->{broken};
-	$display .= "+$item->{upgrade} " if $item->{upgrade};
+	$display .= "BROKEN " if ($item->{broken} && !$options->{no_broken});
+	$display .= "+$item->{upgrade} " if ($item->{upgrade} && !$options->{no_upgrade});
 	$display .= $prefix if $prefix;
 	$display .= $name;
 	$display .= " [$suffix]" if $suffix;
-	$display .= " [$numSlots]" if $numSlots;
+	$display .= " [$numSlots]" if ($numSlots && !$options->{no_slots});
 
 	return $display;
 }
@@ -2934,12 +2934,18 @@ sub updatePlayerNameCache {
 # level: 1 to teleport to a random spot, 2 to respawn.
 sub useTeleport {
 	my ($use_lvl, $internal, $emergency) = @_;
+	debug TF("useTeleport: %s active Teleport::Task \n", $taskManager->countTasksByName('Teleport')), "Task::Teleport";
 	if (!$taskManager->isMutexActive('teleport') && !$taskManager->countTasksByName('Teleport')) {
-		$taskManager->add(
-			Task::Teleport->new(useSkill => $config{teleportAuto_useSkill}, type => ($use_lvl - 1), emergency => $emergency)
-		);
+		if (($use_lvl == 2 && ($char->{skills}{AL_TELEPORT} || $char->inventory->getByNameID(602) || $char->inventory->getByNameID(12324))) 
+				|| ($use_lvl == 1 && ($char->{skills}{AL_TELEPORT} || $char->inventory->getByNameID(601)))) {
+			$taskManager->add(
+				Task::Teleport->new(useSkill => $config{teleportAuto_useSkill}, type => ($use_lvl - 1), emergency => $emergency)
+			);
+			
+			return 1;
+		}
 	}
-	
+	return 0;
 	# old code:
 =pod
 		
@@ -3249,6 +3255,7 @@ sub getBestTarget {
 				|| ($control->{attack_sp}  ne "" && $control->{attack_sp} > $char->{sp})
 				|| ($control->{attack_auto} == 3 && ($monster->{dmgToYou} || $monster->{missedYou} || $monster->{dmgFromYou}))
 				|| ($control->{attack_auto} == 0 && !($monster->{dmgToYou} || $monster->{missedYou}))
+				|| ($control->{prevent_assist} && $control->{prevent_assist} ne "" && checkAssistQuantity($monster->{nameID}) > $control->{prevent_assist})
 			);
 		}
 		if ($config{'attackCanSnipe'}) {
@@ -3820,6 +3827,7 @@ sub checkSelfCondition {
 	my $prefix = shift;
 	return 0 if (!$prefix);
 	return 0 if ($config{$prefix . "_disabled"});
+	# return 0 if ($taskManager->isMutexActive('teleport') || !$taskManager->countTasksByName('Teleport'));
 
 	return 0 if $config{$prefix."_whenIdle"} && !AI::isIdle();
 
@@ -3848,6 +3856,14 @@ sub checkSelfCondition {
 		} else {
 			return 0 if (!inRange($char->{sp}, $config{$prefix."_sp"}));
 		}
+	}
+	
+	if ($config{$prefix."_base_lv"}) {
+		return 0 if (!inRange($char->{'lv'}, $config{$prefix."_base_lv"}));
+	}
+	
+	if ($config{$prefix."_job_lv"}) {
+		return 0 if (!inRange($char->{'lv_job'}, $config{$prefix."_job_lv"}));
 	}
 
 	if ($config{$prefix."_weight"}) {
@@ -4100,6 +4116,17 @@ sub checkSelfCondition {
 	return 0 if (!$hookArgs{return});
 
 	return 1;
+}
+
+sub checkAssistQuantity {
+	my ($monID) = @_;
+	my $count = 0;
+	foreach my $monster (@{$monstersList->getItems()}) {
+		if ($monster->{nameID} == $monID && checkMonsterCleanness($monster)) {
+			$count++;
+		}
+	}
+	return $count;
 }
 
 sub checkPlayerCondition {
@@ -4427,6 +4454,7 @@ sub openShop {
 	@shopnames = split(/;;/, $shop{title_line});
 	$shop{title} = $shopnames[int rand($#shopnames + 1)];
 	$shop{title} = ($config{shopTitleOversize}) ? $shop{title} : substr($shop{title},0,36);
+	$ai_v{'cart_time'} = time + 2;
 	$messageSender->sendOpenShop($shop{title}, \@items);
 	message T("Trying to set up shop...\n"), "vending";
 	$shopstarted = 1;
@@ -4437,7 +4465,7 @@ sub closeShop {
 		error T("A shop has not been opened.\n");
 		return;
 	}
-
+	$ai_v{'cart_time'} = time + 2;
 	$messageSender->sendCloseShop();
 
 	$shopstarted = 0;

@@ -1,21 +1,15 @@
-#############################################################################################
-# A Codificação do texto está correta?
-# Codificação:  ANSI -> UTF8 Without boom
-# Se você não está vendo a acentuação corretamente, seu arquivo está no formato incorreto.
-# Créditos tradução: Duds, Draigonz, Sayd, Temaki' e Kepler  ---          www.openkore.com.br
-#############################################################################################
-# Arqueiros têm a habilidade especial Fabricar Flechas, que permite a você criar
-# flechas usando certos itens.
-# Se você quer que o Kore automaticamente crie flechas com o Fabricar Flechas, então
-# poderá fazer isso editando este arquivo.
+# Archers have the special skill Arrow Craft, which allows you to create
+# arrows using certain items.
+# If you want Kore to automatically create arrows with Arrow Craft, then
+# you can do that by editing this file.
 #
-# Dentro do arquivo, especifique os ingredientes que você precisará para criar flechas.
-# O formato é o seguinte:
-# (Nome do item) (Quantidade)
+# In this file, specify the ingredients that you need to create arrows.
+# The format is as follows:
+# (item name) (amount)
 #
-# Por exemplo:
-# Sangue Escarlate 1
-# Garleta
+# For example:
+# Red Blood 1
+# Garlet
 #
-# Isso irá permitir ao Kore criar Flechas de Fogo e Flechas de Ferro, usando
-# os itens acima.
+# This will allow Kore to create Fire Arrows and Iron Arrows by using
+# the above items.

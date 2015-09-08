@@ -522,6 +522,13 @@ sub main {
 		my $dist = sprintf("%.1f", $monsterDist);
 		debug "Target distance $dist is >$args->{attackMethod}{maxDistance}; moving to target: " .
 			"from ($myPos->{x},$myPos->{y}) to ($pos->{x},$pos->{y})\n", "ai_attack";
+			
+		if ($field->isWalkable($pos->{x},$pos->{y})) {
+			debug "Walkable spot\n", "ai_attack";
+		} else {
+			debug "NON Walkable spot\n", "ai_attack";
+			giveUp();
+		}
 
 		my $result = $char->route(undef, @{$pos}{qw(x y)},
 			maxRouteTime => $config{'attackMaxRouteTime'},

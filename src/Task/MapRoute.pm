@@ -211,6 +211,7 @@ sub iterate {
 			$self->{teleport} = $config{route_teleport} if (!defined $self->{teleport});
 
 			if ($self->{teleport} && !$field->isCity
+			&& (!$config{route_teleport_minSp} || $char->hp_percent > $config{route_teleport_minSp})
 			&& !existsInList($config{route_teleport_notInMaps}, $field->baseName)
 			&& ( !$config{route_teleport_maxTries} || $self->{teleportTries} <= $config{route_teleport_maxTries} )) {
 				my $minDist = $config{route_teleport_minDistance};
@@ -232,19 +233,19 @@ sub iterate {
 						if ($dist > 0 && $config{route_teleport_maxTries} && $self->{teleportTries} >= $config{route_teleport_maxTries}) {
 							debug "Teleported $config{route_teleport_maxTries} times. Falling back to walking.\n", "route_teleport";
 						} else {
-							if (!$self->getSubtask() && !$self->{skillTask}) {
+							if (!$self->getSubtask() && $self->{skillTask} && !$self->{skillTask}->getError()) {
+								$walk = 0;
+								$self->{teleportTime} = time;
+								$self->{teleportTries}++;
+								undef $self->{skillTask};
+							} elsif (!$self->getSubtask() && !$self->{skillTask}) {
 								message TF("Attempting to teleport near NPC, try #%s\n", ($self->{teleportTries} + 1)), "route_teleport";
 								my $task = new Task::Teleport(useSkill => 1, type => 0);
 								$walk = 0;
 								$self->setSubtask($task);
 								$self->{skillTask} = $task;
 							}
-							if (!$self->getSubtask() && !$self->{skillTask}->getError()) {
-								$walk = 0;
-								$self->{teleportTime} = time;
-								$self->{teleportTries}++;
-								undef $self->{skillTask};
-							}
+							
 						}
 					}
 
@@ -339,6 +340,7 @@ sub iterate {
 			$self->{teleport} = $config{route_teleport} if (!defined $self->{teleport});
 
 			if ($self->{teleport} && !$field->isCity
+			&& (!$config{route_teleport_minSp} || $char->hp_percent > $config{route_teleport_minSp})
 			&& !existsInList($config{route_teleport_notInMaps}, $field->baseName)
 			&& ( !$config{route_teleport_maxTries} || $self->{teleportTries} <= $config{route_teleport_maxTries} )) {
 				my $minDist = $config{route_teleport_minDistance};
@@ -347,6 +349,7 @@ sub iterate {
 					undef $self->{mapChanged};
 				}
 
+				# if (!$taskManager->isMutexActive('teleport')) {
 				if (!$self->getSubtask()) {
 					# Find first inter-map portal
 					my $portal;
@@ -366,19 +369,27 @@ sub iterate {
 						if ($dist > 0 && $config{route_teleport_maxTries} && $self->{teleportTries} >= $config{route_teleport_maxTries}) {
 							debug "Teleported $config{route_teleport_maxTries} times. Falling back to walking.\n", "route_teleport";
 						} else {
-							if (!$self->getSubtask() && !$self->{skillTask}) {
-								message TF("Attempting to teleport near portal, try #%s\n", ($self->{teleportTries} + 1)), "route_teleport";
-								my $task = new Task::Teleport(useSkill => 1, type => 0);
-								$walk = 0;
-								$self->setSubtask($task);
-								$self->{skillTask} = $task;
-							}
-							if (!$self->getSubtask() && !$self->{skillTask}->getError()) {
-								$walk = 0;
-								$self->{teleportTime} = time;
-								$self->{teleportTries}++;
-								undef $self->{skillTask};
-							}
+							message TF("Attempting to teleport near portal, try #%s\n", ($self->{teleportTries} + 1)), "route_teleport";
+							$walk = 0;
+							$self->{teleportTime} = time;
+							$self->{teleportTries}++;
+							useTeleport(1);
+							
+							
+							# if (!$self->getSubtask() && defined $self->{skillTask}) {
+								# $walk = 0;
+								# $self->{teleportTime} = time;
+								# $self->{teleportTries}++;
+								# undef $self->{skillTask};
+							# } elsif (!$self->getSubtask() && !$self->{skillTask}) {
+								# message TF("Attempting to teleport near portal, try #%s\n", ($self->{teleportTries} + 1)), "route_teleport";
+								# my $task = new Task::Teleport(useSkill => 1, type => 0);
+								# $walk = 0;
+								# $self->setSubtask($task);
+								# $self->{skillTask} = $task;
+							# }
+							
+							
 						}
 					}
 
@@ -535,11 +546,12 @@ sub subtaskDone {
 			} else {
 				$code = UNKNOWN_ERROR;
 			}
+			debug "MapRoute subtask TalkNPC ended with error code $code \n", 'route';
 			$self->setError($code, $error->{message});
 		}
 	} elsif ($task->isa('Task::Teleport')) {
-		$self->{teleport} = 0;
-		undef $self->{skillTask} if $self->{skillTask};
+		#$self->{teleport} = 0;
+		#undef $self->{skillTask} if $self->{skillTask};
 	} elsif (my $error = $task->getError()) {
 		$self->setError(UNKNOWN_ERROR, $error->{message});
 	}

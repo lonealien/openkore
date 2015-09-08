@@ -1,4 +1,0 @@
-new_2-2 33 172 Chocolati#newbe06
-new_2-2 30 176 Funcionária Kafra#newbe
-new_2-2 33 176 Funcionário Zonda#newbe
-new_2-2 36 176 Soldado

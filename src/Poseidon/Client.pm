@@ -50,7 +50,8 @@ sub _connect {
 	my $socket = new IO::Socket::INET(
 		PeerHost => $self->{host},
 		PeerPort => $self->{port},
-		Proto => 'tcp'
+		Proto => 'tcp',
+		Timeout => 10
 	);
 	return $socket;
 }

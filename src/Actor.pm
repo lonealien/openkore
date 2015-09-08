@@ -782,8 +782,17 @@ sub route {
 	
 	if ($map && !$args{noMapRoute}) {
 		$task = new Task::MapRoute(map => $map, @params);
+		Plugins::callHook('Actor::route::map', {
+			x => $x,
+			y => $y,
+			map => $map
+		});
 	} else {
 		$task = new Task::Route(@params);
+		Plugins::callHook('Actor::route::noMap', {
+			x => $x,
+			y => $y,
+		});
 	}
 	$task->{$_} = $args{$_} for qw(attackID attackOnRoute noSitAuto LOSSubRoute);
 	

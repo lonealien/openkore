@@ -56,9 +56,13 @@ sub new {
 		'009B' => ['actor_look_at', 'v C', [qw(head body)]],
 		'009F' => ['item_take', 'a4', [qw(ID)]],
 		'00A2' => ['item_drop', 'v2', [qw(index amount)]],
+		'00A9' => ['send_equip', 'v2', [qw(index type)]],#6
+		'00A7' => ['item_consume','v V', [qw(index unknown)]],
+		'00AB' => ['item_unequip', 'v', [qw(index)]],
 		'00B2' => ['restart', 'C', [qw(type)]],
 		'00B8' => ['npc_talk_response', 'a4 C', [qw(ID response)]],
 		'00B9' => ['npc_talk_continue', 'a4', [qw(ID)]],
+		'00BB' => ['stats_add', 'c v', [qw(status unknown)]],
 		#'00F3' => ['map_login', '', [qw()]],
 		'00F3' => ['storage_item_add', 'v V', [qw(index amount)]],
 		'00F5' => ['storage_item_remove', 'v V', [qw(index amount)]],
@@ -128,6 +132,7 @@ sub new {
 		'08BA' => ['new_pin_password','a4 Z*', [qw(accountID pin)]],
 		'08C9' => ['request_cashitems'],#2
 		'0987' => ['master_login', 'V Z24 a32 C', [qw(version username password_md5_hex master_version)]],
+		'0998' => ['send_equip', 'v V', [qw(index type)]],#8
 		'09A1' => ['sync_received_characters'],
 		'09D0' => ['gameguard_reply'],
 		#'08BE' => ['change_pin_password','a*', [qw(accountID oldPin newPin)]], # TODO: PIN change system/command?
@@ -430,13 +435,6 @@ sub sendEnteringVender {
 	my $msg = pack("C*", 0x30, 0x01) . $ID;
 	$self->sendToServer($msg);
 	debug "Sent Entering Vender: ".getHex($ID)."\n", "sendPacket", 2;
-}
-
-sub sendEquip {
-	my ($self, $index, $type) = @_;
-	my $msg = pack("C*", 0xA9, 0x00) . pack("v*", $index) .  pack("v*", $type);
-	$self->sendToServer($msg);
-	debug "Sent Equip: $index Type: $type\n" , 2;
 }
 
 # 0x0208,11,friendslistreply,2:6:10

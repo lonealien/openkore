@@ -214,8 +214,9 @@ sub searchStep {
 	#foreach my $parent (keys %{$openlist})
 	{
 		my ($portal, $dest) = split /=/, $parent;
-		if (($self->{budget} ne '' && !($char->inventory->getByNameID(7060) && $openlist->{$parent}{ticket}) && ($openlist->{$parent}{cost} > $self->{budget}))
-			|| (!$config{vipPortals} && $portals_lut{$portal}{dest}{$dest}{vip})) {
+		my $portal_properties = $portals_lut{$portal}{dest}{$dest};
+		if (($self->{budget} ne '' && !($char->inventory->getByNameID(7060) && $portal_properties->{ticket}) && ($portal_properties->{cost} > $self->{budget}))
+			|| (!$config{vipPortals} && $portal_properties->{vip})) {
 			# This link is too expensive
 			# OR this is a vip portal, and we're not vip.
 			# We should calculate the entire route cost
@@ -225,11 +226,11 @@ sub searchStep {
 			# MOVE this entry into the CLOSELIST
 			$closelist->{$parent}{walk}   = $openlist->{$parent}{walk};
 			$closelist->{$parent}{parent} = $openlist->{$parent}{parent};
-			$closelist->{$parent}{cost}  = ($char->inventory->getByNameID(7060) && $openlist->{$parent}{ticket})?0:$openlist->{$parent}{cost};
+			$closelist->{$parent}{cost}  = ($char->inventory->getByNameID(7060) && $portal_properties->{ticket})?0:$portal_properties->{cost};
 			delete $openlist->{$parent};
 		}
 
-		if ($portals_lut{$portal}{dest}{$dest}{map} eq $self->{dest}{map}) {
+		if ($portal_properties->{map} eq $self->{dest}{map}) {
 			if ($self->{dest}{pos}{x} eq '' && $self->{dest}{pos}{y} eq '') {
 				$self->{found} = $parent;
 				$self->{done} = 1;
@@ -251,7 +252,7 @@ sub searchStep {
 				}
 				return;
 
-			} elsif ( Task::Route->getRoute($self->{solution}, $self->{dest}{field}, $portals_lut{$portal}{dest}{$dest}, $self->{dest}{pos}) ) {
+			} elsif ( Task::Route->getRoute($self->{solution}, $self->{dest}{field}, $portal_properties, $self->{dest}{pos}) ) {
 				my $walk = "$self->{dest}{map} $self->{dest}{pos}{x} $self->{dest}{pos}{y}=$self->{dest}{map} $self->{dest}{pos}{x} $self->{dest}{pos}{y}";
 				$closelist->{$walk}{walk} = scalar @{$self->{solution}} + $closelist->{$parent}{$dest}{walk};
 				$closelist->{$walk}{parent} = $parent;

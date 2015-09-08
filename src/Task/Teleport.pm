@@ -56,15 +56,16 @@ use enum qw(
 	ERROR_ITEM
 	ERROR_SKILL
 	ERROR_TASK
+	ERROR_MAP
 );
 
 sub new {
 	my $class = shift;
 	my %args = @_;
-	my $self = $class->SUPER::new(@_, autostop => 1, autofail => 0, mutexes => ['teleport']);
+	my $self = $class->SUPER::new(@_, autostop => 0, autofail => 1, mutexes => ['teleport', 'skill', 'movement'], priority => Task::HIGH_PRIORITY);
 	$self->{emergency} = $args{emergency};
 	# $self->{retry}{timeout} = $timeout{ai_teleport_retry}{timeout} || 0.5; unused atm
-	$self->{giveup}{timeout} = $args{giveup_time} || 4;
+	$self->{giveup}{timeout} = $timeout{ai_teleport_giveup}{timeout} || $args{giveup_time} || 4;
 	$self->{giveup}{time} = time;
 	$self->{type} = $args{type};
 	if ($self->{type} == RANDOM) {
@@ -88,20 +89,29 @@ sub new {
 	
 	$self->{startTime} = time;
 	$timeout{'ai_send_warp_tele_retry'}{'timeout'} = 0.3;
+	$timeout{'ai_send_warp_tele_retry'}{'time'} = time;
 	
 	my @holder = ($self);
 	Scalar::Util::weaken($holder[0]);
 	$self->{hooks} = Plugins::addHooks(
 		['Network::Receive::map_changed', \&mapChange, \@holder], 
-		['packet/warp_portal_list', \&warpPortalList, \@holder]
+		['packet/warp_portal_list', \&warpPortalList, \@holder],
+		['packet/no_teleport', \&noTP, \@holder]
 	);
 	debug "Starting Teleport Task \n", 'teleport';
 	return $self;
 }
 
+sub noTP {
+	my (undef, undef, $holder) = @_;
+	my $self = $holder->[0];
+	$self->{mapError} = 1;
+}
+
 sub warpPortalList {
 	my (undef, undef, $holder) = @_;
 	my $self = $holder->[0];
+	debug "Got warp list", "Task::Teleport";
 	$timeout{'ai_teleport_delay'}{'time'} = time;
 	$self->{state} = GOT_WARP_LIST;
 	$self->{warpListOpen} = 1;
@@ -110,6 +120,7 @@ sub warpPortalList {
 sub DESTROY {
 	my ($self) = @_;
 	Plugins::delHooks($self->{hooks}) if $self->{hooks};
+	debug "Destroying Task::Teleport", "Task::Teleport";
 	$self->SUPER::DESTROY();
 }
 
@@ -131,20 +142,23 @@ sub resume {
 
 sub iterate {
 	my ($self) = @_;
+	
 	return if (!$self->SUPER::iterate());
 	if ($self->{mapChange} || $net->getState() != Network::IN_GAME) {
-		$self->setDone();
+		
 		$self->{warpListOpen} = 0;
 		debug sprintf("Took %s seconds to teleport \n", (time - $self->{startTime})), "Task::Teleport";
+		$self->setDone();
 	} elsif (timeOut($self->{giveup}) && $self->{state} != STARTING) {
 		$messageSender->sendWarpTele(27, 'cancel');
+		debug "Task::Teleport timeout\n", "Task::Teleport";
 		$self->setError(ERROR_TASK, "Task::Teleport timeout");
 	} elsif ($self->{warpListOpen} && timeOut($timeout{ai_send_warp_tele_retry}) && (timeOut($timeout{ai_teleport_delay}) || $self->{emergency})) {
 		$self->{debugRetry}++;
 		debug sprintf("Trying to confirm teleport: attempt %s\n", $self->{debugRetry}), "Task::Teleport";
 		$timeout{ai_send_warp_tele_retry}{time} = time;
 		$messageSender->sendWarpTele(26, $self->{destMap});
-		$self->{warpListOpen} = 0;
+		# $self->{warpListOpen} = 0;
 		#$self->{state} = WAITING_FOR_MAPCHANGE;
 	} elsif ($self->{state} == STARTING) {
 		$self->{giveup}{time} = time;
@@ -187,6 +201,11 @@ sub iterate {
 			}
 		}
 	} elsif ($self->{state} == USE_TELEPORT) {
+		if ($self->{mapError}) {
+			# ESSE ERRO SÓ DÁ EM SKILL!
+			$self->setError(ERROR_MAP, "Task::Teleport unavailable area to teleport");
+			return;
+		}
 		if ($self->{method} == SKILL) {
 			if (!$self->getSubtask()) {
 				message "Creating skill task \n";
@@ -195,6 +214,7 @@ sub iterate {
 				my $task = new Task::UseSkill (
 					actor => $skill->getOwner,
 					skill => $skill,
+					priority => Task::HIGH_PRIORITY
 				);
 				$self->setSubtask($task);
 				$self->{skillTask} = $task;

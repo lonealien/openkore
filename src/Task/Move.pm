@@ -33,7 +33,8 @@ use Modules 'register';
 use Task::WithSubtask;
 use base qw(Task::WithSubtask);
 use Task::SitStand;
-use Globals qw(%timeout $net);
+use Globals qw(%timeout $net $taskManager);
+#use Globals qw(%timeout $net $taskManager);
 use Plugins;
 use Network;
 use Log qw(warning debug);
@@ -78,8 +79,8 @@ sub new {
 	}
 
 	$self->{$_} = $args{$_} for qw(actor x y);
-	$self->{retry}{timeout} = $args{retryTime} || 0.5;
-	$self->{giveup}{timeout} = $args{giveupTime} || $timeout{ai_move_giveup}{timeout} || 3;
+	$self->{retry}{timeout} = $timeout{ai_move_retry}{timeout} || 0.5;
+	$self->{giveup}{timeout} = $timeout{ai_move_giveup}{timeout} || 3;
 
 	# Watch for map change events. Pass a weak reference to ourselves in order
 	# to avoid circular references (memory leaks).
@@ -123,6 +124,7 @@ sub iterate {
 	my ($self) = @_;
 	return if (!$self->SUPER::iterate());
 	return if ($net->getState() != Network::IN_GAME);
+	#return if ($taskManager->isMutexActive('teleport') || $taskManager->countTasksByName('Teleport'));
 
 	# If we're sitting, wait until we've stood up.
 	if ($self->{actor}{sitting}) {

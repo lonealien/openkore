@@ -319,6 +319,10 @@ sub iterate {
 				my %nextPos = (x => $self->{new_x}, y => $self->{new_y});
 				if (distance(\%nextPos, $pos) > $config{$self->{actor}{configPrefix}.'route_step'}) {
 					debug "Route $self->{actor} - movement interrupted: reset route\n", "route";
+					if (!$nextPos{x} && !$nextPos{y}) {
+						error "Bug: route to (0,0) \n";
+						$self->setError(CANNOT_CALCULATE_ROUTE, "Unable to calculate a route.");
+					}
 					$self->{stage} = '';
 				# Below code needs too much improvement, was causing weird actions when attacking monsters, etc.
 				# } elsif (($self->{dest}{pos}{x} == $self->{new_x}) && ($self->{dest}{pos}{y} == $self->{new_y}) # only check for the final destination
