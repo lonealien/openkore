@@ -1,71 +1,73 @@
-# You shouldn't need to modify these variables
-# If you want to really mess up the bot, go ahead :)
+#############################################################################################
+# A Codificação do texto está correta?
+# Codificação:  ANSI -> UTF8 Without boom
+# Se você não está vendo a acentuação corretamente, seu arquivo está no formato incorreto.
+# Créditos tradução: Duds, Draigonz, Sayd, Temaki' e Kepler  ---          www.openkore.com.br
+#############################################################################################
+# Você não precisa necessáriamente modificar essas variaveis
+# Se voce realmente quer bagunçar completamente seu bot, continue em frente ;)
 #
-# The value of each variable is reffered as "x".
+# O valor de cada variavel tem referencial como "x".
 
-# Server connection timeouts
+# Tempo para se conectar ao servidor
 master 12
 gamelogin 12
 charlogin 12
 maplogin 12
 play 40
-
-# When disconnected, wait x seconds before reconnecting again
+# Quando desconectado, esperar x segundos antes de reconectar novamente
 reconnect 30
 
-# When disconnected by dcOnPlayer wait x seconds before reconnecting again (if the flag is equal to 2)
-reconnectDcOnPlayer 300
-
-# Wait x seconds for a poseidon reply before disconnecting
-# Ignore this if you don't use Poseidon Server
+# Espera x segundos por uma resposta do poseidon antes de desconectar-se
+# Ignore esta linha se você não usa Poseidon Server
 poseidon_wait_reply 15
 
-# Activate AI after x seconds after the map's loaded
+# Ativar AI antes de x segundos antes do mapa carregado
 ai 2
 
 ai_move_retry 0.25
 ai_move_giveup 1.5
 
-# Send the attack packet every x seconds, if it hasn't been send already
+# Envia o pacote "ataque" a cada x segundos, se o pacote já não foi enviado
 ai_attack 1
 ai_homunculus_attack 1
 
-# Check for monsters to attack every x seconds
+# Verifica todos os monstros para atacar a cada x segundos
 ai_attack_auto 0.5
 
-# Give up attacking a monster if it can't be reached within x seconds
+# Desiste de atacar um monstro se ele não pode ser atacado dentro de x segundos
 ai_attack_giveup 12
 
-# If you've just killed a monster, and there are no aggressives,
-# and you're not picking up any items, wait x seconds before doing
-# anything else.
+# Se você acabou de matar um monstro, e não tem nenhum monstro agressivo,
+# e voce não esta pegando nenhum item, esperar x segundos antes de fazer
+# qualquer coisa.
 ai_attack_waitAfterKill 0.7
 ai_attack_unstuck 2.75
 ai_attack_unfail 5
 
-# Pause for the specified number of seconds after taking something,
-# it increases the interval between taking several items and between
-# taking the last item and continuing the actions.
+# Pausar por um número de segundos específico depois de pegar alguma coisa,
+# isso aumenta o intervalo entre pegar vários itens e entre
+# pegar o último item e continuar as ações.
 ai_items_take_delay 1.4
 
-# When your monster died, start checking for loot after x seconds
+# Quando seu monstro morrer, começar a procurar por loot depois de x segundos
 ai_items_take_start 0.4
 
-# Stop checking for loot x seconds after it has begun checking
+# Parar de procurar por loot por x segundos depois de ter começado a procurar
 ai_items_take_end 1.2
 
-# When standing near an item, send the 'take' packet every x seconds until
-# the item has been taken.
+# Quando parado próximo a um item, enviar o pacote "pegar" a cada x segundos até
+# o item ser pego.
 ai_take .4
 
-# Give up if unable to pickup item after x seconds
+# Desistir se for incapaz de pegar o item depois de x segundos
 ai_take_giveup 3
 ai_items_gather_giveup 3
 
-# Every x seconds, check items for gathering
+# A cada x segundos, verificar itens a serem coletados
 ai_items_gather_auto .3
 
-# Only gather items that have been more than x seconds on screen
+# Apenas coletar itens que estão mais de x segundos na tela
 ai_items_gather_start .3
 
 ai_follow_lost_end 10
@@ -79,20 +81,20 @@ ai_dead_respawn 4
 ai_wipe_old 200
 ai_wipe_check 30
 
-# Every x seconds, check pet hungry for feeding
+# A cada x segundos, checar a fome do pet afim de alimentá-lo
 ai_petFeed 60
 
-# Send the sit/stand packet at most every x second
+# Enviar o pacote "sentar/levantar" (sit/stand) sempre a cada x segundos
 ai_sit 1
-# Sit after having idled for x seconds
+# Sentar depois de ficar ocioso por x segundos
 ai_sit_idle 10
-# Stand after x seconds, after having typed the 'stand' command
+# Levantar depois de x segundos, depois de ter digitado o comando "stand"
 ai_stand_wait 0
-# Sit after x seconds, after having typed the "sit" command
+# Sentar depois de x segundos, depois de ter digitado o comando "sit"
 ai_sit_wait 0
-# If there are non-party players around and you are to stand up due to the
-# hp/sp sufficiency, do so when the specified number of seconds elapsed
-ai_safe_stand_up 2
+# Se tiver jogadores que não são do grupo próximo e você está em pé devido ao
+# hp/sp
+
 
 ai_skill_use 0.75
 ai_skill_use_giveup 1
@@ -112,8 +114,8 @@ ai_teleport_search 3
 ai_teleport_retry 0.5
 ai_teleport_delay 0.5
 
-# You probably don't ever have to change the following timeouts
-ai_route_calcRoute 1
+# Você provavelmente jamais precisará mudar os tempos seguintes
+ai_route_calcRoute 1ai_route_calcRoute 1
 ai_route_npcTalk 10
 
 ai_buyAuto 5
@@ -125,22 +127,22 @@ ai_sellAuto 2
 ai_sellAuto_giveup 15
 ai_storageAuto 2
 ai_storageAuto_giveup 15
-# delay between sending cart item add/get packets
+# atraso entre o envio dos pacotes "adicionar/pegar item do carrinho" (cart item add/get)
 ai_cartAuto 0.15
 
-# delay between checking if we need to do any cartAuto functions
+# atraso entre entre a verificação da necessidade de usar qualquer função do cartAuto
 ai_cartAutoCheck 3
 ai_avoidcheck 0.5
 ai_shop 4
 ai_shop_useskill_delay 5
 
-# delay between repairAuto
+# atraso entre repairAuto
 ai_repair 4
 
-# delay before starting escape sequence
+# atraso antes do início da sequência de fuga
 ai_route_escape 8
 
-# Don't change the following timeouts!
+# Não mude os tempos abaixo!!
 ai_sync 12
 
 injectSync 5
