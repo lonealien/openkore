@@ -4,3 +4,5 @@
 1156 Petite Voador
 1118 Flora
 1139 Louva-a-Deus
+1002 Poring
+1007 Fabre
