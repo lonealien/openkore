@@ -41,3 +41,4 @@ geffen_in 74 144 Vendedora
 geffen_in 77 167 Vendedor de Ferramentas
 geffen_in 77 173 Vendedor Mágico
 gef_fild07 108 161 Roda Frog#Frog_Cap
+cmd_fild07 94 134 Samir
