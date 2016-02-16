@@ -111,9 +111,9 @@ sub onClientData {
 sub gameguard_reply {
 	my ($self, $args, $client) = @_;
 	if ($config{gameGuard} == 0) {
-		warning "Enviando reply do XKore2.\n";
+		warning "Resposta automatica XKore2.\n";
 		warning "Se tiver DC's constantes apos esta mensagem poste no forum: \n";
-		error "http://forums.openkore-brasil.com.\n"
+		error "http://wwww.openkorebrasil.org\n"
 	} else {
 		# mangle, may be unsafe
 		$args->{mangle} = 2;
