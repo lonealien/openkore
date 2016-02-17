@@ -57,12 +57,9 @@ sub new {
 		'009F' => ['item_take', 'a4', [qw(ID)]],
 		'00A2' => ['item_drop', 'v2', [qw(index amount)]],
 		'00A9' => ['send_equip', 'v2', [qw(index type)]],#6
-		'00A7' => ['item_consume','v V', [qw(index unknown)]],
-		'00AB' => ['item_unequip', 'v', [qw(index)]],
 		'00B2' => ['restart', 'C', [qw(type)]],
 		'00B8' => ['npc_talk_response', 'a4 C', [qw(ID response)]],
 		'00B9' => ['npc_talk_continue', 'a4', [qw(ID)]],
-		'00BB' => ['stats_add', 'c v', [qw(status unknown)]],
 		#'00F3' => ['map_login', '', [qw()]],
 		'00F3' => ['storage_item_add', 'v V', [qw(index amount)]],
 		'00F5' => ['storage_item_remove', 'v V', [qw(index amount)]],
@@ -122,6 +119,7 @@ sub new {
 		'0808' => ['booking_update', 'v6', [qw(job0 job1 job2 job3 job4 job5)]],
 		'0811' => ['buy_bulk_openShop', 'a4 c a*', [qw(limitZeny result itemInfo)]], #Selling store
 		'0815' => ['buy_bulk_closeShop'],
+		'0817' => ['buy_bulk_request', 'a4', [qw(ID)]], #6
 		'0819' => ['buy_bulk_buyer', 'a4 a4 a*', [qw(buyerID buyingStoreID itemInfo)]], #Buying store
 		'0827' => ['char_delete2', 'a4', [qw(charID)]], # 6
 		'082B' => ['char_delete2_cancel', 'a4', [qw(charID)]], # 6
@@ -1243,20 +1241,6 @@ sub sendCaptchaAnswer {
 	my ($self, $answer) = @_;
 	my $msg = pack('v2 a4 a24', 0x07E7, 0x20, $accountID, $answer);
 	$self->sendToServer($msg);
-}
-
-sub sendEnteringBuyer {
-	my ($self, $ID) = @_;
-	my $msg = pack("C*", 0x17, 0x08) . $ID;
-	$self->sendToServer($msg);
-	debug "Sent Entering Buyer: ".getHex($ID)."\n", "sendPacket", 2;
-}
-
-sub sendProgress {
-	my ($self) = @_;
-	my $msg = pack("C*", 0xf1, 0x02);
-	$self->sendToServer($msg);
-	debug "Sent Progress Bar Finish\n", "sendPacket", 2;
 }
 
 # 0x0204,18

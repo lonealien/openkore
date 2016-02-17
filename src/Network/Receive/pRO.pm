@@ -155,14 +155,19 @@ sub received_characters {
 
 	message T("Received characters from Character Server\n"), "connection";
 
-	if (charSelectScreen(1) == 1) {
+	if (!$masterServer->{pinCode}) {
+		if (charSelectScreen(1) == 1) {
 			$firstLoginMap = 1;
 			$startingzeny = $chars[$config{'char'}]{'zeny'} unless defined $startingzeny;
 			$sentWelcomeMessage = 1;
+		}
+	} else {
+		message T("Waiting for PIN code request\n"), "connection";
+		$timeout{'charlogin'}{'time'} = time;
 	}
 }
 
-*parse_quest_update_mission_hunt = *Network::Receive::ServerType0::parse_quest_update_mission_hunt_v2;
-*reconstruct_quest_update_mission_hunt = *Network::Receive::ServerType0::reconstruct_quest_update_mission_hunt_v2;
+*parse_quest_update_mission_hunt = *Network::Receive::parse_quest_update_mission_hunt_v2;
+*reconstruct_quest_update_mission_hunt = *Network::Receive::reconstruct_quest_update_mission_hunt_v2;
 
 1;

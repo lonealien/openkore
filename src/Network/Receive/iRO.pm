@@ -37,15 +37,6 @@ sub new {
 		$self->{packet_list}{$switch} = $packets{$switch};
 	}
 
-	my %handlers = qw(
-		received_characters 099D
-		actor_exists 0856
-		actor_connected 0857
-		actor_moved 0858
-		account_id 0283
-	);
-	$self->{packet_lut}{$_} = $handlers{$_} for keys %handlers;
-	
 	return $self;
 }
 
@@ -72,7 +63,7 @@ sub received_characters_info {
 	$self->received_characters($args);
 }
 
-*parse_quest_update_mission_hunt = *Network::Receive::ServerType0::parse_quest_update_mission_hunt_v2;
-*reconstruct_quest_update_mission_hunt = *Network::Receive::ServerType0::reconstruct_quest_update_mission_hunt_v2;
+*parse_quest_update_mission_hunt = *Network::Receive::parse_quest_update_mission_hunt_v2;
+*reconstruct_quest_update_mission_hunt = *Network::Receive::reconstruct_quest_update_mission_hunt_v2;
 
 1;

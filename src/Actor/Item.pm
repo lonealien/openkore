@@ -9,8 +9,8 @@
 #  also distribute the source code.
 #  See http://www.gnu.org/licenses/gpl.html for the full license.
 #
-#  $Revision: 8619 $
-#  $Id: Item.pm 8619 2013-06-12 03:11:03Z sofax222 $
+#  $Revision: 8894 $
+#  $Id: Item.pm 8894 2014-08-21 16:47:22Z allanon $
 #
 #########################################################################
 ##
@@ -61,6 +61,7 @@ sub _ne {
 	return !&_eq;
 }
 
+
 # The same list as %equipSlot_lut, but sorted to make sense to a human.
 our @slots = qw(
 	topHead midHead lowHead
@@ -70,7 +71,7 @@ our @slots = qw(
 	arrow
 	costumeTopHead costumeMidHead costumeLowHead
 	costumeRobe costumeFloor
-	
+
 	shadowLeftHand shadowRightHand shadowArmor shadowShoes
 	shadowLeftAccessory shadowRightAccessory
 );
@@ -183,23 +184,14 @@ sub bulkEquip {
 		my $skipIndex;
 		$skipIndex = $rightHand if ($_ eq 'leftHand');
 		$skipIndex = $rightAccessory if ($_ eq 'leftAccessory');
-		
-		# TODO: THATS A DIRTY HACK
-		if ($list->{$_} eq '[NONE]' && $char->{equipment} && $char->{equipment}{$_}) {
-			
-			$char->{equipment}{$_}->unequip();
-		
-		} else {
-		
-			$item = Actor::Item::get($list->{$_}, $skipIndex, 1);
+		$item = Actor::Item::get($list->{$_}, $skipIndex, 1);
 
-			next unless ($item && $char->{equipment} && (!$char->{equipment}{$_} || $char->{equipment}{$_}{name} ne $item->{name}));
+		next unless ($item && $char->{equipment} && (!$char->{equipment}{$_} || $char->{equipment}{$_}{name} ne $item->{name}));
 
-			$item->equipInSlot($_);
-			
-			$rightHand = $item->{invIndex} if ($_ eq 'rightHand');
-			$rightAccessory = $item->{invIndex} if ($_ eq 'rightAccessory');
-		}
+		$item->equipInSlot($_);
+		
+		$rightHand = $item->{invIndex} if ($_ eq 'rightHand');
+		$rightAccessory = $item->{invIndex} if ($_ eq 'rightAccessory');
 	}
 }
 
@@ -243,7 +235,7 @@ sub scanConfigAndCheck {
 	foreach my $slot (values %equipSlot_lut) {
 		if (exists $config{"${prefix}_$slot"}){
 			my $item = Actor::Item::get($config{"${prefix}_$slot"}, undef, 1);
-			$count++ if (($config{"${prefix}_$slot"} eq '[NONE]' && $char->{equipment}{$slot}) || ($item && $item->{identified} && $char->{equipment} && (!$char->{equipment}{$slot} || $char->{equipment}{$slot}{name} ne $item->{name})));
+			$count++ if ($item && $char->{equipment} && (!$char->{equipment}{$slot} || $char->{equipment}{$slot}{name} ne $item->{name}));
 		}
 	}
 	return $count;

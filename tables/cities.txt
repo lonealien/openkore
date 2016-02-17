@@ -11,6 +11,7 @@ moc_castle.rsw#Morroc Castle#
 moc_ruins.rsw#Morroc Ruins#
 morocc.rsw#Morroc Town#
 morocc_in.rsw#Inside Morroc#
+que_job01.rsw#Private Pub#
 pay_arche.rsw#Archer Village#
 payon.rsw#Payon Town#
 payon_in01.rsw#Inside Payon#
@@ -82,3 +83,12 @@ malangdo.rsw#Malangdo Island#
 mal_in01.rsw#Inside Malangdo Island 1#
 mal_in02.rsw#Inside Malangdo Island 2#
 zhakastia.rsw#Zhakastia City#
+caspen.rsw#Caspen, the Village of Beginnings#
+casp_in01.rsw#Caspen Inn#
+casp_in02.rsw#Caspen Inn#
+angus.rsw#Zombies#
+novice.rsw#Avid Welcome Grounds#
+rentb7.rsw#House 07#
+city.rsw#The main city#
+n_castle.rsw#NGuild#
+Hyrule.rsw#Hyrule#

@@ -123,25 +123,25 @@ sub master_login {
 	} elsif ($result == ACCOUNT_NOT_FOUND) {
 		$client->send($self->{recvPacketParser}->reconstruct({
 			switch => 'login_error',
-			type => Network::Receive::REFUSE_INVALID_ID,
+			type => Network::Receive::ServerType0::REFUSE_INVALID_ID,
 		}));
 		$client->close();
 	} elsif ($result == PASSWORD_INCORRECT) {
 		$client->send($self->{recvPacketParser}->reconstruct({
 			switch => 'login_error',
-			type => Network::Receive::REFUSE_INVALID_PASSWD,
+			type => Network::Receive::ServerType0::REFUSE_INVALID_PASSWD,
 		}));
 		$client->close();
 	} elsif ($result == ACCOUNT_BANNED) {
 		$client->send($self->{recvPacketParser}->reconstruct({
 			switch => 'login_error',
-			type => Network::Receive::REFUSE_NOT_CONFIRMED,
+			type => Network::Receive::ServerType0::REFUSE_NOT_CONFIRMED,
 		}));
 		$client->close();
 	} elsif ($result == SERVER_REFUSED) {
 		$client->send($self->{recvPacketParser}->reconstruct({
 			switch => 'login_error',
-			type => Network::Receive::ACCEPT_ID_PASSWD,
+			type => Network::Receive::ServerType0::ACCEPT_ID_PASSWD,
 		}));
 		$client->close();
 	} else {

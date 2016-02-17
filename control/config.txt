@@ -1,4 +1,4 @@
-﻿#############################################################################################
+#############################################################################################
 # A Codificação do texto está correta?
 # Codificação:  ANSI -> UTF8 Without boom
 # Se você não está vendo a acentuação corretamente, seu arquivo está no formato incorreto.
@@ -16,12 +16,12 @@
 
 ######## Opções de login e especificação do servidor ########
 
-master 
-server 
-username 
-password 
-loginPinCode 
-char 
+master
+server
+username
+password
+loginPinCode
+char
 
 # Opções do Poseidon (http://wiki.openkore.com/index.php/PoseidonServer)
 # Essas configurações devem ser as mesmas do Poseidon.txt
@@ -47,7 +47,7 @@ XKore_publicIp 127.0.0.1
 
 # Não é aconselhável usar secureAdminPassword se você estiver usando Xkore 2
 secureAdminPassword 1
-adminPassword trewraic
+adminPassword
 callSign
 commandPrefix ;
 
@@ -104,15 +104,15 @@ attackEquip_arrow
 
 #Requer o plugin breakTime: http://wiki.openkore.com/index.php?title=BreakTime
 autoBreakTime {
-	startTime
-	stopTime
+        startTime
+        stopTime
 }
 
 autoConfChange {
-	minTime
-	varTime
-	lvl
-	joblvl
+        minTime
+        varTime
+        lvl
+        joblvl
 }
 
 autoMakeArrows 0
@@ -577,11 +577,11 @@ autoSwitch_default_arrow
 # Para atacar com as mãos, especifique "[NONE]" (sem as aspas) no rightHand
  
 autoSwitch {
-	rightHand
-	leftHand
-	arrow
-	distance
-	useWeapon
+        rightHand
+        leftHand
+        arrow
+        distance
+        useWeapon
 }
  
 equipAuto {
@@ -652,13 +652,13 @@ useSelf_item {
 ######## Armazenamento Automático/Venda automática ########
  
 buyAuto {
-	npc
-	npc_steps
-	standpoint
-	distance 5
-	price
-	minAmount 2
-	maxAmount 3
+        npc
+        npc_steps
+        standpoint
+        distance 5
+        price
+        minAmount 2
+        maxAmount 3
 }
  
 sellAuto 0
@@ -681,9 +681,9 @@ minStorageZeny 50
 npcTimeResponse
  
 getAuto {
-	minAmount
-	maxAmount
-	passive
+        minAmount
+        maxAmount
+        passive
 }
  
 ######## Opções de depuração; útil apenas para desenvolvedores ########
@@ -697,6 +697,3 @@ debugPacket_exclude
 debugPacket_include
 debugPacket_include_dumpMethod
 debugDomains
-storageEncryptKey 0x050B6F79, 0x0202C179, 0x0E20120, 0x04FA43E3, 0x0179B6C8, 0x05973DF2, 0x07D8D6B, 0x08CB9ED9
-gameGuard 0
-macro_orphans terminate

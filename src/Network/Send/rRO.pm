@@ -23,33 +23,26 @@ sub new {
 	my $self = $class->SUPER::new(@_);
 
 	my %packets = (
-		'0090' => ['sendTalk'],
 		'00A7' => ['sendItemUse'],
 		'00AB' => ['sendUnequip'],
 		'00BB' => ['sendAddStatusPoint'],
-		'00B8' => ['sendTalkResponse'],
-		'00f7' => ['sendStorageClose'],
+		'00F7' => ['sendStorageClose'],
 		'0112' => ['sendAddSkillPoint'],
 		'0130' => ['sendEnteringVender'],
-		'0146' => ['sendTalkCancel'],
-		'0364' => ['storage_item_add', 'v V', [qw(index amount)]],
-		'0365' => ['storage_item_remove', 'v V', [qw(index amount)]],
-		'08B8' => ['security_code'],#10
 		'0907' => ['item_to_favorite', 'v C', [qw(index flag)]],#5 TODO where 'flag'=0|1 (0 - move item to favorite tab, 1 - move back) 
-		'0998' => ['sendEquip'],#8
 	);
-	
-	$self->{packet_list}{$_} = $packets{$_} for keys %packets;	
+
+	$self->{packet_list}{$_} = $packets{$_} for keys %packets;
 
 	my %handlers = qw(
 		actor_info_request 0368
 		actor_look_at 0361
 		actor_name_request 0369
-		char_delete 0068
 		character_move 035F
 		item_drop 0363
 		item_take 0362
 		party_setting 07D7
+		send_equip 0998
 		skill_use 0113
 		skill_use_location 0366
 		storage_item_add 0364
@@ -58,13 +51,6 @@ sub new {
 
 	$self->{packet_lut}{$_} = $handlers{$_} for keys %handlers;
 	return $self;
-}
-
-sub sendEquip {
-	my ($self, $index, $type) = @_;
-	my $msg = pack('v2 V', 0x0998, $index, $type);
-	$self->sendToServer($msg);
-	debug "Sent Equip: $index Type: $type\n" , 2;
 }
 
 1;

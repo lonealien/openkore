@@ -9,8 +9,8 @@
 #  also distribute the source code.
 #  See http://www.gnu.org/licenses/gpl.html for the full license.
 #
-#  $Revision: 8843 $
-#  $Id: Send.pm 8843 2014-02-27 21:36:09Z marcelofoxes $
+#  $Revision: 9016 $
+#  $Id: Send.pm 9016 2016-02-15 16:45:35Z windhamwong $
 #
 #########################################################################
 ##
@@ -26,7 +26,7 @@ package Network::Send;
 use strict;
 use Network::PacketParser; # import
 use base qw(Network::PacketParser);
-use encoding 'utf8';
+use utf8;
 use Carp::Assert;
 use Digest::MD5;
 use Math::BigInt;
@@ -194,7 +194,7 @@ sub encryptMessageID {
 			$$r_message = pack("v", $messageID) . substr($$r_message, 2);
 
 			# Debug Log	
-			debug sprintf("Encrypted MID : [%04X]->[%04X] / KEY : [0x%04X]->[0x%04X]\n", $oldMID, $messageID, $oldKey, ($self->{encryption}->{crypt_key} >> 16) & 0x7FFF), "encryption";
+			debug (sprintf("Encrypted MID : [%04X]->[%04X] / KEY : [0x%04X]->[0x%04X]\n", $oldMID, $messageID, $oldKey, ($self->{encryption}->{crypt_key} >> 16) & 0x7FFF), "sendPacket", 0) if $config{debugPacket_sent};
 		}
 	} else {
 		use bytes;
@@ -696,6 +696,12 @@ sub sendDrop {
 	debug "Sent drop: $index x $amount\n", "sendPacket", 2;
 }
 
+sub sendItemUse {
+	my ($self, $index, $targetID) = @_;
+	$self->sendToServer($self->reconstruct({switch => 'item_use', index => $index, targetID => $targetID}));
+	debug "Item Use: $index\n", "sendPacket", 2;
+}
+
 # for old plugin compatibility, use sendRestart instead!
 sub sendRespawn { $_[0]->sendRestart(0) }
 
@@ -791,17 +797,23 @@ sub reconstruct_buy_bulk_buyer {
 	$args->{itemInfo} = pack '(a4)*', map { pack 'v2', @{$_}{qw(amount itemIndex)} } @{$args->{items}};
 }
 
-sub sendBuyBulkbuyer {
+sub sendBuyBulkBuyer {
 	#FIXME not working yet
 	#field index still wrong and remain unknown
 	my ($self, $buyerID, $r_array, $buyingStoreID) = @_;
-	my $msg = pack('v2', 0x0819, 4+8*@{$r_array});
+	my $msg = pack('v2', 0x0819, 12+6*@{$r_array});
 	$msg .= pack ('a4 a4', $buyerID, $buyingStoreID);
 	for (my $i = 0; $i < @{$r_array}; $i++) {
 		debug 'Send Buying Buyer Request: '.$r_array->[$i]{itemIndex}.' '.$r_array->[$i]{itemID}.' '.$r_array->[$i]{amount}."\n", "sendPacket", 2;
 		$msg .= pack('v3', $r_array->[$i]{itemIndex}, $r_array->[$i]{itemID}, $r_array->[$i]{amount});
 	}
 	$self->sendToServer($msg);
+}
+
+sub sendEnteringBuyer {
+	my ($self, $ID) = @_;
+	$self->sendToServer($self->reconstruct({switch => 'buy_bulk_request', ID => $ID}));
+	debug "Sent Entering Buyer: ID - ".getHex($ID)."\n", "sendPacket", 2;
 }
 
 sub sendSkillUse {
@@ -1136,7 +1148,7 @@ sub sendHomunculusAttack {
 	my $self = shift;
 	my $slaveID = shift;
 	my $targetID = shift;
-	my $flag = shift;	
+	my $flag = shift;
 	$self->sendToServer($self->reconstruct({
 				switch => 'slave_attack',
 				slaveID => $slaveID,
@@ -1171,6 +1183,13 @@ sub sendEquip {
 		)
 	);
 	debug "Sent Equip: $index Type: $type\n" , 2;
+}
+
+sub sendProgress {
+	my ($self) = @_;
+	my $msg = pack("C*", 0xf1, 0x02);
+	$self->sendToServer($msg);
+	debug "Sent Progress Bar Finish\n", "sendPacket", 2;
 }
 
 1;

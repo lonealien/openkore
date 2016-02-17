@@ -27,12 +27,12 @@ use Task::WithSubtask;
 use base qw(Task::WithSubtask);
 use Task::Move;
 
-use Globals qw($field $net %config $playersList $npcsList);
-use Log qw(message debug warning error);
+use Globals qw($field $net %config);
+use Log qw(message debug warning);
 use Network;
 use Field;
 use Translation qw(T TF);
-use Misc qw(canMoveTo nearestWalkableCell);
+use Misc;
 use Utils qw(timeOut distance calcPosition);
 use Utils::Exceptions;
 use Utils::Set;
@@ -319,21 +319,12 @@ sub iterate {
 				my %nextPos = (x => $self->{new_x}, y => $self->{new_y});
 				if (distance(\%nextPos, $pos) > $config{$self->{actor}{configPrefix}.'route_step'}) {
 					debug "Route $self->{actor} - movement interrupted: reset route\n", "route";
-					if (!$nextPos{x} && !$nextPos{y}) {
-						error "Bug: route to (0,0) \n";
-						$self->setError(CANNOT_CALCULATE_ROUTE, "Unable to calculate a route.");
-					}
 					$self->{stage} = '';
-				# Below code needs too much improvement, was causing weird actions when attacking monsters, etc.
-				# } elsif (($self->{dest}{pos}{x} == $self->{new_x}) && ($self->{dest}{pos}{y} == $self->{new_y}) # only check for the final destination
-							# && !Misc::canMoveTo($self->{new_x},$self->{new_y})) {
-					# error TF("The spot on coordinates (%s,%s) is occupied by another actor.\n",$self->{new_x},$self->{new_y}), "move";
-					# ($self->{dest}{pos}{x},$self->{dest}{pos}{y}) = Misc::nearestWalkableCell($self->{new_x},$self->{new_y});
-					# $self->{stage} = '';				
+
 				} else {
 					$self->{time_step} = time if ($cur_x != $self->{old_x} || $cur_y != $self->{old_y});
 					$self->{old_x} = $cur_x;
-					$self->{old_y} = $cur_y;					
+					$self->{old_y} = $cur_y;
 					debug "Route $self->{actor} - next step moving to ($self->{new_x}, $self->{new_y}), index $self->{index}, $stepsleft steps left\n", "route";
 					my $task = new Task::Move(
 						actor => $self->{actor},

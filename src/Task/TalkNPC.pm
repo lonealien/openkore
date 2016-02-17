@@ -16,12 +16,12 @@ package Task::TalkNPC;
 use strict;
 use Time::HiRes qw(time);
 use Scalar::Util;
-use encoding 'utf8';
+use utf8;
 
 use Modules 'register';
 use Task;
 use base qw(Task);
-use Globals qw($char %timeout $npcsList $monstersList %ai_v $messageSender %config @storeList $net %talk %timeout);
+use Globals qw($char %timeout $npcsList $monstersList %ai_v $messageSender %config @storeList $net %talk);
 use Log qw(message debug error);
 use Utils;
 use Commands;
@@ -50,6 +50,7 @@ use constant MUTEXES => ['npc'];
 # - All options allowed in Task->new(), except 'mutexes'.
 # - <tt>x</tt> (required): The X-coordinate of the NPC to talk to.
 # - <tt>y</tt> (required): The Y-coordinate of the NPC to talk to.
+# - <tt>nameID</tt> (required): The nameID of the NPC to talk to (you may use this instead of x and y).
 # - <tt>sequence</tt> (required): A string which describes how to talk to the NPC.
 # `l`
 # Note that the NPC is assumed to be on the same map as where the character currently is.
@@ -71,9 +72,9 @@ sub new {
 
 	$self->{x} = $args{x};
 	$self->{y} = $args{y};
+	$self->{nameID} = $args{nameID};
 	$self->{sequence} = $args{sequence};
 	$self->{sequence} =~ s/^ +| +$//g;
-	$self->{response_delay} = $args{response_delay} || $timeout{ai_npc_response}{timeout} || 0.4; # increased to 0.4, 0.25 was too fast
 
 	# Watch for map change events. Pass a weak reference to ourselves in order
 	# to avoid circular references (memory leaks).
@@ -93,7 +94,7 @@ sub DESTROY {
 sub activate {
 	my ($self) = @_;
 	$self->SUPER::activate(); # Do not forget to call this!
-	$self->{time} = Time::HiRes::time;
+	$self->{time} = time;
 	$self->{stage} = 'Not Started';
 	$self->{mapChanged} = 0;
 }
@@ -103,7 +104,7 @@ sub iterate {
 	my ($self) = @_;
 	$self->SUPER::iterate(); # Do not forget to call this!
 	return unless ($net->getState() == Network::IN_GAME);
-	my $timeResponse = (($config{npcTimeResponse} >= 5) ? $config{npcTimeResponse}:5)+$self->{response_delay};
+	my $timeResponse = ($config{npcTimeResponse} >= 5) ? $config{npcTimeResponse}:5;
 	
 	if ($self->{stage} eq 'Not Started') {
 		if (!timeOut($char->{time_move}, $char->{time_move_calc} + 0.2)) {
@@ -111,42 +112,54 @@ sub iterate {
 			return;
 
 		} elsif (timeOut($self->{time}, $timeResponse)) {
-			$self->setError(NPC_NOT_FOUND, TF("Could not find an NPC at location (%d,%d).",
-				$self->{x}, $self->{y}));
+			if ($self->{nameID}) {
+				$self->setError(NPC_NOT_FOUND, TF("Could not find an NPC with id (%d).",
+					$self->{nameID}));
+			} else {
+				$self->setError(NPC_NOT_FOUND, TF("Could not find an NPC at location (%d,%d).",
+					$self->{x}, $self->{y}));
+			}
 
 		} else {
-			if ($self->{x} && $self->{y}) {
-				my $target = $self->findTarget($npcsList);
+			my $target = $self->findTarget($npcsList);
+			if ($target) {
+				debug "Target NPC " . $target->name() . " at ($self->{pos}{x},$self->{pos}{y}) found.\n", "ai_npcTalk";
+			} else {
+				$target = $self->findTarget($monstersList);
 				if ($target) {
-					debug "Target NPC " . $target->name() . " at ($self->{pos}{x},$self->{pos}{y}) found.\n", "ai_npcTalk";
-				} else {
-					$target = $self->findTarget($monstersList);
-					if ($target) {
-						debug "Target Monster-NPC " . $target->name() . " at ($self->{pos}{x},$self->{pos}{y}) found.\n", "ai_npcTalk";
-					}
+					debug "Target Monster-NPC " . $target->name() . " at ($self->{pos}{x},$self->{pos}{y}) found.\n", "ai_npcTalk";
 				}
-
-				if ($target) {
-					$self->{target} = $target;
-					$self->{ID} = $target->{ID};
-					$self->{stage} = 'Talking to NPC';
-					$self->{steps} = [parseArgs("x $self->{sequence}")];
-					$self->{time} =  Time::HiRes::time;
-					undef $ai_v{npc_talk}{time};
-					undef $ai_v{npc_talk}{talk};
-					lookAtPosition($self);
-				}
-			} elsif ($talk{ID}) {
-				$self->{ID} = $talk{ID};
-				$self->{target} = $npcsList->getByID($self->{ID});
-				$self->{stage} = 'Talking to NPC';
-				$self->{steps} = [parseArgs("$self->{sequence}")];
-				$self->{time} =  Time::HiRes::time;
-				#undef $ai_v{npc_talk}{time};
-				#undef $ai_v{npc_talk}{talk};
-				#lookAtPosition($self);
 			}
-				
+
+			if ($target && $target->{statuses}->{EFFECTSTATE_BURROW}) {
+				$self->setError(NPC_NOT_FOUND, TF("NPC is hidden."));
+				$target = undef;
+			}
+
+			if ($target) {
+				$self->{target} = $target;
+				$self->{ID} = $target->{ID};
+				$self->{steps} = [parseArgs("x $self->{sequence}")];
+				undef $ai_v{npc_talk}{time};
+				undef $ai_v{npc_talk}{talk};
+				lookAtPosition($self);
+			}
+
+			# Couldn't find the target, or already in a conversation.
+			# Handles auto-conversation "would you like to change maps?" NPCs.
+			# NPCs drop the conversation automatically after a certain amount of time. Not sure how long. After that, this fails.
+			if (%talk && (!$target || $target->{ID} eq $talk{ID}) && !exists $talk{buyOrSell}) {
+				$self->{ID} = $talk{ID};
+				$self->{target} = Actor::NPC->new;
+				$self->{target}->{appear_time} = time;
+				$self->{target}->{name} = 'Unknown';
+				$self->{steps} = [parseArgs($self->{sequence})];
+			}
+
+			if ($target || %talk) {
+				$self->{stage} = 'Talking to NPC';
+				$self->{time} = time;
+			}
 		}
 
 	} elsif ($self->{mapChanged} || ($ai_v{npc_talk}{talk} eq 'close' && $self->{steps}[0] !~ /x/i)) {
@@ -154,25 +167,25 @@ sub iterate {
 		# we could get disconnected.
 		#$messageSender->sendTalkCancel($self->{ID}) if ($npcsList->getByID($self->{ID}));
 		$self->setDone();
-		message TF("Done talking with %s.\n", $self->{target} ? $self->{target}->name : 'Unknown NPC'), "ai_npcTalk";
+		message TF("Done talking with %s.\n", $self->{target}->name), "ai_npcTalk";
 
-	} elsif (timeOut($self->{time}, $timeResponse)) {
+	} elsif (!$ai_v{npc_talk}{time} && timeOut($self->{time}, $timeResponse)) {
 		# If NPC does not respond before timing out, then by default, it's
 		# a failure.
 		$messageSender->sendTalkCancel($self->{ID});
 		$self->setError(NPC_NO_RESPONSE, T("The NPC did not respond."));
 
-	} elsif (timeOut($ai_v{npc_talk}{time}, $self->{response_delay})) {
-		# $timeout{ai_npc_response}{timeout} seconds have passed since we last talked to the NPC.
+	} elsif (timeOut($ai_v{npc_talk}{time}, 0.25)) {
+		# 0.25 seconds have passed since we last talked to the NPC.
 
 		if ($ai_v{npc_talk}{talk} eq 'close' && $self->{steps}[0] =~ /x/i) {
 			undef $ai_v{npc_talk}{talk};
 		}
-		$self->{time} =  Time::HiRes::time;
+		$self->{time} = time;
 
 		# We give the NPC some time to respond. This time will be reset once
 		# the NPC responds.
-		$ai_v{npc_talk}{time} =  Time::HiRes::time + $timeResponse;
+		$ai_v{npc_talk}{time} = time + $timeResponse;
 
 		if ($config{autoTalkCont}) {
 			while ($self->{steps}[0] =~ /^c$/i) {
@@ -187,14 +200,14 @@ sub iterate {
 		if ($step =~ /^w(\d+)/i) {
 			# Wait x seconds.
 			my $time = $1;
-			$ai_v{npc_talk}{time} =  Time::HiRes::time + $time;
-			$self->{time} =  Time::HiRes::time + $time;
+			$ai_v{npc_talk}{time} = time + $time;
+			$self->{time} = time + $time;
 			
 		} elsif ( $step =~ /^a=(.*)/i ) {
 			# Run a command.
 			my $command = $1;
-			$ai_v{npc_talk}{time} =  Time::HiRes::time + $timeResponse - 4;
-			$self->{time} =  Time::HiRes::time + $timeResponse - 4;
+			$ai_v{npc_talk}{time} = time + $timeResponse - 4;
+			$self->{time} = time + $timeResponse - 4;
 			Commands::run($command);
 			
 		} elsif ( $step =~ /^c/i ) {
@@ -203,26 +216,24 @@ sub iterate {
 				$messageSender->sendTalkContinue($talk{ID});
 			} else {
 				$self->setError(WRONG_NPC_INSTRUCTIONS,
-					TF("According to the given NPC instructions, the Next button " .
-					"must now be clicked on, but the NPC is expecting '%s' sequence.", ucfirst($npcTalkType)));
+					T("According to the given NPC instructions, the Next button " .
+					"must now be clicked on, but that's not possible."));
 				$self->cancelTalk();
 			}
 
-		} elsif ( $step !~ /^c$/i && $npcTalkType eq 'next' && !$config{autoTalkCont}) {
+		} elsif ( $step !~ /^c/i && $ai_v{npc_talk}{talk} eq 'next') {
 			debug "Auto-continuing NPC Talk - next detected \n", 'ai_npcTalk';
-			
 			$messageSender->sendTalkContinue($talk{ID});
 			return;
 		} elsif ( $step =~ /^t=(.*)/i ) {
 			# Send NPC talk text.
-			Log::warning "Sending talk text \n";
 			$messageSender->sendTalkText($talk{ID}, $1);
 
-		} elsif ( $step =~ /d(\d+)/i ) {
+		} elsif ( $step =~ /^d(\d+)/i ) {
 			# Send NPC talk number.
 			$messageSender->sendTalkNumber($talk{ID}, $1);
 
-		} elsif ( $step =~ /x/i ) {
+		} elsif ( $step =~ /^x/i ) {
 			# Initiate NPC conversation.
 			if (!$self->{target}->isa('Actor::Monster')) {
 				$messageSender->sendTalk($self->{ID});
@@ -230,23 +241,39 @@ sub iterate {
 				$messageSender->sendAction($self->{ID}, 0);
 			}
 
-		} elsif ( $step =~ /r(\d+)/i ) {
+		} elsif ( $step =~ /^r(?:(\d+)|=(.+)|~\/(.*?)\/(i?))/i ) {
 			# Choose a menu item.
 			my $choice = $1;
-			if ($npcTalkType eq 'select') {
-				if ($talk{responses} && $choice < @{$talk{responses}} - 1) {
+			if ($npcTalkType eq 'select' and $2 || $3) {
+				# Choose a menu item by matching options against a regular expression.
+				my $pattern = $2 ? "^\Q$2\E\$" : $3;
+				my $postCondition = $4;
+				( $choice ) = grep { $postCondition ? $talk{responses}[$_] =~ /$pattern/i : $talk{responses}[$_] =~ /$pattern/ } 0..$#{$talk{responses}};
+				if (defined $choice && $choice < $#{$talk{responses}}) {
 					$messageSender->sendTalkResponse($talk{ID}, $choice + 1);
-				} elsif ($talk{responses}) {
+				} elsif (defined $choice) {
+					# The last response is a fake "Cancel Chat" response.
+					$self->cancelTalk();
+				} else {
+					$self->setError(WRONG_NPC_INSTRUCTIONS,
+						TF("According to the given NPC instructions, a menu " .
+						"item matching '%s' must now be selected, but no " .
+						"such menu item exists.", $pattern));
+					$self->cancelTalk();
+				}
+			} elsif ($npcTalkType eq 'select') {
+				if ($choice < $#{$talk{responses}}) {
+					$messageSender->sendTalkResponse($talk{ID}, $choice + 1);
+				} elsif ($choice) {
+					# The last response is a fake "Cancel Chat" response.
+					$self->cancelTalk();
+				} else {
 					$self->setError(WRONG_NPC_INSTRUCTIONS,
 						TF("According to the given NPC instructions, menu item %d must " .
 						"now be selected, but there are only %d menu items.",
 						$choice, @{$talk{responses}} - 1));
 					$self->cancelTalk();
-				} else {
-					$self->setError(WRONG_NPC_INSTRUCTIONS,
-						TF("According to the given NPC instructions, menu item %d must " .
-						"now be selected, but there are no menu items.", $choice));
-				}	
+				}
 			} else {
 				$self->setError(WRONG_NPC_INSTRUCTIONS,
 					T("According to the given NPC instructions, a menu item " .
@@ -254,13 +281,13 @@ sub iterate {
 				$self->cancelTalk();
 			}
 
-		} elsif ( $step =~ /n/i ) {
+		} elsif ( $step =~ /^n/i ) {
 			# Click Close or Cancel.
 			$self->cancelTalk();
-			$ai_v{npc_talk}{time} =  Time::HiRes::time;
-			$self->{time} =  Time::HiRes::time;
+			$ai_v{npc_talk}{time} = time;
+			$self->{time} = time;
 
-		} elsif ( $step =~ /b.*/i ) {
+		} elsif ( $step =~ /^b.*/i ) {
 			# Get the shop's item list.
 			if ($step =~ /^b$/i) {
 				$messageSender->sendNPCBuySellList($talk{ID}, 0);
@@ -285,20 +312,19 @@ sub iterate {
 				}
 				# We give some time to get inventory_item_added packet from server.
 				# And skip this itteration.
-				$ai_v{npc_talk}{time} =  Time::HiRes::time + 0.2;
-				$self->{time} =  Time::HiRes::time + 0.2;
+				$ai_v{npc_talk}{time} = time + 0.2;
+				$self->{time} = time + 0.2;
 				return;
 			}
 
-		} elsif ( $step =~ /s/i ) {
+		} elsif ( $step =~ /^s/i ) {
 			# Get the sell list in a shop.
 			$messageSender->sendNPCBuySellList($talk{ID}, 1);
 
-		} elsif ( $step =~ /e/i ) {
+		} elsif ( $step =~ /^e/i ) {
 			# ? Pretend like the conversation was stopped by the NPC?
 			$ai_v{npc_talk}{talk} = 'close';
 		}
-		$self->{lastTalk} = Time::HiRes::time;
 
 		shift @{$self->{steps}};
 	}
@@ -334,13 +360,17 @@ sub mapChanged {
 # Actor findTarget(ActorList actorList)
 #
 # Check whether the target as specified in $self->{x} and $self->{y} is in the given
-# actor list. Returns the actor object if it's currently on screen and has a name,
-# undef otherwise.
+# actor list. Or if the target as specified in $self->{nameID} is in the given actor list.
+# Returns the actor object if it's currently on screen and has a name, undef otherwise.
 #
 # Note: we require that the NPC's name is known, because otherwise talking
 # may fail.
 sub findTarget {
 	my ($self, $actorList) = @_;
+	if ($self->{nameID}) {
+		my ($actor) = grep { $self->{nameID} eq $_->{nameID} } @{$actorList->getItems};
+		return $actor;
+	}
 	foreach my $actor (@{$actorList->getItems()}) {
 		my $pos = ($actor->isa('Actor::NPC')) ? $actor->{pos} : $actor->{pos_to};
 		if ($pos->{x} == $self->{x} && $pos->{y} == $self->{y}) {

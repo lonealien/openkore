@@ -1,12 +1,3 @@
-1011 ChonChon
-1018 Creamy
-1008 Pupa
-1156 Petite Voador
-1118 Flora
-1139 Louva-a-Deus
-1002 Poring
-1007 Fabre
-1074 Molusco
-1254 Raggler
-1073 Caranguejo
-3382 Alma Andarilha
+1023 Guerreiro Orc
+1273 Senhora Orc
+1686 Filhote de Orc

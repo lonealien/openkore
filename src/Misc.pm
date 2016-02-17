@@ -8,8 +8,8 @@
 #  also distribute the source code.
 #  See http://www.gnu.org/licenses/gpl.html for the full license.
 #
-#  $Revision: 8841 $
-#  $Id: Misc.pm 8841 2014-02-26 16:28:47Z marcelofoxes $
+#  $Revision: 9016 $
+#  $Id: Misc.pm 9016 2016-02-15 16:45:35Z windhamwong $
 #
 #########################################################################
 ##
@@ -27,7 +27,7 @@ use Carp::Assert;
 use Data::Dumper;
 use Compress::Zlib;
 use base qw(Exporter);
-use encoding 'utf8';
+use utf8;
 
 use Globals;
 use Log qw(message warning error debug);
@@ -51,11 +51,9 @@ use Actor::Portal;
 use Actor::Pet;
 use Actor::Slave;
 use Actor::Unknown;
-use Task::Teleport;
 use Time::HiRes qw(time usleep);
 use Translation;
 use Utils::Exceptions;
-use List::Util qw(shuffle);
 
 our @EXPORT = (
 	# Config modifiers
@@ -93,7 +91,8 @@ our @EXPORT = (
 	# File Parsing and Writing
 	qw/chatLog
 	shopLog
-	monsterLog/,
+	monsterLog
+	deadLog/,
 
 	# Logging
 	qw/itemLog/,
@@ -161,7 +160,6 @@ our @EXPORT = (
 	top10Listing
 	whenGroundStatus
 	writeStorageLog
-	readStorageLog
 	getBestTarget
 	isSafe
 	isSafeActorQuery/,
@@ -203,9 +201,7 @@ our @EXPORT = (
 	openShop
 	closeShop
 	inLockMap
-	parseReload
-	canMoveTo
-	nearestWalkableCell/
+	parseReload/
 	);
 
 
@@ -304,7 +300,11 @@ sub configModify {
 		}
 		
 		if ($config{$key} eq $val) {
-			message TF("Config '%s' is already %s\n", $key, $val), "info";
+			if ($val) {
+				message TF("Config '%s' is already %s\n", $key, $val), "info";
+			}else{
+				message TF("Config '%s' is already *None*\n", $key), "info";
+			}
 			return;
 		}
 		
@@ -835,6 +835,13 @@ sub monsterLog {
 	close MONLOG;
 }
 
+sub deadLog {
+	my $crud = shift;
+	return if (!$config{'logDead'});
+	open DEADLOG, ">>:utf8", $Settings::dead_log_file;
+	print DEADLOG "[DEAD] $crud\n";
+	close DEADLOG;
+}
 
 #########################################
 #########################################
@@ -1144,7 +1151,7 @@ sub charSelectScreen {
 		next unless ($chars[$num] && %{$chars[$num]});
 		if (0) {
 			# The old (more verbose) message
-			message swrite(
+			swrite(
 				T("-------  Character \@< ---------\n" .
 				"Name: \@<<<<<<<<<<<<<<<<<<<<<<<<\n" .
 				"Job:  \@<<<<<<<      Job Exp: \@<<<<<<<\n" .
@@ -1155,11 +1162,11 @@ sub charSelectScreen {
 				"SP:   \@||||/\@||||   Dex: \@<<<<<<<<\n" .
 				"zeny: \@<<<<<<<<<<  Luk: \@<<<<<<<<\n" .
 				"-------------------------------"),
-				[$num, $chars[$num]{'name'}, $jobs_lut{$chars[$num]{'jobID'}}, $chars[$num]{'exp_job'},
+				$num, $chars[$num]{'name'}, $jobs_lut{$chars[$num]{'jobID'}}, $chars[$num]{'exp_job'},
 				$chars[$num]{'lv'}, $chars[$num]{'str'}, $chars[$num]{'lv_job'}, $chars[$num]{'agi'},
 				$chars[$num]{'exp'}, $chars[$num]{'vit'}, $chars[$num]{'hp'}, $chars[$num]{'hp_max'},
 				$chars[$num]{'int'}, $chars[$num]{'sp'}, $chars[$num]{'sp_max'}, $chars[$num]{'dex'},
-				$chars[$num]{'zeny'}, $chars[$num]{'luk'}]);
+				$chars[$num]{'zeny'}, $chars[$num]{'luk'});
 		}
 
 		my $messageDeleteDate;
@@ -1461,7 +1468,7 @@ sub createCharacter {
 	my $slot = shift;
 	my $name = shift;
 
-	if ($net->getState() != 3) {
+	if ($net->getState() != 3 && $net->getState() != 1.5) {
 		$interface->errorDialog(T("We're not currently connected to the character login server."), 0);
 		return 0;
 	} elsif ($slot !~ /^\d+$/) {
@@ -1739,6 +1746,7 @@ sub inInventory {
 sub inventoryItemRemoved {
 	my ($invIndex, $amount) = @_;
 
+	return if $amount == 0;
 	my $item = $char->inventory->get($invIndex);
 	if (!$char->{arrow} || ($item && $char->{arrow} != $item->{index})) {
 		# This item is not an equipped arrow
@@ -1781,20 +1789,20 @@ sub monsterName {
 # Resolve the name of a simple item
 sub itemNameSimple {
 	my $ID = shift;
-	return 'Unknown' unless defined($ID);
-	return 'None' unless $ID;
-	return $items_lut{$ID} || "Unknown #$ID";
+	return T("Unknown") unless defined($ID);
+	return T("None") unless $ID;
+	return $items_lut{$ID} || T("Unknown #")."$ID";
 }
 
 ##
-# itemName($item, [options])
+# itemName($item)
 #
 # Resolve the name of an item. $item should be a hash with these keys:
 # nameID  => integer index into %items_lut
 # cards   => 8-byte binary data as sent by server
 # upgrade => integer upgrade level
 sub itemName {
-	my ($item, $options) = @_;
+	my $item = shift;
 
 	my $name = itemNameSimple($item->{nameID});
 
@@ -1813,7 +1821,7 @@ sub itemName {
 		# Alchemist-made potion
 		#
 		# Ignore the "cards" inside.
-	} elsif ($cards[0] == 65280) {
+	} elsif ($cards[0] == 65280 || $cards[0] == 1) {
 		# Pet egg
 		# cards[0] == 65280
 		# substr($item->{cards}, 2, 4) = packed pet ID
@@ -1827,7 +1835,7 @@ sub itemName {
 		my $elementName = $elements_lut{$elementID};
 		my $starCrumbs = ($cards[1] >> 8) / 5;
 		if ($starCrumbs >= 1 && $starCrumbs <= 3 ) {
-			$prefix .= ('V'x$starCrumbs)."S " if $starCrumbs;
+			$prefix .= (T("V")x$starCrumbs).T("S ") if $starCrumbs;
 		}
 		# $prefix .= "$elementName " if ($elementName ne "");
 		$suffix = "$elementName" if ($elementName ne "");
@@ -1845,12 +1853,12 @@ sub itemName {
 	my $numSlots = $itemSlotCount_lut{$item->{nameID}} if ($prefix eq "");
 
 	my $display = "";
-	$display .= "BROKEN " if ($item->{broken} && !$options->{no_broken});
-	$display .= "+$item->{upgrade} " if ($item->{upgrade} && !$options->{no_upgrade});
+	$display .= T("BROKEN ") if $item->{broken};
+	$display .= "+$item->{upgrade} " if $item->{upgrade};
 	$display .= $prefix if $prefix;
 	$display .= $name;
 	$display .= " [$suffix]" if $suffix;
-	$display .= " [$numSlots]" if ($numSlots && !$options->{no_slots});
+	$display .= " [$numSlots]" if $numSlots;
 
 	return $display;
 }
@@ -1909,12 +1917,12 @@ sub storageGet {
 sub headgearName {
 	my ($lookID) = @_;
 
-	return "Nothing" if $lookID == 0;
+	return T("Nothing") if $lookID == 0;
 
 	my $itemID = $headgears_lut[$lookID];
 
 	if (!defined($itemID)) {
-		return "Unknown lookID $lookID";
+		return T("Unknown lookID") . $lookID;
 	}
 
 	return main::itemName({nameID => $itemID});
@@ -2263,6 +2271,7 @@ sub relog {
 sub sendMessage {
 	my ($sender, $type, $msg, $user) = @_;
 	my ($j, @msgs, $oldmsg, $amount, $space);
+	my $msgMaxLen = $config{'message_length_max'} || 80;
 
 	@msgs = split /\\n/, $msg;
 	for ($j = 0; $j < @msgs; $j++) {
@@ -2275,17 +2284,17 @@ sub sendMessage {
 				$msg[$i] = " ";
 				$space = 1;
 			}
-			if (length($msg[$i]) > $config{'message_length_max'}) {
-				while (length($msg[$i]) >= $config{'message_length_max'}) {
+			if (length($msg[$i]) > $msgMaxLen) {
+				while (length($msg[$i]) >= $msgMaxLen) {
 					$oldmsg = $msg;
 					if (length($msg)) {
-						$amount = $config{'message_length_max'};
+						$amount = $msgMaxLen;
 						if ($amount - length($msg) > 0) {
-							$amount = $config{'message_length_max'} - 1;
+							$amount = $msgMaxLen - 1;
 							$msg .= " " . substr($msg[$i], 0, $amount - length($msg));
 						}
 					} else {
-						$amount = $config{'message_length_max'};
+						$amount = $msgMaxLen;
 						$msg .= substr($msg[$i], 0, $amount);
 					}
 					sendMessage_send($sender, $type, $msg, $user);
@@ -2293,7 +2302,7 @@ sub sendMessage {
 					undef $msg;
 				}
 			}
-			if (length($msg[$i]) && length($msg) + length($msg[$i]) <= $config{'message_length_max'}) {
+			if (length($msg[$i]) && length($msg) + length($msg[$i]) <= $msgMaxLen) {
 				if (length($msg)) {
 					if (!$space) {
 						$msg .= " " . $msg[$i];
@@ -2934,20 +2943,6 @@ sub updatePlayerNameCache {
 # level: 1 to teleport to a random spot, 2 to respawn.
 sub useTeleport {
 	my ($use_lvl, $internal, $emergency) = @_;
-	debug TF("useTeleport: %s active Teleport::Task \n", $taskManager->countTasksByName('Teleport')), "Task::Teleport";
-	if (!$taskManager->isMutexActive('teleport') && !$taskManager->countTasksByName('Teleport')) {
-		if (($use_lvl == 2 && ($char->{skills}{AL_TELEPORT} || $char->inventory->getByNameID(602) || $char->inventory->getByNameID(12324))) 
-				|| ($use_lvl == 1 && ($char->{skills}{AL_TELEPORT} || $char->inventory->getByNameID(601)))) {
-			$taskManager->add(
-				Task::Teleport->new(useSkill => $config{teleportAuto_useSkill}, type => ($use_lvl - 1), emergency => $emergency)
-			);
-			
-			return 1;
-		}
-	}
-	return 0;
-	# old code:
-=pod
 		
 	my %args = (
 		level => $use_lvl, # 1 = Teleport, 2 = respawn
@@ -3056,14 +3051,20 @@ sub useTeleport {
 	# could lead to problems if the name is different on some servers
 	# 11 Mar 2010 - instead of name, use nameID, names can be different for different servers
 	my $item;
-	if ($use_lvl == 1) {
-		#$item = $char->inventory->getByName("Fly Wing");
-		$item = $char->inventory->getByNameID(601);
-		unless ($item) { $item = $char->inventory->getByNameID(12323); } # only if we don't have any fly wing
-	} elsif ($use_lvl == 2) {
-		#$item = $char->inventory->getByName("Butterfly Wing");
-		$item = $char->inventory->getByNameID(602);
-		unless ($item) { $item = $char->inventory->getByNameID(12324); } # only if we don't have any butterfly wing
+	if ($use_lvl == 1) { #Fly Wing
+		if (!$config{teleportAuto_item1}) {
+			$item = $char->inventory->getByNameID(601);
+			unless ($item) { $item = $char->inventory->getByNameID(12323); } # only if we don't have any fly wing
+		} else {
+			$item = $char->inventory->getByName($config{teleportAuto_item1});
+		}
+	} elsif ($use_lvl == 2) { #Butterfly Wing
+		if (!$config{teleportAuto_item2}) {
+			$item = $char->inventory->getByNameID(602);
+			unless ($item) { $item = $char->inventory->getByNameID(12324); } # only if we don't have any butterfly wing
+		} else {
+			$item = $char->inventory->getByName($config{teleportAuto_item2});
+		}
 	}
 
 	if ($item) {
@@ -3090,7 +3091,6 @@ sub useTeleport {
 	}
 	
 	return 0;
-=cut
 }
 
 ##
@@ -3149,39 +3149,6 @@ sub writeStorageLog {
 	my $f;
 
 	if (open($f, ">:utf8", $Settings::storage_log_file)) {
-		my $msg = TF("---------- Storage %s -----------\n", getFormattedDate(int(time)));
-		my %storage_h;	
-		for (my $i = 0; $i < @storageID; $i++) {
-			next if ($storageID[$i] eq "");
-			my $item = $storage{$storageID[$i]};
-			push @{$storage_h{$item->{type}}}, $item;		
-		}
-		
-		foreach my $storage_type (sort keys %storage_h) {
-			$msg .= sprintf("-- %s --\n", $itemTypes_lut{$storage_type});
-			foreach my $item (@{$storage_h{$storage_type}}) {
-				my $binID = $item->{binID};
-				my $display = $item->{name};
-				$display .= " x $item->{amount}" unless $item->equippable;
-				$display .= " -- " . T("Not Identified") if !$item->{identified};
-				$display .= " -- " . T("Broken") if $item->{broken};
-				$msg .= " $display\n";
-				# why would we store binID?
-				# $msg .= swrite(
-					# "@>>> @<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<",
-					# [$binID, $display]);
-			}
-		}
-		$msg .= "-------------------------------\n";
-		$msg .=  TF("Capacity: %d/%d\n", $storage{items}, $storage{items_max});
-		$msg .=  "-------------------------------\n";
-		print $f $msg;
-		close $f;
-		
-		message T("Storage logged\n"), "success";
-		
-# old storage log
-=pod		
 		print $f TF("---------- Storage %s -----------\n", getFormattedDate(int(time)));
 		for (my $i = 0; $i < @storageID; $i++) {
 			next if (!$storageID[$i]);
@@ -3200,24 +3167,10 @@ sub writeStorageLog {
 		close $f;
 
 		message T("Storage logged\n"), "success";
-=cut
+
 	} elsif ($show_error_on_fail) {
 		error TF("Unable to write to %s\n", $Settings::storage_log_file);
 	}
-}
-
-sub readStorageLog {
-	my ($show_error_on_fail) = @_;
-	if (open(my $f, "<:utf8", $Settings::storage_log_file)) {
-		my @storage_log = <$f>;
-		foreach my $line (@storage_log) {
-			message "$line", "info";
-		}
-		return 1;
-	} elsif ($show_error_on_fail) {
-		error TF("Unable to read from %s\n", $Settings::storage_log_file);
-	}
-	return 0;
 }
 
 ##
@@ -3255,7 +3208,6 @@ sub getBestTarget {
 				|| ($control->{attack_sp}  ne "" && $control->{attack_sp} > $char->{sp})
 				|| ($control->{attack_auto} == 3 && ($monster->{dmgToYou} || $monster->{missedYou} || $monster->{dmgFromYou}))
 				|| ($control->{attack_auto} == 0 && !($monster->{dmgToYou} || $monster->{missedYou}))
-				|| ($control->{prevent_assist} && $control->{prevent_assist} ne "" && checkAssistQuantity($monster->{nameID}) > $control->{prevent_assist})
 			);
 		}
 		if ($config{'attackCanSnipe'}) {
@@ -3759,7 +3711,7 @@ sub getActorName {
 	my $id = shift;
 
 	if (!$id) {
-		return 'Nothing';
+		return T("Nothing");
 	} else {
 		my $hash = Actor::get($id);
 		return $hash->nameString;
@@ -3827,7 +3779,6 @@ sub checkSelfCondition {
 	my $prefix = shift;
 	return 0 if (!$prefix);
 	return 0 if ($config{$prefix . "_disabled"});
-	# return 0 if ($taskManager->isMutexActive('teleport') || !$taskManager->countTasksByName('Teleport'));
 
 	return 0 if $config{$prefix."_whenIdle"} && !AI::isIdle();
 
@@ -3857,14 +3808,6 @@ sub checkSelfCondition {
 			return 0 if (!inRange($char->{sp}, $config{$prefix."_sp"}));
 		}
 	}
-	
-	if ($config{$prefix."_base_lv"}) {
-		return 0 if (!inRange($char->{'lv'}, $config{$prefix."_base_lv"}));
-	}
-	
-	if ($config{$prefix."_job_lv"}) {
-		return 0 if (!inRange($char->{'lv_job'}, $config{$prefix."_job_lv"}));
-	}
 
 	if ($config{$prefix."_weight"}) {
 		if ($config{$prefix."_weight"} =~ /^(.*)\%$/) {
@@ -3874,7 +3817,7 @@ sub checkSelfCondition {
 		}
 	}
 
-	if ($config{$prefix."_homunculus"} =~ /^\S$/) {
+	if ($config{$prefix."_homunculus"} =~ /\S/) {
 		return 0 if (!!$config{$prefix."_homunculus"}) ^ ($char->{homunculus} && !$char->{homunculus}{state});
 	}
 
@@ -3896,15 +3839,15 @@ sub checkSelfCondition {
 		}
 
 		if ($config{$prefix."_homunculus_dead"}) {
-			return 0 unless ($char->{homunculus}{state} & 4);
+			return 0 unless ($char->{homunculus}{state} & 4); # 4 = dead
 		}
 		
 		if ($config{$prefix."_homunculus_resting"}) {
-			return 0 unless ($char->{homunculus}{state} & 2);
+			return 0 unless ($char->{homunculus}{state} & 2); # 2 = rest
 		}
 	}
 
-	if ($config{$prefix."_mercenary"} =~ /^\S$/) {
+	if ($config{$prefix."_mercenary"} =~ /\S/) {
 		return 0 if (!!$config{$prefix."_mercenary"}) ^ (!!$char->{mercenary});
 	}
 
@@ -3980,7 +3923,6 @@ sub checkSelfCondition {
 
 	if ($config{$prefix . "_onAction"}) { return 0 unless (existsInList($config{$prefix . "_onAction"}, AI::action())); }
 	if ($config{$prefix . "_notOnAction"}) { return 0 if (existsInList($config{$prefix . "_notOnAction"}, AI::action())); }
-	if ($config{$prefix . "_notOnMutex"}) { return 0 if ($taskManager->isMutexActive($config{$prefix . "_notOnMutex"})); }
 	if ($config{$prefix . "_spirit"}) {return 0 unless (inRange(defined $char->{spirits} ? $char->{spirits} : 0, $config{$prefix . "_spirit"})); }
 	if ($config{$prefix . "_amuletType"}) {return 0 unless $config{$prefix . "_amuletType"} eq $char->{amuletType}; }
 
@@ -4116,17 +4058,6 @@ sub checkSelfCondition {
 	return 0 if (!$hookArgs{return});
 
 	return 1;
-}
-
-sub checkAssistQuantity {
-	my ($monID) = @_;
-	my $count = 0;
-	foreach my $monster (@{$monstersList->getItems()}) {
-		if ($monster->{nameID} == $monID && checkMonsterCleanness($monster)) {
-			$count++;
-		}
-	}
-	return $count;
 }
 
 sub checkPlayerCondition {
@@ -4454,7 +4385,6 @@ sub openShop {
 	@shopnames = split(/;;/, $shop{title_line});
 	$shop{title} = $shopnames[int rand($#shopnames + 1)];
 	$shop{title} = ($config{shopTitleOversize}) ? $shop{title} : substr($shop{title},0,36);
-	$ai_v{'cart_time'} = time + 2;
 	$messageSender->sendOpenShop($shop{title}, \@items);
 	message T("Trying to set up shop...\n"), "vending";
 	$shopstarted = 1;
@@ -4465,7 +4395,7 @@ sub closeShop {
 		error T("A shop has not been opened.\n");
 		return;
 	}
-	$ai_v{'cart_time'} = time + 2;
+
 	$messageSender->sendCloseShop();
 
 	$shopstarted = 0;
@@ -4527,53 +4457,6 @@ sub buyingstoreitemdelete {
 	$item->{amount} -= $amount;
 	$char->inventory->remove($item) if ($item->{amount} <= 0);
 	$itemChange{$item->{name}} -= $amount;
-}
-
-# boolean canMoveTo(int $x, int $y)
-# Checks for an Actor(only players and npcs I suppose) on the (x,y) coordinates  (only players and npcs I suppose)
-# Return: 1 if there's someone on the spot, 0 otherwise.
-sub canMoveTo {
-	my ($x,$y) = @_;
-	debug "Looking for obstacles on ($x,$y)\n", 2;
-	foreach (@{$playersList->getItems()}) {
-		return 0 if ($_->{pos_to}{x} == $x && $_->{pos_to}{y} == $y);
-	}
-	foreach (@{$npcsList->getItems()}) {
-		return 0 if ($_->{pos_to}{x} == $x && $_->{pos_to}{y} == $y);
-	}
-	return 1;
-}
-
-# Array nearestWalkableCell(int $old_x_target, int $old_y_target)
-# Look for a new -nearest- free cell around the old targeted coordinates
-# Return: Array (int $free_x_coord, int $free_y_coord)
-sub nearestWalkableCell {
-	my ($x, $y) = @_;
-	debug "Calculating nearest free cell around ($x, $y)...\n";
-	
-	# spiral search algorithm
-	# TODO: randomize and make the selected cell less preditable. currently it always start calculating by the top-right cell
-	# X is the occupied cell, the numbers represent the algorithm sequence
-	# [7][8][1]
-	# [6][X][2]
-	# [5][4][3]
-	# TODO: cleaner, more understandable code
-	for (my $distance = 1; $distance < 10; $distance++) {
-		my $vx = $distance;
-		my $vy = $distance;
-		# This foreach loop will add some randomness to the code, but it's also very ugly and still not the desirable code
-		foreach my $code_order (shuffle (1, 2, 3, 4)) {
-			if ($code_order == 1) {
-				for (my $vy = $vx; $vy >= -$vx; $vy--) { return ($vx+$x, $vy+$y) if ($field->isWalkable($vx+$x, $vy+$y) && canMoveTo($vx+$x, $vy+$y)); }
-			} elsif ($code_order == 2) {
-				for (my $vx = $vy-1; $vx > -$vy; $vx--) { return ($vx+$x, $vy+$y) if ($field->isWalkable($vx+$x, $vy+$y) && canMoveTo($vx+$x, $vy+$y)); }
-			} elsif ($code_order == 3) {
-				for (my $vy = -$vx; $vy <= $vx; $vy++) { return (-$vx+$x, $vy+$y) if ($field->isWalkable(-$vx+$x, $vy+$y) && canMoveTo(-$vx+$x, $vy+$y)); }
-			} elsif ($code_order == 4) {
-				for (my $vx = -$vy+1; $vx < $vy; $vx++) { return ($vx+$x, -$vy+$y) if ($field->isWalkable($vx+$x, -$vy+$y) && canMoveTo($vx+$x, -$vy+$y)); }
-			}
-		}
-	}
 }
 
 return 1;

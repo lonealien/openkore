@@ -111,6 +111,7 @@ sub game_login {
 			}
 			$client->send($output);
 			&sendCharInfo if ($charSvrSet{sync_Count} == 0);
+
 		} else {
 			no encoding 'utf8';
 			use bytes;

@@ -15,8 +15,8 @@
 #  GNU General Public License for more details.
 #
 #
-#  $Revision: 8015 $
-#  $Id: Console.pm 8015 2012-04-29 10:05:52Z farrainbow $
+#  $Revision: 9016 $
+#  $Id: Console.pm 9016 2016-02-15 16:45:35Z windhamwong $
 #
 #########################################################################
 ##
@@ -30,7 +30,7 @@ use strict;
 use Wx ':everything';
 use Wx::RichText;
 use base qw(Wx::RichTextCtrl);
-use encoding 'utf8';
+use utf8;
 
 use Globals qw(%consoleColors $interface);
 use Utils::StringScanner;

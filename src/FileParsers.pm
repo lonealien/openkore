@@ -8,8 +8,8 @@
 #  also distribute the source code.
 #  See http://www.gnu.org/licenses/gpl.html for the full license.
 #
-#  $Revision: 8754 $
-#  $Id: FileParsers.pm 8754 2013-11-30 19:57:50Z marcelofoxes $
+#  $Revision: 9016 $
+#  $Id: FileParsers.pm 9016 2016-02-15 16:45:35Z windhamwong $
 #
 #########################################################################
 ##
@@ -24,7 +24,7 @@ use strict;
 use File::Spec;
 use Exporter;
 use base qw(Exporter);
-#use encoding 'utf8';
+#use utf8;
 use Carp;
 use Text::Balanced qw(extract_delimited);
 
@@ -69,8 +69,8 @@ our @EXPORT = qw(
 	writePortalsLOS
 	writeSectionedFileIntact
 	updateMonsterLUT
-	updateItemsSellTable
 	updatePortalLUT
+	updatePortalLUT2
 	updateNPCLUT
 );
 
@@ -78,14 +78,6 @@ our @EXPORT = qw(
 sub parseArrayFile {
 	my $file = shift;
 	my $r_array = shift;
-	
-	my %ret = (
-		file => $file,
-		array => $r_array
-	    );
-	Plugins::callHook("FileParsers::ArrayFile", \%ret);
-	return if ($ret{return});
-	
 	undef @{$r_array};
 
 	my @lines;
@@ -172,13 +164,6 @@ sub parseCommandsDescription {
 	my $file = shift;
 	my $r_hash = shift;
 	my $no_undef = shift;
-	
-	my %ret = (
-		file => $file,
-		hash => $r_hash
-	    );
-	Plugins::callHook("FileParsers::CommandsDescription", \%ret);
-	return if ($ret{return});
 
 	undef %{$r_hash} unless $no_undef;
 	my ($key, $commentBlock, $description);
@@ -254,7 +239,7 @@ sub parseConfigFile {
 		} elsif (defined $commentBlock) {
 			next;
 
-		} elsif (!defined $inBlock && $line =~ /{$/ && $line !~ /^password .+$/) { # dirty fix for passwords with '{' character
+		} elsif (!defined $inBlock && $line =~ /{$/) {
 			# Begin of block
 			$line =~ s/ *{$//;
 			($key, $value) = $line =~ /^(.*?) (.*)/;
@@ -576,53 +561,48 @@ sub parseMonControl {
 			$r_hash->{$key}{attack_hp} = $args[6];
 			$r_hash->{$key}{attack_sp} = $args[7];
 			$r_hash->{$key}{weight} = $args[8];
-			$r_hash->{$key}{prevent_assist} = $args[9];
-			$r_hash->{$key}{aggressive_if_dist} = $args[10];
 		}
 	}
 	return 1;
 }
 
 sub parsePortals {
-	my ($file, $r_hash) = @_;
+	my $file = shift;
+	my $r_hash = shift;
 	undef %{$r_hash};
-	my $reader = Utils::TextReader->new($file);
-	my %complex_portal;
-	until ($reader->eof) {
-		$_ = $reader->readLine;
-		s/\r//g;
-		s/(.*)[\s\t]+#.*$/$1/;
-		s/^\s+|\s+$//g;
-		if (/^([\w|@|-]+)\s(\d{1,3})\s(\d{1,3})\s([\w|@|-]+)\s(\d{1,3})\s(\d{1,3})(?:\s+(\{))?$/) {
-			# portal
-			my ($source_map, $source_x, $source_y, $dest_map, $dest_x, $dest_y, $open_bracket) = ($1, $2, $3, $4, $5, $6, $7);
+	my $reader = new Utils::TextReader($file);
+	while (!$reader->eof()) {
+		my $line = $reader->readLine();
+		next if $line =~ /^#/;
+		$line =~ s/\cM|\cJ//g;
+		$line =~ s/\s+/ /g;
+		$line =~ s/^\s+|\s+$//g;
+		$line =~ s/(.*)[\s\t]+#.*$/$1/;
+		
+		if ($line =~ /^([\w|@|-]+)\s(\d{1,3})\s(\d{1,3})\s([\w|@|-]+)\s(\d{1,3})\s(\d{1,3})\s?(.*)/) {
+		my ($source_map, $source_x, $source_y, $dest_map, $dest_x, $dest_y, $misc) = ($1, $2, $3, $4, $5, $6, $7);
 			my $portal = "$source_map $source_x $source_y";
 			my $dest = "$dest_map $dest_x $dest_y";
-			# Check for duplicated portals
-			# if ($$r_hash{$portal}{'dest'}{$dest}) {
-				# error "$_ \n";
-				# exit;
-			# }
 			$$r_hash{$portal}{'source'}{'map'} = $source_map;
 			$$r_hash{$portal}{'source'}{'x'} = $source_x;
 			$$r_hash{$portal}{'source'}{'y'} = $source_y;
 			$$r_hash{$portal}{'dest'}{$dest}{'map'} = $dest_map;
 			$$r_hash{$portal}{'dest'}{$dest}{'x'} = $dest_x;
 			$$r_hash{$portal}{'dest'}{$dest}{'y'} = $dest_y;
-			$$r_hash{$portal}{dest}{$dest}{enabled} = 1;
-			if ($open_bracket) {
-				$complex_portal{'open'} = 1;
-				$complex_portal{'portal'} = $portal;
-				$complex_portal{'dest'} = $dest;
+			$$r_hash{$portal}{dest}{$dest}{enabled} = 1; # is available permanently (can be used when calculating a route)
+			#$$r_hash{$portal}{dest}{$dest}{active} = 1; # TODO: is available right now (otherwise, wait until it becomes available)
+			if ($misc =~ /^(\d+)\s(\d)\s(.*)$/) { # [cost] [allow_ticket] [talk sequence]
+				$$r_hash{$portal}{'dest'}{$dest}{'cost'} = $1;
+				$$r_hash{$portal}{'dest'}{$dest}{'allow_ticket'} = $2;
+				$$r_hash{$portal}{'dest'}{$dest}{'steps'} = $3;
+			} elsif ($misc =~ /^(\d+)\s(.*)$/) { # [cost] [talk sequence]
+				$$r_hash{$portal}{'dest'}{$dest}{'cost'} = $1;
+				$$r_hash{$portal}{'dest'}{$dest}{'steps'} = $2;
+			} else { # [talk sequence]
+				$$r_hash{$portal}{'dest'}{$dest}{'steps'} = $misc;
 			}
-		} elsif (/^(\w+):\s+(.+)/) {
-			$complex_portal{'properties'}{$1} = $2;
-		} elsif (/^\}$/) { # reached end of definition, save
-			my $portal = $complex_portal{'portal'};
-			my $dest = $complex_portal{'dest'};
-			map { $$r_hash{$portal}{'dest'}{$dest}{$_} = $complex_portal{'properties'}{$_} } keys %{$complex_portal{'properties'}};
-			undef %complex_portal;
 		}
+		
 	}
 	return 1;
 }
@@ -1340,19 +1320,18 @@ sub updateMonsterLUT {
 	close FILE;
 }
 
-sub updateItemsSellTable {
-	my $file = shift;
-	my $ID = shift;
-	my $flag = shift;
-	open FILE, ">>:utf8", $file;
-	print FILE "$ID $flag\n";
-	close FILE;
-}
-
 sub updatePortalLUT {
 	my ($file, $src, $x1, $y1, $dest, $x2, $y2) = @_;
 	open FILE, ">>:utf8", $file;
 	print FILE "$src $x1 $y1 $dest $x2 $y2\n";
+	close FILE;
+}
+
+#Add: NPC talk Sequence
+sub updatePortalLUT2 {
+	my ($file, $src, $x1, $y1, $dest, $x2, $y2, $seq) = @_;
+	open FILE, ">>:utf8", $file;
+	print FILE "$src $x1 $y1 $dest $x2 $y2 $seq\n";
 	close FILE;
 }
 

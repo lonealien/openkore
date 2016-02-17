@@ -334,22 +334,6 @@ sub countTasksByName {
 }
 
 ##
-# int $TaskManager->isMutexActive(String name)
-#
-# Returns whether a mutex is active or not.
-sub isMutexActive {
-	my ($self, $name) = @_;
-	my $activeMutexes = $self->{activeMutexes};
-	my @entries;
-	foreach my $mutex (keys %{$activeMutexes}) {
-		if ($mutex eq $name) {
-			return 1;
-		}
-	}
-	return 0;
-}
-
-##
 # String $TaskManager->activeTasksString()
 #
 # Returns a string which describes the current active tasks.

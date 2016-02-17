@@ -16,8 +16,8 @@
 #  GNU General Public License for more details.
 #
 #
-#  $Revision: 7820 $
-#  $Id: Curses.pm 7820 2011-07-23 01:22:30Z farrainbow $
+#  $Revision: 8936 $
+#  $Id: Curses.pm 8936 2014-12-22 00:54:20Z allanon $
 #
 #########################################################################
 package Interface::Console::Curses;
@@ -34,10 +34,25 @@ use Settings qw/%sys/;
 
 use constant MAXHISTORY => 50;
 
+our $keymap = {
+	'[11~' => KEY_F( 1 ),
+	'[12~' => KEY_F( 2 ),
+	'[13~' => KEY_F( 3 ),
+	'[14~' => KEY_F( 4 ),
+};
+
+our $attrtable;
+
 sub new {
 	my %interface = ();
 	bless \%interface, __PACKAGE__;
 	my $self = \%interface;
+
+	foreach ( keys %$keymap ) {
+		my $h = $keymap;
+		$h = $h->{$_} ||= {} foreach split //, $_;
+		$h->{match} = $keymap->{$_};
+	}
 
 	initscr;
 	idlok 1;
@@ -58,6 +73,39 @@ sub new {
 	init_pair(6, COLOR_MAGENTA, -1);
 	init_pair(7, COLOR_CYAN, -1);
 	init_pair(8, COLOR_WHITE, -1);
+	init_pair(9, -1, COLOR_BLACK);
+	init_pair(10, -1, COLOR_RED);
+	init_pair(11, -1, COLOR_GREEN);
+	init_pair(12, -1, COLOR_YELLOW);
+	init_pair(13, -1, COLOR_BLUE);
+	init_pair(14, -1, COLOR_MAGENTA);
+	init_pair(15, -1, COLOR_CYAN);
+	init_pair(16, -1, COLOR_WHITE);
+	$attrtable = {
+		normal     => A_NORMAL,
+		underline  => A_UNDERLINE,
+		reverse    => A_REVERSE,
+		blink      => A_BLINK,
+		dim        => A_DIM,
+		bold       => A_BOLD,
+		black      => COLOR_PAIR( 1 ),
+		red        => COLOR_PAIR( 2 ),
+		green      => COLOR_PAIR( 3 ),
+		yellow     => COLOR_PAIR( 4 ),
+		blue       => COLOR_PAIR( 5 ),
+		magenta    => COLOR_PAIR( 6 ),
+		cyan       => COLOR_PAIR( 7 ),
+		white      => COLOR_PAIR( 8 ),
+		bg_black   => COLOR_PAIR( 9 ),
+		bg_red     => COLOR_PAIR( 10 ),
+		bg_green   => COLOR_PAIR( 11 ),
+		bg_yellow  => COLOR_PAIR( 12 ),
+		bg_blue    => COLOR_PAIR( 13 ),
+		bg_magenta => COLOR_PAIR( 14 ),
+		bg_cyan    => COLOR_PAIR( 15 ),
+		bg_white   => COLOR_PAIR( 16 ),
+	};
+
 	$self->{winStatus} = newwin(4, 0, 0, 0);
 	$self->{winObjects} = newwin($LINES-5, 15, 4, $COLS-15);
 	$self->{winLog} = newwin($LINES-5, $COLS-15, 4, 0);
@@ -81,6 +129,10 @@ sub new {
 		['loadfiles', sub { $self->loadfiles (@_); }],
 		['postloadfiles', sub { $self->loadfiles (@_); }],
 	);
+
+	$self->{inputPos}    = 0;
+	$self->{inputBuffer} = '';
+	$self->history_init;
 
 	return \%interface;
 }
@@ -201,32 +253,61 @@ sub readEvents {
 	my $ch = getch();
 	return undef if ($ch eq ERR);
 
+	my $event_was_yank = 0;
+
 	my $ret;
 	while ($ch ne ERR) {
+		if ( ord( $ch ) == 27 ) {
+
+			# Escape sequence. These should be caught by Curses, but sometimes are not.
+			# Attempt to translate.
+			my $h = $keymap;
+			my @seq;
+			my $ch2;
+			while ( $h && ( $ch2 = getch() ) ne ERR ) {
+				push @seq, $ch2;
+				if ( defined $h->{$ch2}->{match} ) {
+					$ch  = $h->{$ch2}->{match};
+					@seq = ();
+					last;
+				}
+				$h = $h->{$ch2};
+			}
+			ungetch( pop @seq ) while @seq;
+		}
+
 		if ($ch eq "\r" || $ch eq KEY_ENTER) {
 			# Enter
+			$self->history_add( $self->{inputBuffer} );
 			$ret = $self->{inputBuffer};
 			undef $self->{inputBuffer};
 			$self->{inputPos} = 0;
-			if (length($ret) > 0 && $ret ne $self->{inputHistory}[0]) {
-				unshift @{$self->{inputHistory}}, $ret;
-				pop @{$self->{inputHistory}} if (@{$self->{inputHistory}} > MAXHISTORY);
-			}
-			$self->{inputHistoryPos} = 0;
 			last;
-		} elsif ((ord($ch) == 9 || ord($ch) == 127 || $ch eq KEY_BACKSPACE) && $self->{inputBuffer}) {
+		} elsif (ord($ch) == 8 || ord($ch) == 127 || $ch eq KEY_BACKSPACE) {
 			# Backspace
-			$self->{inputBuffer} = substr($self->{inputBuffer}, 0, $self->{inputPos} - 1) . substr($self->{inputBuffer}, $self->{inputPos});
-			$self->{inputPos}--;
-		} elsif (ord($ch) == 12) {
-			# Ctrl-L
+			if ($self->{inputBuffer} ne '' && $self->{inputPos} > 0) {
+				$self->{inputBuffer} = substr($self->{inputBuffer}, 0, $self->{inputPos} - 1) . substr($self->{inputBuffer}, $self->{inputPos});
+				$self->{inputPos}--;
+			}
+		} elsif (ord($ch) == 4 || ord($ch) == 330) {
+			# Delete
+			if ($self->{inputBuffer} ne '' && $self->{inputPos} < length $self->{inputBuffer}) {
+				$self->{inputBuffer} = substr($self->{inputBuffer}, 0, $self->{inputPos}) . substr($self->{inputBuffer}, $self->{inputPos} + 1);
+			}
+		} elsif (ord($ch) == 12 || $ch eq KEY_RESIZE) {
+			# Ctrl-L: Redraw screen
 			clear;
 			$self->updateLayout;
+		} elsif (ord($ch) == 25) {
+			# Ctrl-Y: Paste yank buffer
+			$self->{inputBuffer} = substr($self->{inputBuffer}, 0, $self->{inputPos}) . $self->{yankBuffer} . substr($self->{inputBuffer}, $self->{inputPos});
+			$self->{inputPos} += length $self->{yankBuffer};
 		} elsif (ord($ch) == 21) {
-			# Ctrl-U
-			undef $self->{inputBuffer};
+			# Ctrl-U: Clear left of cursor
+			$self->{yankBuffer} = substr( $self->{inputBuffer}, 0, $self->{inputPos} ) . $self->{yankAccumulator};
+			$self->{inputBuffer} = substr $self->{inputBuffer}, $self->{inputPos};
 			$self->{inputPos} = 0;
-			$self->{inputHistoryPos} = 0;
+			$event_was_yank = 1;
 		} elsif ($ch == KEY_LEFT) {
 			# Cursor left
 			$self->{inputPos}-- if ($self->{inputPos} > 0);
@@ -235,13 +316,11 @@ sub readEvents {
 			$self->{inputPos}++ if ($self->{inputPos} < length($self->{inputBuffer}));
 		} elsif ($ch == KEY_UP) {
 			# Input history
-			$self->{inputHistoryPos}++ if (defined $self->{inputHistory}[$self->{inputHistoryPos}]);
-			$self->{inputBuffer} = $self->{inputHistory}[$self->{inputHistoryPos}-1];
+			$self->{inputBuffer} = $self->history_back;
 			$self->{inputPos} = length($self->{inputBuffer});
 		} elsif ($ch == KEY_DOWN) {
 			# Input history
-			$self->{inputHistoryPos}-- if ($self->{inputHistoryPos} > 0);
-			$self->{inputBuffer} = $self->{inputHistoryPos} ? $self->{inputHistory}[$self->{inputHistoryPos}-1] : "";
+			$self->{inputBuffer} = $self->history_forward;
 			$self->{inputPos} = length($self->{inputBuffer});
 		} elsif ($ch == KEY_PPAGE) {
 			# TODO: Scrollback buffer
@@ -264,13 +343,29 @@ sub readEvents {
 			$self->toggleWindow("Chat");
 			$self->updateLayout;
 		} elsif (ord($ch) == 18) {
-			# Ctrl+R
-			# Display skills
-			$self->{objectsMode} = $self->{objectsMode} eq 'skills' ? undef : 'skills';
-		} elsif (ord($ch) == 5) {
-			# Ctrl+E
-			# Display inventory
-			$self->{objectsMode} = $self->{objectsMode} eq 'inventory' ? undef : 'inventory';
+			# Ctrl+R: Rotate objectsMode
+			$self->{objectsMode}
+				= !$self->{objectsMode} ? 'skills'
+				: $self->{objectsMode} eq 'skills' ? 'inventory'
+				:                                    undef;
+		} elsif (ord($ch) == 1 || $ch == KEY_HOME) {
+			# Ctrl+A: Beginning of line
+			$self->{inputPos} = 0;
+		} elsif (ord($ch) == 5 || $ch == KEY_END) {
+			# Ctrl+E: End of line
+			$self->{inputPos} = length $self->{inputBuffer};
+		} elsif (ord($ch) == 23) {
+			# Ctrl+W: Erase word
+			my $pos = $self->{inputPos};
+			$pos-- while $pos && substr( $self->{inputBuffer}, $pos - 1, 1 ) =~ /\s/o;
+			$pos-- while $pos && substr( $self->{inputBuffer}, $pos - 1, 1 ) =~ /\S/o;
+			$self->{yankBuffer} = substr( $self->{inputBuffer}, $pos, $self->{inputPos} - $pos ) . $self->{yankAccumulator};
+			$self->{inputBuffer} = substr( $self->{inputBuffer}, 0, $pos ) . substr( $self->{inputBuffer}, $self->{inputPos} );
+			$self->{inputPos} = $pos;
+			$event_was_yank = 1;
+		} elsif (length $ch > 1) {
+			# Unhandled Curses special character. Ignore.
+			Log::message("Console::Curses: Unknown special character [$ch]. Ignoring.\n");
 		} elsif (ord($ch) >= 32 && ord($ch) <= 126) {
 			# Normal character
 			$self->{inputBuffer} = substr($self->{inputBuffer}, 0, $self->{inputPos}) . $ch . substr($self->{inputBuffer}, $self->{inputPos});
@@ -279,14 +374,24 @@ sub readEvents {
 		$ch = getch();
 	}
 
+	$self->{yankAccumulator} = $event_was_yank ? $self->{yankBuffer} : '';
+
 	my $pos = 0;
-	$pos += 10 while (length($self->{inputBuffer}) - $pos >= $COLS);
+	$pos += 10 while length $self->{inputBuffer} >= $pos + $COLS;
 	erase $self->{winInput};
 	addstr $self->{winInput}, 0, 0, substr($self->{inputBuffer}, $pos);
 	noutrefresh $self->{winInput};
 	$self->setCursor;
 
 	return ($ret ne "") ? $ret : undef;
+}
+
+sub swrite {
+	my $self = shift;
+	my $picture = shift;
+	$^A = '';
+	formline $picture, @_;
+	return "$^A";
 }
 
 sub printw {
@@ -297,33 +402,16 @@ sub printw {
 	my $picture = shift;
 	my @params = @_;
 
-	my %attrtable = (
-		normal => A_NORMAL,
-		underline => A_UNDERLINE,
-		reverse => A_REVERSE,
-		blink => A_BLINK,
-		dim => A_DIM,
-		bold => A_BOLD,
-		black => COLOR_PAIR(1),
-		red => COLOR_PAIR(2),
-		green => COLOR_PAIR(3),
-		yellow => COLOR_PAIR(4),
-		blue => COLOR_PAIR(5),
-		magenta => COLOR_PAIR(6),
-		cyan => COLOR_PAIR(7),
-		white => COLOR_PAIR(8)
-	);
-
 	$^A = '';
 	formline $picture, @params;
 	my @text = split(/{([^}]+)}/, $^A);
 	move $win, $line, $col;
 	for (my $i = 0; $i < @text; $i += 2) {
-		if (grep { exists $attrtable{$_} } split /\|/, $text[$i+1]) {
+		if (grep { exists $attrtable->{$_} } split /\|/, $text[$i+1]) {
 			addstr $win, $text[$i];
 			attrset $win, A_NORMAL;
 			foreach my $attr (split(/\|/, $text[$i+1])) {
-				attron $win, $attrtable{$attr} if $attrtable{$attr};
+				attron $win, $attrtable->{$attr} if $attrtable->{$attr};
 			}
 		} else {
 			addstr $win, $text[$i] . (defined $text[$i+1] ? "{$text[$i+1]}" : '');
@@ -333,7 +421,7 @@ sub printw {
 		if ($text[$i+1] ne "") {
 			attrset $win, A_NORMAL;
 			foreach my $attr (split(/\|/, $text[$i+1])) {
-				attron $win, $attrtable{$attr} if $attrtable{$attr};
+				attron $win, $attrtable->{$attr} if $attrtable->{$attr};
 			}
 		}
 =cut
@@ -491,59 +579,109 @@ sub updateStatus {
 
 	return unless $char;
 
-	erase $self->{winStatus};
-	my $width = int($self->{winStatusWidth} / 2);
+	my $homun = $char->{homunculus} || {};
+	my $bar_types = {
+		char       => { title => 'Char' },
+		status     => { title => 'Status' },
+		hom_status => { title => 'HStatu' },
+		location   => { title => 'Map' },
 
-	$self->printw($self->{winStatus}, 0, 0, "{bold|yellow} Char: {bold|white}@*{normal} (@*@*@*@*",
-		$char->{name}, $jobs_lut{$char->{jobID}}, " - ", $sex_lut{$char->{sex}}, ")");
-	my $bexpbar = $self->makeBar($width-24, $char->{exp}, $char->{exp_max});
-	$self->printw($self->{winStatus}, 1, 0, "{bold|yellow}   Base:{normal} @<< $bexpbar (@#.##%)",
-		$char->{lv}, $char->{exp_max} ? $char->{exp} / $char->{exp_max} * 100 : 0);
-	my $jexpbar = $self->makeBar($width-24, $char->{exp_job}, $char->{exp_job_max});
-	$self->printw($self->{winStatus}, 2, 0, "{bold|yellow}    Job:{normal} @<< $jexpbar (@#.##%)",
-		$char->{lv_job}, $char->{exp_job_max} ? $char->{exp_job} / $char->{exp_job_max} * 100 : 0);
-	
-	my $mapTitle = $field->isCity ? 'City' : 'Map';
-	
-	my ($i, $args);
-	if ('' ne ($i = AI::findAction ('attack')) and $args = AI::args ($i) and $args = Actor::get ($args->{ID})) {
-		$self->printw($self->{winStatus}, 3, 0, "{bold|yellow} @>>>>>:{normal} @* (@*,@*) => {red}@*{normal}",
-			$mapTitle, $field->name, $char->{pos}{x}, $char->{pos}{y}, $args->name);
-	} elsif ('' ne ($i = AI::findAction ('follow')) and $args = AI::args ($i) and $args->{following} || $args->{ai_follow_lost}) {
-		$self->printw($self->{winStatus}, 3, 0, "{bold|yellow} @>>>>>:{normal} @* (@*,@*) => {cyan}@*{normal}",
-			$mapTitle, $field->name, $char->{pos}{x}, $char->{pos}{y}, $args->{name});
-	} else {
-		if ('' ne ($i = Utils::DataStructures::binFindReverse (\@AI::ai_seq, 'route')) and $args = AI::args ($i)) {
-			if ($args->{dest}{map} eq $field->baseName) {
-				$self->printw($self->{winStatus}, 3, 0, "{bold|yellow} @>>>>>:{normal} @* (@*,@*) => (@*,@*)",
-					$mapTitle, $field->name, $char->{pos}{x}, $char->{pos}{y}, $args->{dest}{pos}{x}, $args->{dest}{pos}{y});
-			} elsif (!defined $args->{dest}{pos}{x}) {
-				$self->printw($self->{winStatus}, 3, 0, "{bold|yellow} @>>>>>:{normal} @* (@*,@*) => @*",
-					$mapTitle, $field->name, $char->{pos}{x}, $char->{pos}{y}, $args->{dest}{map});
-			} else {
-				$self->printw($self->{winStatus}, 3, 0, "{bold|yellow} @>>>>>:{normal} @* (@*,@*) => @* (@*,@*)",
-					$mapTitle, $field->name, $char->{pos}{x}, $char->{pos}{y}, $args->{dest}{map}, $args->{dest}{pos}{x}, $args->{dest}{pos}{y});
+		base => { title => 'Base', cur => $char->{exp},     max => $char->{exp_max},     valtext => sprintf '%3d', $char->{lv} },
+		job  => { title => 'Job',  cur => $char->{exp_job}, max => $char->{exp_job_max}, valtext => sprintf '%3d', $char->{lv_job} },
+
+		hp       => { title => 'HP',     cur => $char->{hp},        max => $char->{hp_max},     color1 => 'bold|red',  color2 => 'bold|green', threshold => 15 },
+		sp       => { title => 'SP',     cur => $char->{sp},        max => $char->{sp_max},     color1 => 'bold|blue', color2 => '',           threshold => 0 },
+		weight   => { title => 'Weight', cur => $char->{weight},    max => $char->{weight_max}, color1 => 'cyan',      color2 => 'red',        threshold => 50 },
+		cart     => { title => 'Cart W', cur => $cart{weight},      max => $cart{weight_max},   color1 => 'cyan',      color2 => '',           threshold => 0 },
+		hunger   => { title => 'Hunger', cur => $homun->{hunger},   max => 100,                 color1 => 'red',       color2 => 'green',      threshold => 0 },
+		intimacy => { title => 'Loyal',  cur => $homun->{intimacy}, max => 1000,                color1 => 'red',       color2 => 'green',      threshold => 10 },
+		hom_hp   => { title => 'Hom HP', cur => $homun->{hp},       max => $homun->{hp_max},    color1 => 'bold|red',  color2 => 'bold|green', threshold => 0 },
+		hom_sp   => { title => 'Hom SP', cur => $homun->{sp},       max => $homun->{sp_max},    color1 => 'bold|blue', color2 => '',           threshold => 0 },
+
+		attack_target_hp => { title => 'Atk HP' },
+	};
+	my $bars = [
+		{ col => 0, row => 0, type => $config{"bar_1_1"} || 'char' },
+		{ col => 0, row => 1, type => $config{"bar_1_2"} || 'base' },
+		{ col => 0, row => 2, type => $config{"bar_1_3"} || 'job' },
+		{ col => 0, row => 3, type => $config{"bar_1_4"} || 'location' },
+		{ col => 1, row => 0, type => $config{"bar_2_1"} || 'hp' },
+		{ col => 1, row => 1, type => $config{"bar_2_2"} || 'sp' },
+		{ col => 1, row => 2, type => $config{"bar_2_3"} || 'weight' },
+		{ col => 1, row => 3, type => $config{"bar_2_4"} || 'status' },
+		{ col => 2, row => 0, type => $config{"bar_3_1"} || $char->{homunculus} && 'hom_hp' || '' },
+		{ col => 2, row => 1, type => $config{"bar_3_2"} || $char->{homunculus} && 'hunger' || '' },
+		{ col => 2, row => 2, type => $config{"bar_3_3"} || $char->{homunculus} && 'intimacy' || '' },
+		{ col => 2, row => 3, type => $config{"bar_3_4"} || $char->{homunculus} && 'hom_status' || '' },
+	];
+	my $cols = 2;
+	foreach my $bar ( @$bars ) {
+        next if !$bar_types->{ $bar->{type} };
+
+		$bar->{$_} = $bar_types->{ $bar->{type} }->{$_} foreach keys %{ $bar_types->{ $bar->{type} } };
+
+		if ( $bar->{type} eq 'char' ) {
+			$bar->{text} = $self->swrite( '{bold|white}@*{normal} (@* - @*)', $char->{name}, $jobs_lut{ $char->{jobID} }, $sex_lut{ $char->{sex} } );
+		} elsif ( $bar->{type} eq 'status' ) {
+			$bar->{text} = $char->statusesString;
+		} elsif ( $bar->{type} eq 'hom_status' ) {
+			$bar->{text} = eval { $homun->can( 'statusesString' ) } ? $homun->statusesString : 'No homunculus summoned.';
+		} elsif ( $bar->{type} eq 'location' && $field ) {
+			my $pos = calcPosition( $char );
+			$bar->{title} = 'City' if $field->isCity;
+			$bar->{text} = $self->swrite( '@* (@*,@*)', $field->name, $pos->{x}, $pos->{y} );
+			my ( $i, $args );
+			if ( ( $i = AI::findAction( 'attack' ) ) ne '' and $args = AI::args( $i ) and $args = Actor::get( $args->{ID} ) ) {
+				$bar->{text} .= $self->swrite( ' => {red}@*{normal}', $args->name );
+			} elsif ( ( $i = AI::findAction( 'follow' ) ) ne '' and $args = AI::args( $i ) and $args->{following} || $args->{ai_follow_lost} ) {
+				$bar->{text} .= $self->swrite( ' => {cyan}@*{normal}', $args->{name} );
+			} elsif ( ( $i = Utils::DataStructures::binFindReverse( \@AI::ai_seq, 'route' ) ) ne '' and $args = AI::args( $i ) ) {
+				if ( $args->{dest}{map} eq $field->baseName ) {
+					$bar->{text} .= $self->swrite( ' => (@*,@*)', $args->{dest}{pos}{x}, $args->{dest}{pos}{y} );
+				} elsif ( !defined $args->{dest}{pos}{x} ) {
+					$bar->{text} .= $self->swrite( ' => @*', $args->{dest}{map} );
+				} else {
+					$bar->{text} .= $self->swrite( ' => @* (@*,@*)', $args->{dest}{map}, $args->{dest}{pos}{x}, $args->{dest}{pos}{y} );
+				}
 			}
-		} else {
-			$self->printw($self->{winStatus}, 3, 0, "{bold|yellow} @>>>>>:{normal} @* (@*,@*)",
-				$mapTitle, $field->name, $char->{pos}{x}, $char->{pos}{y});
+		} elsif ( $bar->{type} eq 'intimacy' ) {
+			$bar->{title} = 'Cordial' if $homun->{intimacy} <= 910;
+			$bar->{title} = 'Neutral' if $homun->{intimacy} <= 750;
+			$bar->{title} = 'Shy'     if $homun->{intimacy} <= 250;
+			$bar->{title} = 'Awkwrd'  if $homun->{intimacy} <= 100;
+			$bar->{title} = 'Hate'    if $homun->{intimacy} <= 10;
+		} elsif ( $bar->{type} eq 'attack_target_hp' ) {
+			my $target;
+			my $i = AI::findAction('attack');
+			if ( $i ne '' && ( $target = Actor::get( AI::args( $i )->{ID} ) ) ) {
+				$bar->{cur} = $target->{hp};
+				$bar->{max} = $target->{hp_max};
+			}
 		}
+		$cols = max( $cols, $bar->{col} + 1 ) if $bar->{type};
 	}
 
-	vline $self->{winStatus}, 0, $width-1, 0, $self->{winStatusHeight};
-	my $hpbar = $self->makeBar($width-29, $char->{hp}, $char->{hp_max}, "bold|red", 15, "bold|green");
-	$self->printw($self->{winStatus}, 0, $width, "{bold|yellow}     HP:{normal} @####/@#### $hpbar (@##%)",
-		$char->{hp}, $char->{hp_max}, $char->{hp_max} ? int($char->{hp} / $char->{hp_max} * 100) : 0);
-	my $spbar = $self->makeBar($width-29, $char->{sp}, $char->{sp_max}, "bold|blue");
-	$self->printw($self->{winStatus}, 1, $width, "{bold|yellow}     SP:{normal} @####/@#### $spbar (@##%)",
-		$char->{sp}, $char->{sp_max}, $char->{sp_max} ? int($char->{sp} / $char->{sp_max} * 100) : 0);
-	my $weightbar = $self->makeBar($width-29, $char->{weight}, $char->{weight_max}, "cyan", 50, "red");
-	$self->printw($self->{winStatus}, 2, $width, "{bold|yellow} Weight:{normal} @####/@#### $weightbar (@##%)",
-		$char->{weight}, $char->{weight_max}, $char->{weight_max} ? int($char->{weight} / $char->{weight_max} * 100) : 0);
-	$self->printw($self->{winStatus}, 3, $width, "{bold|yellow} Status:{normal} @*", $char->statusesString);
+	erase $self->{winStatus};
+	my $width = int( ( $self->{winStatusWidth} + 3 ) / $cols - 3 );
+
+	foreach ( 1 .. ( $cols - 1 ) ) {
+		vline $self->{winStatus}, 0, ( $width + 3 ) * $_ - 2, 0, $self->{winStatusHeight};
+	}
+	foreach my $bar ( @$bars ) {
+		next if !$bar->{type};
+        next if !$bar_types->{ $bar->{type} };
+		if ( !defined $bar->{text} ) {
+			my $val_str = $self->swrite( $bar->{valtext} || '@####/@####', $bar->{cur}, $bar->{max} );
+			my $bar_str = $self->makeBar( $width - 18 - length $val_str, $bar->{cur}, $bar->{max}, $bar->{color1}, $bar->{threshold}, $bar->{color2} );
+			$bar->{text} = $self->swrite( "$val_str $bar_str (@##.#%)", !$bar->{max} ? 0 : 100 * $bar->{cur} / $bar->{max} );
+		}
+		$self->printw( $self->{winStatus}, $bar->{row}, $bar->{col} * ( $width + 3 ), "{bold|yellow}@>>>>>:{normal} @*", $bar->{title}, $bar->{text} );
+	}
 
 	$self->{heartBeat} = !$self->{heartBeat};
 	addstr $self->{winStatus}, 0, 0, $self->{heartBeat} ? ":" : ".";
+
+	Plugins::callHook( 'curses/updateStatus' );
 
 	noutrefresh $self->{winStatus};
 }
@@ -558,7 +696,7 @@ sub updateObjects {
 	my $namelen = $self->{winObjectsWidth} - 9;
 	erase $self->{winObjects};
 
-	my $display = $self->{objectsMode} ? $self->{objectsMode} : $sys{curses_objects} || 'players, monsters, items, npcs';
+	my $display = $self->{objectsMode} ? $self->{objectsMode} : $sys{curses_objects} || 'players, monsters, slaves, items, npcs';
 	
 	for (split /\s*,\s*/, $display) {
 		my ($objectsID, $objects, $style) = ([], {}, 'normal');
@@ -566,6 +704,8 @@ sub updateObjects {
 			($objectsID, $objects, $style) = (\@playersID, \%players, 'cyan');
 		} elsif ($_ eq 'monsters') {
 			($objectsID, $objects, $style) = (\@monstersID, \%monsters, 'red');
+		} elsif ($_ eq 'slaves') {
+			($objectsID, $objects, $style) = (\@slavesID, \%slaves, 'green');
 		} elsif ($_ eq 'items') {
 			($objectsID, $objects, $style) = (\@itemsID, \%items, 'green');
 		} elsif ($_ eq 'npcs') {
@@ -584,14 +724,18 @@ sub updateObjects {
 		for (my $i = 0; $i < @$objectsID && $line < $self->{winObjectsHeight}; $i++) {
 			my $id = $objectsID->[$i];
 			next if ($id eq "");
+			next if $config{monster_filter} && $objectsID == \@monstersID && $objects->{$id}->{name_given} !~ /$config{monster_filter}/igs;
 			
 			my $lineStyle = $style;
-			if ($_ eq 'players') {
-				$lineStyle = 'yellow' if $char->{party}{users}{$id};
-			} elsif ($_ eq 'skills') {
+			my $idx = $i;
+			my $name;
+			my $count;
+			if ($_ eq 'skills') {
+				($idx,$name,$count) = ($objects->{$id}{ID}, Skill->new(handle => $id)->getName, $objects->{$id}{lv});
 				$lineStyle = 'normal' unless $objects->{$id}{sp};
 				$lineStyle = 'blue' unless $objects->{$id}{lv} || $objects->{$id}{up};
 			} elsif ($_ eq 'inventory') {
+				($idx,$name,$count) = ($i, $objects->{$id}{name}, $objects->{$id}{amount});
 				if ($objects->{$id}->usable) {
 					$lineStyle = 'green';
 				} elsif ($objects->{$id}{equipped}) {
@@ -599,12 +743,22 @@ sub updateObjects {
 				} elsif ($objects->{$id}->equippable) {
 					$lineStyle = 'blue';
 				}
+			} else {
+				($idx,$name,$count) = ($i, $objects->{$id}->name, distance($char->{pos}, $objects->{$id}{pos}));
+				$lineStyle = 'yellow' if $char->{party}{users}{$id};
 			}
-			
+
+			if ($_ eq 'slaves') {
+				$name .= " [$objects->{$id}->{given_name}]" if $objects->{$id}->{given_name} && $objects->{$id}->name ne $objects->{$id}->{given_name};
+			}
+
+			if ($namelen > 10 + 1 + 10 && $objects->{$id}->{hp_max}) {
+				my $bar = $self->makeBar( 10, $objects->{$id}->{hp}, $objects->{$id}->{hp_max} );
+				$name = $self->swrite( '@' . ( '<' x ($namelen - 11) ) . ' @' . ( '<' x 9 ), $name, $bar );
+			}
+
 			$self->printw($self->{winObjects}, $line++, 0, "{bold|$lineStyle}@## {$lineStyle}@".("<"x$namelen)." {normal}@#",
-				$_ eq 'skills' ? ($objects->{$id}{ID}, Skill->new (handle => $id)->getName, $objects->{$id}{lv})
-				: $_ eq 'inventory' ? ($i, $objects->{$id}{name}, $objects->{$id}{amount})
-				: ($i, $objects->{$id}->name, distance($char->{pos}, $objects->{$id}{pos}))
+				$idx, $name, $count
 			);
 		}
 		if ($_ eq 'skills' && $line < $self->{winObjectsHeight}) {
@@ -651,6 +805,8 @@ sub updateObjects {
 		$self->printw($self->{winObjects}, $line++, 0, "{bold|blue}@# {blue}@".("<"x$namelen)." {normal}@#", $i, $name, $dist);
 	}
 =cut
+
+	Plugins::callHook( 'curses/updateObjects' );
 
 	noutrefresh $self->{winObjects};
 }
@@ -703,6 +859,8 @@ sub loadfiles {
 			text => $param->{files}[$param->{current} - 1]{name},
 		};
 	} else {
+		$self->history_load;
+
 		Plugins::delHooks ($self->{loadingHooks});
 		delete $self->{loadingHooks};
 		$self->{loading} = {
@@ -714,6 +872,89 @@ sub loadfiles {
 	}
 	
 	$self->updateStatus;
+}
+
+# This history stuff should be extracted into a separate object that can work with any interface.
+
+sub history_max {
+	$config{history_max} || MAXHISTORY
+}
+
+sub history_file {
+	File::Spec->catfile( $Settings::logs_folder, sprintf '%s_%s_%s.txt', 'history', $config{username}, $config{char} );
+}
+
+sub history_init {
+	my ( $self ) = @_;
+
+	$self->{inputHistoryPos} = 0;
+	$self->{inputHistory}    = [];
+}
+
+sub history_load {
+	my ( $self ) = @_;
+
+	$self->history_init;
+
+	my $log_fp;
+	return if !open $log_fp, '<', $self->history_file;
+	seek $log_fp, 0, 2;
+
+	# Load up log lines from the end of the file.
+	my $pos = tell $log_fp;
+	my $buf = '';
+	while ( $pos && scalar( split /[\r\n]+/, $buf ) <= $self->history_max ) {
+		my $offset = $pos < 8192 ? $pos : 8192;
+		$pos -= $offset;
+		seek $log_fp, $pos, 0;
+		my $tmp = '';
+		read $log_fp, $tmp, $offset;
+		substr $buf, 0, 0, $tmp;
+	}
+	@{ $self->{inputHistory} } = reverse split /[\r\n]+/, $buf;
+	splice @{ $self->{inputHistory} }, $self->history_max if @{ $self->{inputHistory} } > $self->history_max;
+
+	# Strip the timestamps.
+	s/^\[.*?\] // foreach @{ $self->{inputHistory} };
+}
+
+sub history_forward {
+	my ( $self ) = @_;
+	$self->{inputHistoryPos}-- if $self->{inputHistoryPos};
+	$self->history_get;
+}
+
+sub history_back {
+	my ( $self ) = @_;
+	$self->{inputHistoryPos}++ if $self->{inputHistoryPos} < @{ $self->{inputHistory} };
+	$self->history_get;
+}
+
+sub history_get {
+	my ( $self ) = @_;
+	return '' if !$self->{inputHistoryPos};
+	$self->{inputHistory}->[ $self->{inputHistoryPos} - 1 ];
+}
+
+sub history_add {
+	my ( $self, $msg ) = @_;
+
+	$self->{inputHistoryPos} = 0;
+
+	return if !$msg;
+	return if @{ $self->{inputHistory} } && $msg eq $self->{inputHistory}->[0];
+
+	unshift @{ $self->{inputHistory} }, $msg;
+	pop @{ $self->{inputHistory} } while @{ $self->{inputHistory} } > $self->history_max;
+
+	my $log_fp = $self->{log_fp};
+	if ( !$log_fp || $self->{log_file} ne $self->history_file ) {
+		open $log_fp, '>>', $self->history_file;
+		select( ( select( $log_fp ), $|++ )[0] ) if $log_fp;
+		$self->{log_fp}   = $log_fp;
+		$self->{log_file} = $self->history_file;
+	}
+	print $log_fp "[" . localtime() . "] $msg\n" if $log_fp;
 }
 
 1;

@@ -14,7 +14,7 @@ use IO::Socket;
 use Text::ParseWords;
 use Carp::Assert;
 use Config;
-use encoding 'utf8';
+use utf8;
 
 use Globals;
 use Modules;
@@ -51,11 +51,6 @@ use constant {
 };
 
 our $state;
-
-# is this right? seems hackish....
-$SIG{INT} = $SIG{HUP} = $SIG{KILL} = $SIG{TERM} = $SIG{QUIT} = sub {
-	Misc::quit();
-};
 
 sub mainLoop {
 	Benchmark::begin('mainLoop') if DEBUG;
@@ -116,7 +111,8 @@ sub loadPlugins {
 	eval {
 		Plugins::loadAll();
 	};
-	if (my $e = caught('Plugin::LoadException')) {
+	my $e;
+	if ($e = caught('Plugin::LoadException')) {
 		$interface->errorDialog(TF("This plugin cannot be loaded because of a problem in the plugin. " .
 			"Please notify the plugin's author about this problem, " .
 			"or remove the plugin so %s can start.\n\n" .
@@ -124,7 +120,7 @@ sub loadPlugins {
 			"%s",
 			$Settings::NAME, $e->message));
 		$quit = 1;
-	} elsif (my $e = caught('Plugin::DeniedException')) {
+	} elsif ($e = caught('Plugin::DeniedException')) {
 		$interface->errorDialog($e->message);
 		$quit = 1;
 	} elsif ($@) {
@@ -237,8 +233,6 @@ sub loadDataFiles {
 		loader => [\&parseDataFile2, \%monsters_lut]);
 	Settings::addTableFile('npcs.txt',
 		loader => [\&parseNPCs, \%npcs_lut]);
-	Settings::addTableFile('itemssellable.txt',
-		loader => [\&parseDataFile2, \%items_sellable]);
 	Settings::addTableFile('packetdescriptions.txt',
 		loader => [\&parseSectionedFile, \%packetDescriptions], mustExist => 0);
 	Settings::addTableFile('portals.txt',
@@ -271,7 +265,7 @@ sub loadDataFiles {
 	Settings::addTableFile('effects.txt', loader => [\&parseDataFile2, \%effectName], mustExist => 0);
 	Settings::addTableFile('msgstringtable.txt', loader => [\&parseArrayFile, \@msgTable], mustExist => 0);
 
-	use encoding 'utf8';
+	use utf8;
 
 	Plugins::callHook('start2');
 	eval {
@@ -281,12 +275,13 @@ sub loadDataFiles {
 		};
 		Settings::loadAll($progressHandler);
 	};
-	if (my $e = caught('UTF8MalformedException')) {
+	my $e;
+	if ($e = caught('UTF8MalformedException')) {
 		$interface->errorDialog(TF(
 			"The file %s must be in UTF-8 encoding.",
 			$e->textfile));
 		$quit = 1;
-	} elsif (my $e = caught('FileNotFoundException')) {
+	} elsif ($e = caught('FileNotFoundException')) {
 		$interface->errorDialog(TF("Unable to load the file %s.", $e->filename));
 		$quit = 1;
 	} elsif ($@) {
@@ -350,9 +345,10 @@ sub initNetworking {
 		require Bus::Handlers;
 		my $host = $sys{bus_server_host};
 		my $port = $sys{bus_server_port};
-		$host = undef if ($host eq '' || $ENV{NOBUS});
-		$port = undef if ($port eq '' || $ENV{NOBUS});
-		$bus = new Bus::Client(host => $host, port => $port);
+		my $userAgent = $sys{bus_userAgent};
+		$host = undef if ($host eq '');
+		$port = undef if ($port eq '');
+		$bus = new Bus::Client(host => $host, port => $port, userAgent => $userAgent);
 		our $busMessageHandler = new Bus::Handlers($bus);
 	}
 	
@@ -459,7 +455,7 @@ sub processServerSettings {
 	}
 	
 	foreach my $serverOption ('storageEncryptKey', 'gameGuard','paddedPackets','paddedPackets_attackID',
-				'paddedPackets_skillUseID', 'vipPortals') {
+				'paddedPackets_skillUseID') {
 		if ($master->{$serverOption} ne '' && !(defined $config{$serverOption})) {
 			# Delete Wite Space
 			# why only one, if deleting any?
@@ -531,7 +527,7 @@ sub finalInitialization {
 	StdHttpReader::init();
 	initStatVars();
 	initRandomRestart();
-	# initUserSeed(); not used atm
+	initUserSeed();
 	initConfChange();
 	Log::initLogFiles();
 	$timeout{'injectSync'}{'time'} = time;
@@ -591,7 +587,6 @@ sub initConnectVars {
 	undef @skillsID;
 	undef @partyUsersID;
 	undef %cashShop;
-	undef $questList;
 }
 
 # Initialize variables when you change map (after a teleport or after you walked into a portal)

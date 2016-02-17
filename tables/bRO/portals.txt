@@ -1,66 +1,24 @@
-#VER=2
-alberta 195 151 alb2trea 62 69 {
-	steps: c c r0
-}
-alb2trea 39 50 alberta 192 169 {
-	steps: r0
-}
-alberta 247 122 tur_dun01 157 39 {
-	cost: 10000
-	steps: c r1 c r0 c c c
-}
-alberta 245 45 lou_fild01 190 101 {
-	cost: 10000
-	steps: c r1 c c r0
-}
-alberta 247 42 ayothaya 149 71 {
-	cost: 10000
-	steps: c r1 c c r0 n
-}
-lou_fild01 190 100 alberta 235 45 {
-	steps: c r0
-}
-tur_dun01 165 29 alberta 241 115 {
-	steps: c r0 c c
-}
-alberta 245 93 amatsu 197 83 {
-	cost: 10000
-	steps: c r1 c c c r0 n
-}
-amatsu 194 79 alberta 243 91 {
-	steps: c r0 n
-}
-alberta 245 69 gon_fild01 258 82 {
-	steps: c r1 c c r0 n
-}
-gon_fild01 255 79 alberta 243 67 {
-	steps: c r0 n
-}
-izlude 201 181 izlu2dun 107 50 {
-	cost: 150
-	steps: c r0
-}
-izlu2dun 108 27 izlude 176 182 {
-	steps: c r0
-}
-prt_fild05 270 212 prt_sewb1 135 248 {
-	steps: c r0
-}
-aldebaran 223 222 xmas_fild01 78 68 {
-	steps: c r1 c c n
-}
-moc_fild12 35 303 cmd_fild08 331 319 {
-	steps: c r0 n
-}
-ayothaya 152 68 alberta 247 42 {
-	steps: c r0 n
-}
-ama_in02 115 177 ama_dun01 229 10 {
-	steps: c r1 c r0 n
-}
-ama_dun01 229 7 ama_in02 119 181 {
-	steps: c r0 n
-}
+#format: <source coordinate><destination coordinate>[zenny cost][conversation sequence]
+alberta 195 151 alb2trea 62 69 0 c c r0
+alb2trea 39 50 alberta 192 169 0 r0
+alberta 247 122 tur_dun01 157 39 10000 c r1 c r0 c c c
+alberta 245 45 lou_fild01 190 101 10000 c r1 c c r0
+alberta 247 42 ayothaya 149 71 10000 c r1 c c r0 n
+lou_fild01 190 100 alberta 235 45 0 c r0
+tur_dun01 165 29 alberta 241 115 0 c r0 c c
+alberta 245 93 amatsu 197 83 10000 c r1 c c c r0 n
+amatsu 194 79 alberta 243 91 0 c r0 n
+alberta 245 69 gon_fild01 258 82 0 c r1 c c r0 n
+gon_fild01 255 79 alberta 243 67 0 c r0 n
+izlude 201 181 izlu2dun 107 50 150 c r0
+izlu2dun 108 27 izlude 176 182 0 c r0
+prt_fild05 270 212 prt_sewb1 135 248 0 c r0
+aldebaran 223 222 xmas_fild01 78 68 0 c r1 c c n
+moc_fild12 35 303 cmd_fild08 331 319 0 c r0 n
+ayothaya 152 68 alberta 247 42 0 c r0 n
+ama_in02 115 177 ama_dun01 229 10 0 c r1 c r0 n
+ama_dun01 229 7 ama_in02 119 181 0 c r0 n
+
 # VIP Warps
 #yuno 142 183 prontera 116 72 1800 c c c c c r0
 #yuno 142 183 izlude 94 103 1800 c c c c c r1
@@ -72,7 +30,7 @@ ama_dun01 229 7 ama_in02 119 181 {
 #yuno 152 187 aldebaran 168 112 1200 c r2 c r0
 #aldebaran 143 119 geffen 120 39 2300 c r2 c r0
 #aldebaran 143 119 yuno 158 125 1200 c r2 c r1
-#aldebaran 143 119 izlude 94 103 1800 c r2 c r2
+#aldebaran 143 119 izude 94 103 1800 c r2 c r2
 #aldebaran 143 119 mjolnir_02 99 351 1700 c r2 c r3
 #morocc 156 97 prontera 116 72 1200 c r2 c r0
 #morocc 156 97 payon 161 58 1200 c r2 c r1
@@ -131,451 +89,122 @@ ama_dun01 229 7 ama_in02 119 181 {
 #izlude 134 88 morocc 156 47 1200 c r2 c r2
 #izlude 134 88 aldebaran 168 112 1800 c r2 c r3
 # to add: Eden warper, Prontera warper
+
 # Non-VIP Warps
 #prontera 146 89 aldebaran 168 112 2000 1 c r2 c r5
-yuno 152 187 aldebaran 168 112 {
-	cost: 1200
-	ticket: 1
-	steps: c r2 c r0
-}
-aldebaran 143 119 geffen 120 39 {
-	cost: 2300
-	ticket: 1
-	steps: c r2 c r0
-}
-aldebaran 143 119 yuno 158 125 {
-	cost: 1200
-	ticket: 1
-	steps: c r2 c r1
-}
-aldebaran 143 119 izlude 94 103 {
-	cost: 1800
-	ticket: 1
-	steps: c r2 c r2
-}
-aldebaran 143 119 mjolnir_02 99 351 {
-	cost: 1700
-	ticket: 1
-	steps: c r2 c r3
-}
-morocc 156 97 prontera 116 72 {
-	cost: 1200
-	ticket: 1
-	steps: c r2 c r0
-}
-morocc 156 97 payon 161 58 {
-	cost: 1200
-	ticket: 1
-	steps: c r2 c r1
-}
-morocc 156 97 alberta 117 56 {
-	cost: 1800
-	ticket: 1
-	steps: c r2 c r2
-}
-morocc 156 97 comodo 209 143 {
-	cost: 1800
-	ticket: 1
-	steps: c r2 c r3
-}
-morocc 156 97 cmd_fild07 127 134 {
-	cost: 1200
-	ticket: 1
-	steps: c r2 c r4
-}
-morocc 160 258 prontera 116 72 {
-	cost: 1200
-	ticket: 1
-	steps: c r2 c r0
-}
-morocc 160 258 payon 161 58 {
-	cost: 1200
-	ticket: 1
-	steps: c r2 c r1
-}
-morocc 160 258 alberta 117 56 {
-	cost: 1800
-	ticket: 1
-	steps: c r2 c r2
-}
-morocc 160 258 comodo 209 143 {
-	cost: 1800
-	ticket: 1
-	steps: c r2 c r3
-}
-morocc 160 258 cmd_fild07 127 134 {
-	cost: 1200
-	ticket: 1
-	steps: c r2 c r4
-}
-cmd_fild07 136 134 morocc 156 47 {
-	cost: 1200
-	ticket: 1
-	steps: c c r2 c r0
-}
-cmd_fild07 136 134 comodo 209 143 {
-	cost: 1200
-	ticket: 1
-	steps: c c r2 c r1
-}
-comodo 195 150 morocc 156 47 {
-	cost: 1800
-	ticket: 1
-	steps: c c r2 c r0
-}
-comodo 195 150 cmd_fild07 127 134 {
-	cost: 1200
-	ticket: 1
-	steps: c c r2 c r1
-}
-comodo 195 150 umbala 100 154 {
-	cost: 1800
-	ticket: 1
-	steps: c c r2 c r2
-}
-umbala 87 160 comodo 209 143 {
-	cost: 1800
-	ticket: 1
-	steps: c r2 c r0
-}
-prontera 146 89 izlude 94 103 {
-	cost: 600
-	ticket: 1
-	steps: c r2 c r0
-}
-prontera 146 89 geffen 120 39 {
-	cost: 1200
-	ticket: 1
-	steps: c r2 c r1
-}
-prontera 146 89 payon 161 58 {
-	cost: 1200
-	ticket: 1
-	steps: c r2 c r2
-}
-prontera 146 89 morocc 156 47 {
-	cost: 1200
-	ticket: 1
-	steps: c r2 c r3
-}
-prontera 146 89 gef_fild10 52 326 {
-	cost: 1700
-	ticket: 1
-	steps: c r2 c r4
-}
-prontera 146 89 alberta 117 56 {
-	cost: 1800
-	ticket: 1
-	steps: c r2 c r5
-}
-prontera 151 29 izlude 94 103 {
-	cost: 600
-	ticket: 1
-	steps: c r2 c r0
-}
-prontera 151 29 geffen 120 39 {
-	cost: 1200
-	ticket: 1
-	steps: c r2 c r1
-}
-prontera 151 29 payon 161 58 {
-	cost: 1200
-	ticket: 1
-	steps: c r2 c r2
-}
-prontera 151 29 morocc 156 47 {
-	cost: 1200
-	ticket: 1
-	steps: c r2 c r3
-}
-prontera 151 29 gef_fild10 52 326 {
-	cost: 1700
-	ticket: 1
-	steps: c r2 c r4
-}
-prontera 151 29 alberta 117 56 {
-	cost: 1800
-	ticket: 1
-	steps: c r2 c r5
-}
-prontera 282 200 izlude 94 103 {
-	cost: 600
-	ticket: 1
-	steps: c r2 c r0
-}
-prontera 282 200 geffen 120 39 {
-	cost: 1200
-	ticket: 1
-	steps: c r2 c r1
-}
-prontera 282 200 payon 161 58 {
-	cost: 1200
-	ticket: 1
-	steps: c r2 c r2
-}
-prontera 282 200 morocc 156 47 {
-	cost: 1200
-	ticket: 1
-	steps: c r2 c r3
-}
-prontera 282 200 gef_fild10 52 326 {
-	cost: 1700
-	ticket: 1
-	steps: c r2 c r4
-}
-prontera 282 200 alberta 117 56 {
-	cost: 1800
-	ticket: 1
-	steps: c r2 c r5
-}
-prontera 29 207 izlude 94 103 {
-	cost: 600
-	ticket: 1
-	steps: c r2 c r0
-}
-prontera 29 207 geffen 120 39 {
-	cost: 1200
-	ticket: 1
-	steps: c r2 c r1
-}
-prontera 29 207 payon 161 58 {
-	cost: 1200
-	ticket: 1
-	steps: c r2 c r2
-}
-prontera 29 207 morocc 156 47 {
-	cost: 1200
-	ticket: 1
-	steps: c r2 c r3
-}
-prontera 29 207 gef_fild10 52 326 {
-	cost: 1700
-	ticket: 1
-	steps: c r2 c r4
-}
-prontera 29 207 alberta 117 56 {
-	cost: 1800
-	ticket: 1
-	steps: c r2 c r5
-}
-payon 175 226 prontera 116 72 {
-	cost: 1200
-	ticket: 1
-	steps: c r2 c r0
-}
-payon 175 226 alberta 117 56 {
-	cost: 1200
-	ticket: 1
-	steps: c r2 c r1
-}
-payon 175 226 morocc 156 47 {
-	cost: 1200
-	ticket: 1
-	steps: c r2 c r2
-}
-payon 181 104 prontera 116 72 {
-	cost: 1200
-	ticket: 1
-	steps: c r2 c r0
-}
-payon 181 104 alberta 117 56 {
-	cost: 1200
-	ticket: 1
-	steps: c r2 c r1
-}
-payon 181 104 morocc 156 47 {
-	cost: 1200
-	ticket: 1
-	steps: c r2 c r2
-}
-geffen 120 62 aldebaran 168 112 {
-	cost: 1200
-	ticket: 1
-	steps: c r2 c r1
-}
-geffen 120 62 prontera 116 72 {
-	cost: 1200
-	ticket: 1
-	steps: c r2 c r0
-}
-alberta 113 60 payon 161 58 {
-	cost: 1200
-	ticket: 1
-	steps: c r2 c r0
-}
-alberta 113 60 morocc 156 47 {
-	cost: 1800
-	ticket: 1
-	steps: c r2 c r1
-}
-alberta 113 60 prontera 116 72 {
-	cost: 1800
-	ticket: 1
-	steps: c r2 c r2
-}
-alberta 28 229 payon 161 58 {
-	cost: 1200
-	ticket: 1
-	steps: c r2 c r0
-}
-alberta 28 229 morocc 156 47 {
-	cost: 1800
-	ticket: 1
-	steps: c r2 c r1
-}
-alberta 28 229 prontera 116 72 {
-	cost: 1800
-	ticket: 1
-	steps: c r2 c r2
-}
-izlude 134 88 geffen 120 39 {
-	cost: 1200
-	ticket: 1
-	steps: c r2 c r0
-}
-izlude 134 88 payon 161 58 {
-	cost: 1200
-	ticket: 1
-	steps: c r2 c r1
-}
-izlude 134 88 morocc 156 47 {
-	cost: 1200
-	ticket: 1
-	steps: c r2 c r2
-}
-izlude 134 88 aldebaran 168 112 {
-	cost: 1800
-	ticket: 1
-	steps: c r2 c r3
-}
-rachel 109 138 veins 205 101 {
-	cost: 2200
-	ticket: 1
-	steps: c r2 c r0
-}
-# rachel 109 138 yuno 158 125 {
-	# cost: 3000
-	# ticket: 1
-	# steps: c r2 c r1
-# }
-veins 208 128 rachel 115 125 {
-	cost: 2200
-	ticket: 1
-	steps: c r2 c r0
-}
-# veins 208 128 yuno 158 125 {
-	# cost: 3000
-	# ticket: 1
-	# steps: c r2 c r1
-# }
-moc_para01 14 32 prontera 116 72 {
-	cost: 1800
-	ticket: 1
-	steps: c c r0 c n
-}
+yuno 152 187 aldebaran 168 112 1200 1 c r2 c r0
+aldebaran 143 119 geffen 120 39 2300 1 c r2 c r0
+aldebaran 143 119 yuno 158 125 1200 1 c r2 c r1
+aldebaran 143 119 izude 94 103 1800 1 c r2 c r2
+aldebaran 143 119 mjolnir_02 99 351 1700 1 c r2 c r3
+morocc 156 97 prontera 116 72 1200 1 c r2 c r0
+morocc 156 97 payon 161 58 1200 1 c r2 c r1
+morocc 156 97 alberta 117 56 1800 1 c r2 c r2
+morocc 156 97 comodo 209 143 1800 1 c r2 c r3
+morocc 156 97 cmd_fild07 127 134 1200 1 c r2 c r4
+morocc 160 258 prontera 116 72 1200 1 c r2 c r0
+morocc 160 258 payon 161 58 1200 1 c r2 c r1
+morocc 160 258 alberta 117 56 1800 1 c r2 c r2
+morocc 160 258 comodo 209 143 1800 1 c r2 c r3
+morocc 160 258 cmd_fild07 127 134 1200 1 c r2 c r4
+cmd_fild07 136 134 morocc 156 47 1200 1 c c r2 c r0
+cmd_fild07 136 134 comodo 209 143 1200 1 c c r2 c r1
+comodo 195 150 morocc 156 47 1800 1 c c r2 c r0
+comodo 195 150 cmd_fild07 127 134 1200 1 c c r2 c r1
+comodo 195 150 umbala 100 154 1800 1 c c r2 c r2
+umbala 87 160 comodo 209 143 1800 1 c r2 c r0
+prontera 146 89 izlude 94 103 600 1 c r2 c r0
+prontera 146 89 geffen 120 39 1200 1 c r2 c r1
+prontera 146 89 payon 161 58 1200 1 c r2 c r2
+prontera 146 89 morocc 156 47 1200 1 c r2 c r3
+prontera 146 89 gef_fild10 52 326 1700 1 c r2 c r4
+prontera 146 89 alberta 117 56 1800 1 c r2 c r5
+prontera 151 29 izlude 94 103 600 1 c r2 c r0
+prontera 151 29 geffen 120 39 1200 1 c r2 c r1
+prontera 151 29 payon 161 58 1200 1 c r2 c r2
+prontera 151 29 morocc 156 47 1200 1 c r2 c r3
+prontera 151 29 gef_fild10 52 326 1700 1 c r2 c r4
+prontera 151 29 alberta 117 56 1800 1 c r2 c r5
+prontera 282 200 izlude 94 103 600 1 c r2 c r0
+prontera 282 200 geffen 120 39 1200 1 c r2 c r1
+prontera 282 200 payon 161 58 1200 1 c r2 c r2
+prontera 282 200 morocc 156 47 1200 1 c r2 c r3
+prontera 282 200 gef_fild10 52 326 1700 1 c r2 c r4
+prontera 282 200 alberta 117 56 1800 1 c r2 c r5
+prontera 29 207 izlude 94 103 600 1 c r2 c r0
+prontera 29 207 geffen 120 39 1200 1 c r2 c r1
+prontera 29 207 payon 161 58 1200 1 c r2 c r2
+prontera 29 207 morocc 156 47 1200 1 c r2 c r3
+prontera 29 207 gef_fild10 52 326 1700 1 c r2 c r4
+prontera 29 207 alberta 117 56 1800 1 c r2 c r5
+payon 175 226 prontera 116 72 1200 1 c r2 c r0
+payon 175 226 alberta 117 56 1200 1 c r2 c r1
+payon 175 226 morocc 156 47 1200 1 c r2 c r2
+payon 181 104 prontera 116 72 1200 1 c r2 c r0
+payon 181 104 alberta 117 56 1200 1 c r2 c r1
+payon 181 104 morocc 156 47 1200 1 c r2 c r2
+alberta 113 60 payon 161 58 1200 1 c r2 c r0
+alberta 113 60 morocc 156 47 1800 1 c r2 c r1
+alberta 113 60 prontera 116 72 1800 1 c r2 c r2
+alberta 28 229 payon 161 58 1200 1 c r2 c r0
+alberta 28 229 morocc 156 47 1800 1 c r2 c r1
+alberta 28 229 prontera 116 72 1800 1 c r2 c r2
+izlude 134 88 geffen 120 39 1200 1 c r2 c r0
+izlude 134 88 payon 161 58 1200 1 c r2 c r1
+izlude 134 88 morocc 156 47 1200 1 c r2 c r2
+izlude 134 88 aldebaran 168 112 1800 1 c r2 c r3
+rachel 109 138 veins 205 101 2200 1 c r2 c r0
+rachel 109 138 yuno 158 125 3000 1 c r2 c r1
+veins 208 128 rachel 115 125 2200 1 c r2 c r0
+veins 208 128 yuno 158 125 3000 1 c r2 c r1
+moc_para01 14 32 prontera 116 72 1800 1 c c r0 c n
+
 # Training Grounds
 new_1-1 148 112 new_1-2 100 9
-new_1-2 100 6 new_1-1 144 112
 new_2-1 148 112 new_2-2 100 9
-new_2-2 100 6 new_2-1 144 112
 new_3-1 148 112 new_3-2 100 9
-new_3-2 100 6 new_3-1 144 112
 new_4-1 148 112 new_4-2 100 9
-new_4-2 100 6 new_4-1 144 112
 new_5-1 148 112 new_5-2 100 9
+new_1-2 100 6 new_1-1 144 112
+new_2-2 100 6 new_2-1 144 112
+new_3-2 100 6 new_3-1 144 112
+new_4-2 100 6 new_4-1 144 112
 new_5-2 100 6 new_5-1 144 112
+
 # Training Grounds entrance
-new_1-2 100 29 new_1-2 100 70 {
-	steps: c r0 c c
-}
-new_2-2 100 29 new_2-2 100 70 {
-	steps: c r0 c c
-}
-new_3-2 100 29 new_3-2 100 70 {
-	steps: c r0 c c
-}
-new_4-2 100 29 new_4-2 100 70 {
-	steps: c r0 c c
-}
-new_5-2 100 29 new_5-2 100 70 {
-	steps: c r0 c c
-}
+new_1-2 100 29 new_1-2 100 70 0 c r0 c c
+new_2-2 100 29 new_2-2 100 70 0 c r0 c c
+new_3-2 100 29 new_3-2 100 70 0 c r0 c c
+new_4-2 100 29 new_4-2 100 70 0 c r0 c c
+new_5-2 100 29 new_5-2 100 70 0 c r0 c c
+
 # Training Grounds Kafra
-new_1-2 118 108 prontera 150 50 {
-	steps: c c c r0 c c c r0 c
-}
-new_2-2 118 108 prontera 150 50 {
-	steps: c c c r0 c c c r0 c
-}
-new_3-2 118 108 prontera 150 50 {
-	steps: c c c r0 c c c r0 c
-}
-new_4-2 118 108 prontera 150 50 {
-	steps: c c c r0 c c c r0 c
-}
-new_5-2 118 108 prontera 150 50 {
-	steps: c c c r0 c c c r0 c
-}
-new_1-2 118 108 morocc 155 110 {
-	steps: c c c r0 c c c r1 c
-}
-new_2-2 118 108 morocc 155 110 {
-	steps: c c c r0 c c c r1 c
-}
-new_3-2 118 108 morocc 155 110 {
-	steps: c c c r0 c c c r1 c
-}
-new_4-2 118 108 morocc 155 110 {
-	steps: c c c r0 c c c r1 c
-}
-new_5-2 118 108 morocc 155 110 {
-	steps: c c c r0 c c c r1 c
-}
-new_1-2 118 108 payon 166 67 {
-	steps: c c c r0 c c c r2 c
-}
-new_2-2 118 108 payon 166 67 {
-	steps: c c c r0 c c c r2 c
-}
-new_3-2 118 108 payon 166 67 {
-	steps: c c c r0 c c c r2 c
-}
-new_4-2 118 108 payon 166 67 {
-	steps: c c c r0 c c c r2 c
-}
-new_5-2 118 108 payon 166 67 {
-	steps: c c c r0 c c c r2 c
-}
-new_1-2 118 108 alberta 114 58 {
-	steps: c c c r0 c c c r3 c
-}
-new_2-2 118 108 alberta 114 58 {
-	steps: c c c r0 c c c r3 c
-}
-new_3-2 118 108 alberta 114 58 {
-	steps: c c c r0 c c c r3 c
-}
-new_4-2 118 108 alberta 114 58 {
-	steps: c c c r0 c c c r3 c
-}
-new_5-2 118 108 alberta 114 58 {
-	steps: c c c r0 c c c r3 c
-}
-new_1-2 118 108 geffen 122 65 {
-	steps: c c c r0 c c c r4 c
-}
-new_2-2 118 108 geffen 122 65 {
-	steps: c c c r0 c c c r4 c
-}
-new_3-2 118 108 geffen 122 65 {
-	steps: c c c r0 c c c r4 c
-}
-new_4-2 118 108 geffen 122 65 {
-	steps: c c c r0 c c c r4 c
-}
-new_5-2 118 108 geffen 122 65 {
-	steps: c c c r0 c c c r4 c
-}
+new_1-2 118 108 prontera 150 50 0 c c c r0 c c c r0 c
+new_2-2 118 108 prontera 150 50 0 c c c r0 c c c r0 c
+new_3-2 118 108 prontera 150 50 0 c c c r0 c c c r0 c
+new_4-2 118 108 prontera 150 50 0 c c c r0 c c c r0 c
+new_5-2 118 108 prontera 150 50 0 c c c r0 c c c r0 c
+new_1-2 118 108 morocc 155 110 0 c c c r0 c c c r1 c
+new_2-2 118 108 morocc 155 110 0 c c c r0 c c c r1 c
+new_3-2 118 108 morocc 155 110 0 c c c r0 c c c r1 c
+new_4-2 118 108 morocc 155 110 0 c c c r0 c c c r1 c
+new_5-2 118 108 morocc 155 110 0 c c c r0 c c c r1 c
+new_1-2 118 108 payon 166 67 0 c c c r0 c c c r2 c
+new_2-2 118 108 payon 166 67 0 c c c r0 c c c r2 c
+new_3-2 118 108 payon 166 67 0 c c c r0 c c c r2 c
+new_4-2 118 108 payon 166 67 0 c c c r0 c c c r2 c
+new_5-2 118 108 payon 166 67 0 c c c r0 c c c r2 c
+new_1-2 118 108 alberta 114 58 0 c c c r0 c c c r3 c
+new_2-2 118 108 alberta 114 58 0 c c c r0 c c c r3 c
+new_3-2 118 108 alberta 114 58 0 c c c r0 c c c r3 c
+new_4-2 118 108 alberta 114 58 0 c c c r0 c c c r3 c
+new_5-2 118 108 alberta 114 58 0 c c c r0 c c c r3 c
+new_1-2 118 108 geffen 122 65 0 c c c r0 c c c r4 c
+new_2-2 118 108 geffen 122 65 0 c c c r0 c c c r4 c
+new_3-2 118 108 geffen 122 65 0 c c c r0 c c c r4 c
+new_4-2 118 108 geffen 122 65 0 c c c r0 c c c r4 c
+new_5-2 118 108 geffen 122 65 0 c c c r0 c c c r4 c
+
 new_1-2 126 106 new_1-2 160 171
 new_2-2 126 106 new_2-2 160 171
 new_3-2 126 106 new_3-2 160 171
@@ -596,44 +225,19 @@ new_2-2 46 172 new_2-2 78 106
 new_3-2 46 172 new_3-2 78 106
 new_4-2 46 172 new_4-2 78 106
 new_5-2 46 172 new_5-2 78 106
-new_1-3 97 41 izlude_in 74 167 {
-	steps: c r1 c c r1 c
-}
-new_1-3 101 41 prt_church 172 19 {
-	steps: c r1 c c r1
-}
-new_2-3 101 41 prt_church 172 19 {
-	steps: c r1 c c r1
-}
-new_3-3 101 41 prt_church 172 19 {
-	steps: c r1 c c r1
-}
-new_4-3 101 41 prt_church 172 19 {
-	steps: c r1 c c r1
-}
-new_5-3 101 41 prt_church 172 19 {
-	steps: c r1 c c r1
-}
-new_1-3 113 41 payon_in02 64 65 {
-	steps: c r1 c c r1
-}
-new_2-3 113 41 payon_in02 64 65 {
-	steps: c r1 c c r1
-}
-new_3-3 113 41 payon_in02 64 65 {
-	steps: c r1 c c r1
-}
-new_4-3 113 41 payon_in02 64 65 {
-	steps: c r1 c c r1
-}
-new_5-3 113 41 payon_in02 64 65 {
-	steps: c r1 c c r1
-}
+
+new_1-3 97 41 izlude_in 74 167 0 c r1 c c r1 c
+
+new_1-3 101 41 prt_church 172 19 0 c r1 c c r1
+new_2-3 101 41 prt_church 172 19 0 c r1 c c r1
+new_3-3 101 41 prt_church 172 19 0 c r1 c c r1
+new_4-3 101 41 prt_church 172 19 0 c r1 c c r1
+new_5-3 101 41 prt_church 172 19 0 c r1 c c r1
+
 # Izlude Arena
-arena_room 105 93 prt_are_in 60 14 {
-	steps: c r0
-}
+arena_room 105 93 prt_are_in 60 14 0 c r0
 prt_are_in 54 13 arena_room 100 77
+
 # Anthell
 #anthell01 35 267 moc_fild20 161 144
 #anthell02 171 170 moc_fild20 333 315
@@ -643,6 +247,7 @@ anthell01 35 267 cmd_fild08 335 355
 anthell02 171 170 cmd_fild08 344 82
 cmd_fild08 335 355 anthell01 35 263
 cmd_fild08 348 82 anthell02 171 170
+
 # Morroc area (Episode 12)
 moc_fild01 84 19 moc_fild20 209 333
 moc_fild07 380 202 moc_fild20 36 177
@@ -651,166 +256,93 @@ moc_fild11 377 197 moc_fild20 36 177
 moc_fild13 32 171 moc_fild20 349 179
 moc_fild16 124 381 moc_fild20 197 24
 moc_fild16 333 380 moc_fild20 197 24
-moc_fild20 38 174 morocc 160 61 {
-	steps: c r1 c c c c r1 c c r1
-}
-moc_fild20 38 183 morocc 160 61 {
-	steps: c r1 c c c c r1 c c r1
-}
-moc_fild20 189 21 morocc 160 61 {
-	steps: c r1 c c c c r1 c c r1
-}
-moc_fild20 200 21 morocc 160 61 {
-	steps: c r1 c c c c r1 c c r1
-}
-moc_fild20 354 183 morocc 160 61 {
-	steps: c r1 c c c c r1 c c r1
-}
-moc_fild20 354 174 morocc 160 61 {
-	steps: c r1 c c c c r1 c c r1
-}
-moc_fild20 203 336 moc_fild01 86 32 {
-	steps: c r1 c c c c r2
-}
-moc_fild20 215 336 moc_fild01 86 32 {
-	steps: c r1 c c c c r2
-}
-moc_fild20 203 336 morocc 160 61 {
-	steps: c r1 c c c c r1 c c r1
-}
-moc_fild20 215 336 morocc 160 61 {
-	steps: c r1 c c c c r1 c c r1
-}
+moc_fild20 38 174 morocc 160 61 0 c r1 c c c c r1 c c r1
+moc_fild20 38 183 morocc 160 61 0 c r1 c c c c r1 c c r1
+moc_fild20 189 21 morocc 160 61 0 c r1 c c c c r1 c c r1
+moc_fild20 200 21 morocc 160 61 0 c r1 c c c c r1 c c r1
+moc_fild20 354 183 morocc 160 61 0 c r1 c c c c r1 c c r1
+moc_fild20 354 174 morocc 160 61 0 c r1 c c c c r1 c c r1
+moc_fild20 203 336 moc_fild01 86 32 0 c r1 c c c c r2
+moc_fild20 215 336 moc_fild01 86 32 0 c r1 c c c c r2
+moc_fild20 203 336 morocc 160 61 0 c r1 c c c c r1 c c r1
+moc_fild20 215 336 morocc 160 61 0 c r1 c c c c r1 c c r1
 morocc 299 207 moc_fild20 36 177
 prt_fild09 95 19 moc_fild20 209 333
 prt_fild09 246 17 moc_fild20 209 333
 prt_fild10 263 23 moc_fild20 209 333
+
 # Dimensional Gorge (Episode 12)
 # moc_fild20 -> moc_fild21 npcs are only available with the quest and a party with at least two members online
-moc_fild20 38 174 moc_fild21 38 193 {
-	steps: c r1 c c c
-}
-moc_fild20 38 183 moc_fild21 38 193 {
-	steps: c r1 c c c
-}
-moc_fild20 189 21 moc_fild21 38 193 {
-	steps: c r1 c c c
-}
-moc_fild20 200 21 moc_fild21 38 193 {
-	steps: c r1 c c c
-}
-moc_fild20 354 183 moc_fild21 38 193 {
-	steps: c r1 c c c
-}
-moc_fild20 354 174 moc_fild21 38 193 {
-	steps: c r1 c c c
-}
-moc_fild20 203 336 moc_fild21 38 193 {
-	steps: c r1 c c c
-}
-moc_fild20 215 336 moc_fild21 38 193 {
-	steps: c r1 c c c
-}
+moc_fild20 38 174 moc_fild21 38 193 0 c r1 c c c
+moc_fild20 38 183 moc_fild21 38 193 0 c r1 c c c
+moc_fild20 189 21 moc_fild21 38 193 0 c r1 c c c
+moc_fild20 200 21 moc_fild21 38 193 0 c r1 c c c
+moc_fild20 354 183 moc_fild21 38 193 0 c r1 c c c
+moc_fild20 354 174 moc_fild21 38 193 0 c r1 c c c
+moc_fild20 203 336 moc_fild21 38 193 0 c r1 c c c
+moc_fild20 215 336 moc_fild21 38 193 0 c r1 c c c
 moc_fild21 26 196 moc_fild20 349 179
 moc_fild22 32 196 moc_fild20 349 179
+
 # Battlegrounds (Episode 12)
-aldebaran 146 109 bat_room 154 150 {
-	steps: c c r0 c
-}
-geffen 109 66 bat_room 154 150 {
-	steps: c c r0 c
-}
-lighthalzen 153 86 bat_room 154 150 {
-	steps: c c r0 c
-}
-moc_ruins 75 162 bat_room 154 150 {
-	steps: c c r0 c
-}
-payon 189 105 bat_room 154 150 {
-	steps: c c r0 c
-}
-prontera 123 83 bat_room 154 150 {
-	steps: c c r0 c
-}
-rachel 149 138 bat_room 154 150 {
-	steps: c c r0 c
-}
+aldebaran 146 109 bat_room 154 150 0 c c r0 c
+geffen 109 66 bat_room 154 150 0 c c r0 c
+lighthalzen 153 86 bat_room 154 150 0 c c r0 c
+moc_ruins 75 162 bat_room 154 150 0 c c r0 c
+payon 189 105 bat_room 154 150 0 c c r0 c
+prontera 123 83 bat_room 154 150 0 c c r0 c
+rachel 149 138 bat_room 154 150 0 c c r0 c
 # following is a single warp, depends of battleground entrance npc used
 #bat_room 148 150 aldebaran 168 112 0 c r0 c
 #bat_room 148 150 geffen 120 39 0 c r0 c
 #bat_room 148 150 lighthalzen 159 93 0 c r0 c
 #bat_room 148 150 moc_ruins 152 48 0 c r0 c
 #bat_room 148 150 payon 161 58 0 c r0 c
-bat_room 148 150 prontera 116 72 {
-	steps: c r0 c
-}
+bat_room 148 150 prontera 116 72 0 c r0 c
 #bat_room 148 150 rachel 115 124 0 c r0 c
 # following bat_room npcs are only available with base lvl 80
 # Tierra 1 Blue
-bat_room 124 178 bat_room 57 223 {
-	steps: c r0 c
-}
+bat_room 124 178 bat_room 57 223 0 c r0 c
 bat_room 57 220 bat_room 154 150
 # Tierra 1 Red
-bat_room 125 121 bat_room 57 207 {
-	steps: c r0 c
-}
+bat_room 125 121 bat_room 57 207 0 c r0 c
 bat_room 57 211 bat_room 154 150
 # Flavius 1 Blue
-bat_room 133 178 bat_room 85 223 {
-	steps: c r0 c
-}
+bat_room 133 178 bat_room 85 223 0 c r0 c
 bat_room 85 220 bat_room 154 150
 # Flavius 1 Red
-bat_room 133 121 bat_room 85 207 {
-	steps: c r0 c
-}
+bat_room 133 121 bat_room 85 207 0 c r0 c
 bat_room 85 211 bat_room 154 150
 # Tierra 2 Blue
-bat_room 140 178 bat_room 114 223 {
-	steps: c r0 c
-}
+bat_room 140 178 bat_room 114 223 0 c r0 c
 bat_room 113 220 bat_room 154 150
 # Tierra 2 Red
-bat_room 140 121 bat_room 114 207 {
-	steps: c r0 c
-}
+bat_room 140 121 bat_room 114 207 0 c r0 c
 bat_room 113 211 bat_room 154 150
 # Flavius 2 Blue
-bat_room 148 178 bat_room 141 224 {
-	steps: c r0 c
-}
+bat_room 148 178 bat_room 141 224 0 c r0 c
 bat_room 141 220 bat_room 154 150
-bat_b02 10 293 bat_room 154 150 {
-	steps: c
-}
+bat_b02 10 293 bat_room 154 150 0 c
 # Flavius 2 Red
-bat_b02 189 14 bat_room 154 150 {
-	steps: c
-}
+bat_room 148 121 bat_room
+bat_room  bat_room 154 150
+bat_b02 189 14 bat_room 154 150 0 c
+
 # The New World (Episode 13)
-mid_camp 213 286 moc_fild20 342 179 {
-	steps: c c r0
-}
+mid_camp 213 286 moc_fild20 342 179 0 c c r0
+
 # Battlegrounds (Episode 13)
 # KVM Blue
-bat_room 164 178 bat_room 169 223 {
-	steps: c r0 c
-}
+bat_room 164 178 bat_room 169 223 0 c r0 c
 bat_room 169 220 bat_room 154 150
 #(chatroom) bat_room 169 226 bat_c01 53 131
-bat_c01 51 130 bat_room 154 150 {
-	steps: c
-}
+bat_c01 51 130 bat_room 154 150 0 c
 # KVM Red
-bat_room 164 121 bat_room 169 207 {
-	steps: c r0 c
-}
+bat_room 164 121 bat_room 169 207 0 c r0 c
 bat_room 169 211 bat_room 154 150
 #(chatroom) bat_room 169 205 bat_c01 147 56
-bat_c01 148 54 bat_room 154 150 {
-	steps: c
-}
+bat_c01 148 54 bat_room 154 150 0 c
+
 alb_ship 26 166 alberta 170 170
 alb_ship 37 174 alb_ship 68 99
 alb_ship 41 163 alberta 178 165
@@ -857,9 +389,7 @@ alde_dun03 12 267 alde_dun02 279 250
 alde_dun03 191 31 c_tower3 212 159
 alde_dun03 276 48 c_tower1 235 226
 alde_dun03 277 183 c_tower2 24 24
-alde_dun03 264 16 alde_dun04 78 268 {
-	steps: c r2 c
-}
+alde_dun03 264 16 alde_dun04 78 268 0 c r2 c
 aldeba_in 24 224 aldebaran 51 218
 aldeba_in 27 34 aldebaran 72 197
 aldeba_in 27 71 aldeba_in 27 102
@@ -1022,23 +552,15 @@ ayothaya 202 161 ayo_in01 31 108
 ayothaya 62 104 ayo_in01 191 183
 ayothaya 208 283 ayo_in02 100 152
 ayo_fild01 32 240 ayothaya 273 176
-ayo_fild01 129 197 ayo_fild02 100 100 {
-	steps: c c c c c r0 c c c
-}
-ayo_fild01 129 197 ayo_fild02 30 135 {
-	steps: c w1 c w1 c1 w1 c1 w1 c1 r0 c w1 c w1 c n
-}
+ayo_fild01 129 197 ayo_fild02 100 100 0 c c c c c r0 c c c
+ayo_fild01 129 197 ayo_fild02 30 135 c w1 c w1 c1 w1 c1 w1 c1 r0 c w1 c w1 c n
 ayo_fild02 285 149 ayo_dun01 275 18
-ayo_fild02 25 154 ayo_fild01 115 200 {
-	steps: c r0 c n
-}
+ayo_fild02 25 154 ayo_fild01 115 200 c r0 c n
 ayo_in01 31 111 ayothaya 202 161
 ayo_in01 194 183 ayothaya 62 104
 ayo_in02 100 148 ayothaya 208 283
 ayo_dun01 274 14 ayo_fild02 279 150
-ayo_dun01 24 283 ayo_dun02 23 26 {
-	steps: c n
-}
+ayo_dun01 24 283 ayo_dun02 23 26 c n
 ayo_dun02 24 22 ayo_dun01 24 279
 beach_dun 276 67 comodo 24 214
 beach_dun2 154 13 comodo 176 358
@@ -1126,14 +648,8 @@ comodo 271 271 cmd_in01 109 125
 comodo 333 175 beach_dun3 17 265
 einbroch 150 25 ein_fild08 164 377
 einbroch 157 331 ein_fild04 184 31
-einbroch 232 272 einbech 43 215 {
-	cost: 200
-	steps: c c r0 n
-}
-einbech 39 215 einbroch 226 276 {
-	cost: 200
-	steps: c r0 n
-}
+einbroch 232 272 einbech 43 215 200 c c r0 n
+einbech 39 215 einbroch 226 276 200 c r0 n
 einbech 145 112 ein_in01 268 104
 einbech 177 136 ein_in01 190 35
 einbech 138 252 ein_dun01 22 14
@@ -1579,15 +1095,9 @@ lhz_in02 94 212 lhz_in02 94 144
 lhz_in02 89 144 lhz_in02 89 212
 lhz_in02 103 155 lhz_in02 44 154
 lhz_in02 49 154 lhz_in02 98 155
-lighthalzen 267 200 lighthalzen 303 229 {
-	steps: c n
-}
-lighthalzen 294 223 lighthalzen 260 199 {
-	steps: c n
-}
-lighthalzen 313 301 lhz_cube 231 12 {
-	steps: c c r0 n
-}
+lighthalzen 267 200 lighthalzen 303 229 0 c n
+lighthalzen 294 223 lighthalzen 260 199 0 c n
+lighthalzen 313 301 lhz_cube 231 12 0 c c r0 n
 lighthalzen 198 163 lhz_in02 21 195
 louyang 218 19 lou_fild01 233 356
 louyang 130 63 lou_in02 72 31
@@ -1730,9 +1240,7 @@ moc_prydb1 142 115 moc_prydb1 111 115
 moc_ruins 54 161 moc_pryd01 195 9
 moc_ruins 71 16 moc_fild19 71 170
 moc_ruins 159 37 morocc 25 294
-monk_test 329 61 job_monk 226 175 {
-	steps: c c r0 c
-}
+monk_test 329 61 job_monk 226 175 0 c c r0 c
 morocc 24 164 moc_fild19 169 107
 morocc 25 294 moc_ruins 159 37
 morocc 46 46 morocc_in 68 75
@@ -2407,6 +1915,7 @@ um_fild02 188 374 um_fild04 182 13
 um_fild02 373 148 um_fild03 32 145
 um_fild02 373 329 um_fild03 19 334
 um_fild02 22 272 um_fild01 369 277
+um_fild02 373 148 um_fild03 32 145
 um_fild03 19 334 um_fild02 373 329
 um_fild03 32 145 um_fild02 373 148
 um_fild03 114 50 cmd_fild01 77 366
@@ -2789,8 +2298,10 @@ ve_fild04 44 249 ve_fild03 350 220
 ve_fild04 115 50 ve_fild06 80 183
 ve_fild05 200 330 ve_fild03 222 48
 ve_fild05 359 192 ve_fild06 80 183
+ve_fild06 153 220 veins 218 355
 ve_fild06 81 177 ve_fild04 115 55
 ve_fild06 81 177 ve_fild05 354 191
+ve_fild07 147 371 veins 146 28
 yuno_fild06 369 136 hu_fild04 28 126
 hu_fild04 26 126 yuno_fild06 367 136
 yuno_fild06 149 369 hu_fild01 139 37
@@ -2799,8 +2310,6 @@ hu_fild04 381 187 hu_fild05 34 202
 hu_fild05 32 202 hu_fild04 379 187
 hu_fild05 91 42 hu_fild07 80 369
 hu_fild07 80 371 hu_fild05 91 44
-hu_fild07 35 351 yuno_fild02 384 338
-yuno_fild02 384 340 hu_fild07 37 351
 hu_fild07 56 36 yuno_fild09 47 375
 yuno_fild09 47 377 hu_fild07 56 38
 hu_fild07 226 36 yuno_fild09 220 372
@@ -2826,6 +2335,15 @@ airport 161 13 airport 47 21
 airport 47 18 airport 163 16
 airport 143 14 einbroch 64 204
 einbroch 64 207 airport 143 17
+lhz_airport 125 14 lhz_airport 19 20
+lhz_airport 19 18 lhz_airport 123 14
+lhz_airport 160 14 lhz_airport 48 20
+lhz_airport 48 18 lhz_airport 162 14
+lighthalzen 267 76 lhz_airport 143 15
+lhz_airport 143 13 lighthalzen 265 76
+lhz_airport 143 63 lighthalzen 296 76
+lighthalzen 294 76 lhz_airport 143 60
+lighthalzen 308 76 airplane 224 64
 y_airport 125 14 y_airport 19 20
 y_airport 19 18 y_airport 123 14
 y_airport 160 14 y_airport 48 20
@@ -2834,7 +2352,16 @@ yuno 53 214 y_airport 143 23
 y_airport 143 16 yuno 52 207
 yuno 47 240 y_airport 143 54
 yuno 59 240 y_airport 143 54
-
+airplane 208 53 airplane 239 160
+airplane 245 160 airplane 214 54
+airplane_01 254 54 airplane_01 91 67
+airplane_01 87 67 airplane_01 250 54
+airplane_01 208 53 airplane_01 239 160
+airplane_01 245 160 airplane_01 214 54
+airplane_01 104 199 airplane_01 105 72
+airplane_01 103 72 airplane_01 102 199
+airplane_01 104 176 airplane_01 105 52
+airplane_01 103 52 airplane_01 102 176
 ein_in01 265 104 einbech 141 112
 einbech 256 109 ein_in01 148 153
 ein_in01 144 153 einbech 253 109
@@ -2965,13 +2492,8 @@ que_bingo 39 34 que_bingo 34 109
 que_bingo 34 105 que_bingo 38 28
 que_bingo 53 34 que_bingo 49 71
 que_bingo 48 66 que_bingo 53 29
-hugel 209 109 odin_tem01 100 146 {
-	cost: 800
-	steps: c r1 n
-}
-odin_temp01 93 146 hugel 206 109 {
-	steps: c r1 n
-}
+hugel 209 109 odin_tem01 100 146 800 c r1 n
+odin_temp01 93 146 hugel 206 109 c r1 n
 ein_fild04 343 293 ein_fild05 80 294
 ein_fild05 76 294 ein_fild04 336 292
 ein_fild05 376 183 ein_fild06 47 166
@@ -3107,24 +2629,16 @@ prontera 263 279 prt_in 227 18
 prt_in 227 15 prontera 263 275
 prt_church 115 122 prt_church 168 106
 prt_church 166 106 prt_church 112 122
-alberta 245 66 moscovia 162 56 {
-	cost: 10000
-	steps: c r1 c r0 n
-}
-moscovia 166 53 alberta 243 67 {
-	steps: c r0 n
-}
-alberta 189 151 izlude 176 182 {
-	cost: 500
-	steps: c r1
-}
-izlude 201 181 alberta 188 169 {
-	cost: 500
-	steps: c r1
-}
+alberta 245 66 moscovia 162 56 10000 c r1 c r0 n
+moscovia 166 53 alberta 243 67 0 c r0 n
+alberta 189 151 izlude 176 182 500 c r1
+izlude 201 181 alberta 188 169 500 c r1
 hu_fild06 200 372 hugel 95 37
+hugel 95 33 hu_fild06 200 367
 hu_fild06 28 119 hu_fild05 347 130
 hu_fild05 353 126 hu_fild06 34 119
+airplane 254 54 airplane 91 67
+airplane 87 67 airplane 250 54
 yuno 96 261 airplane 244 58
 yuno 6 261 airplane_01 244 58
 izlude 149 39 izlude 182 56
@@ -3154,66 +2668,37 @@ mosk_in 99 126 mosk_in 21 116
 moscovia 256 138 mosk_in 96 61
 moscovia 256 179 mosk_in 211 114
 mosk_in 89 180 moscovia 204 169
+
 # Einbroch tower
-einbroch 218 198 einbroch 181 196 {
-	cost: 10
-	steps: c c c c r0
-}
-einbroch 173 229 einbroch 179 204 {
-	cost: 10
-	steps: c c c c r0
-}
-einbroch 176 172 einbroch 181 196 {
-	cost: 10
-	steps: c c c c r0
-}
+einbroch 218 198 einbroch 181 196 10 c c c c r0
+einbroch 173 229 einbroch 179 204 10 c c c c r0
+einbroch 176 172 einbroch 181 196 10 c c c c r0
 # 175 196 have several destinations, all in einbroch
-einbroch 175 196 einbroch 216 188 {
-	steps: c c r0
-}
+einbroch 175 196 einbroch 216 188 0 c c r0
+
 einbroch 137 199 que_ng 138 167
 que_ng 130 166 einbroch 130 197
 que_ng 178 162 que_ng 176 86
 que_ng 170 85 que_ng 182 161
 que_ng 165 137 que_ng 177 41
 que_ng 172 42 que_ng 160 139
+
 # Yuno airport
-y_airport 143 43 y_airport 148 51 {
-	cost: 1200
-	steps: c r0 c r0
-}
-y_airport 143 49 y_airport 142 40 {
-	steps: c r0 c r0
-}
-y_airport 140 63 yuno 47 244 {
-	steps: c r0
-}
-y_airport 145 63 yuno 59 244 {
-	steps: c r0
-}
+y_airport 143 43 y_airport 148 51 1200 c r0 c r0
+y_airport 143 49 y_airport 142 40 0 c r0 c r0
+y_airport 140 63 yuno 47 244 0 c r0
+y_airport 145 63 yuno 59 244 0 c r0
 
 # Lighthalzen airport
-lighthalzen 267 75 lhz_airport 142 17
-lhz_airport 143 43 lhz_airport 148 51 {
-	cost: 1200
-	steps: c r0 c r0
-}
-
-lhz_airport 143 49 lhz_airport 142 40 {
-	steps: c r0 c r0
-}
-
-lhz_airport 142 60 lighthalzen 296 76
-lhz_airport 142 13 lighthalzen 262 75
-lighthalzen 294 76 lhz_airport 143 53
-lighthalzen 308 76 airplane 224 64
+lhz_airport 143 43 lhz_airport 148 51 1200 c r0 c r0
+lhz_airport 143 49 lhz_airport 142 40 0 c r0 c r0
 
 # Izlude airship
-izlude 206 55 airplane_01 244 58 {
-	cost: 1200
-	steps: c r0 c r0
-}
+izlude 206 55 airplane_01 244 58 1200 c r0 c r0
+
 # Rachel airship
+#(portal with dialog) ra_fild12 295 208 airplane_01 245 60 1200 c r0
+
 prt_fild03 371 256 prt_monk 25 248
 prt_monk 245 137 monk_in 98 183
 monk_in 98 186 prt_monk 245 139
@@ -3229,15 +2714,14 @@ monk_in 69 46 monk_in 38 38
 monk_in 40 38 monk_in 71 46
 monk_in 98 27 prt_monk 245 104
 prt_monk 245 106 monk_in 98 30
-job_monk 225 180 prt_monk 194 168 {
-	steps: c
-}
+job_monk 225 180 prt_monk 194 168 0 c
 monk_test 329 76 monk_test 259 118
 monk_test 259 115 monk_test 329 71
 monk_test 272 125 monk_test 301 127
 monk_test 298 127 monk_test 268 125
 monk_test 166 278 prt_monk 196 168
 monk_test 329 47 prt_monk 193 166
+
 # Aldebaran - alchemist guild
 aldebaran 65 53 alde_alche 20 175
 alde_alche 13 184 alde_alche 88 113
@@ -3256,15 +2740,18 @@ aldebaran 53 65 alde_alche 42 175
 alde_alche 42 171 aldebaran 56 68
 alde_alche 41 186 alde_alche 113 178
 alde_alche 114 183 alde_alche 42 182
+
+lhz_airport 142 13 lighthalzen 262 75
+
 # Lighthalzen Rekenber HQ - entrance
 lighthalzen 106 248 lhz_in01 116 126
 lhz_in01 116 121 lighthalzen 106 243
+
 # Lighthalzen Rekenber HQ - alchemist area entrance
-lhz_in01 35 226 lhz_in01 37 225 {
-	steps: n
-}
+lhz_in01 35 226 lhz_in01 37 225 0 n
 lhz_in01 40 224 lhz_in01 19 129
 lhz_in01 15 129 lhz_in01 34 224
+
 lhz_in01 11 24 lhz_in01 149 179
 lhz_in01 149 179 lhz_in01 15 24
 lhz_in01 191 127 lhz_in01 53 129
@@ -3284,27 +2771,32 @@ lighthalzen 198 257 lhz_in02 39 28
 lighthalzen 236 276 lhz_in02 133 199
 lighthalzen 251 299 lhz_in03 97 21
 # Rogue Guild
+
 cmd_fild07 193 117 in_rogue 379 46
 in_rogue 375 46 cmd_fild07 196 117
 in_rogue 375 33 in_rogue 380 125
 in_rogue 375 125 in_rogue 379 33
+
 #(portal with dialog) cmd_fild09 335 143 in_rogue 169 34 0 c r0 r2 r4 r0 c
 in_rogue 172 34 cmd_fild09 341 143
 # maze entrance
 #in_rogue 160 34 in_rogue x y 0 c c c c c c r0
+
 cmd_fild04 304 180 in_rogue 164 106
 in_rogue 161 103 cmd_fild04 304 180
+
 # maze exit
 in_rogue 370 320 in_rogue 378 113
+
 # Louyang Tower
 louyang 133 245 lou_in01 25 19
 lou_in01 28 19 louyang 136 245
 # bug: Kore can't use this portal properly lou_in01 25 23 lou_in01 17 19 500 c c r1 c
+
 # Mushroom Farm
-moc_ruins 141 125 job_thief1 133 333 {
-	steps: c
-}
+moc_ruins 141 125 job_thief1 133 333 0 c # random endpoint
 job_thief1 180 15 moc_ruins 145 117
+
 # Hugel - Lighthalzen Airship (needs additional configuration)
 #airplane 243 73 einbroch 92 278
 #airplane 243 73 hugel 181 146
@@ -3318,6 +2810,7 @@ new_zone02 46 172 new_zone02 78 106
 new_zone02 156 171 new_zone02 126 106
 pay_fild07 163 17 pay_fild03 177 275
 alde_alche 19 171 aldebaran 68 56
+airplane 243 73 lighthalzen 302 75
 airport 142 13 lighthalzen 262 75
 lighthalzen 196 46 lhz_in02 282 83
 lhz_in02 274 82 lhz_in02 270 14
@@ -3325,99 +2818,45 @@ lhz_in02 288 30 lighthalzen 194 35
 lighthalzen 197 36 lhz_in02 284 30
 lhz_in02 265 14 lhz_in02 269 82
 lhz_in02 282 79 lighthalzen 194 48
+
 # Eden HQ Entrace
-prontera 124 76 moc_para01 31 14 {
-	steps: c c r0
-}
-# prontera 38 212 moc_para01 31 14 c c r0
-#prontera 162 326 moc_para01 31 14 c c r0
-#prontera 271 213 moc_para01 31 14 c c r0
+prontera 124 76 moc_para01 31 14 c c r0
+prontera 38 212 moc_para01 31 14 c c r0
+prontera 162 326 moc_para01 31 14 c c r0
+prontera 271 213 moc_para01 31 14 c c r0
 #morocc 161 97 moc_para01 31 14 c c r0 does not exist in bRO
-moc_ruins 68 164 moc_para01 31 14 {
-	steps: c c r0
-}
-moc_prydb1 53 126 moc_para01 31 14 {
-	steps: c c r0
-}
-amatsu 100 145 moc_para01 31 14 {
-	steps: c c r0
-}
-brasilis 194 221 moc_para01 31 14 {
-	steps: c c r0
-}
-geffen 132 66 moc_para01 31 14 {
-	steps: c c r0
-}
+moc_ruins 68 164 moc_para01 31 14 c c r0
+moc_prydb1 53 126 moc_para01 31 14 c c r0
+amatsu 100 145 moc_para01 31 14 c c r0
+brasilis 194 221 moc_para01 31 14 c c r0
+geffen 132 66 moc_para01 31 14 c c r0
 #geffen 196 147 moc_para01 31 14 c c r0 does not exist in bRO
-payon 177 111 moc_para01 31 14 {
-	steps: c c r0
-}
-aldebaran 133 119 moc_para01 31 14 {
-	steps: c c r0
-}
-einbroch 250 211 moc_para01 31 14 {
-	steps: c c r0
-}
-moscovia 220 192 moc_para01 31 14 {
-	steps: c c r0
-}
-einbroch 55 202 moc_para01 31 14 {
-	steps: c c r0
-}
-yuno 144 189 moc_para01 31 14 {
-	steps: c c r0
-}
-lighthalzen 164 86 moc_para01 31 14 {
-	steps: c c r0
-}
-alberta 124 67 moc_para01 31 14 {
-	steps: c c r0
-}
-dewata 194 168 moc_para01 31 14 {
-	steps: c c r0
-}
-comodo 202 151 moc_para01 31 14 {
-	steps: c c r0
-}
+payon 177 111 moc_para01 31 14 c c r0
+aldebaran 133 119 moc_para01 31 14 c c r0
+einbroch 244 200 moc_para01 31 14 c c r0
+moscovia 220 192 moc_para01 31 14 c c r0
+einbroch 55 202 moc_para01 31 14 c c r0
+yuno 144 189 moc_para01 31 14 c c r0
+lighthalzen 167 102 moc_para01 31 14 c c r0
+alberta 124 67 moc_para01 31 14 c c r0
+dewata 194 168 moc_para01 31 14 c c r0
+# comodo 191 153 moc_para01 31 14 c c r0
 # cmd_fild07 139 134 moc_para01 31 14 c c r0
-gonryun 162 122 moc_para01 31 14 {
-	steps: c c r0
-}
+gonryun 162 122 moc_para01 31 14 c c r0
 #umbala 96 160 moc_para01 31 14 c c r0
-ayothaya 209 169 moc_para01 31 14 {
-	steps: c c r0
-}
-hugel 99 167 moc_para01 31 14 {
-	steps: c c r0
-}
-rachel 125 144 moc_para01 31 14 {
-	steps: c c r0
-}
-veins 220 109 moc_para01 31 14 {
-	steps: c c r0
-}
-alberta_in 75 39 moc_para01 31 14 {
-	steps: c c r0
-}
-alberta 27 238 moc_para01 31 14 {
-	steps: c c r0
-}
-geffen_in 160 104 moc_para01 31 14 {
-	steps: c c r0
-}
-payon_in02 58 58 moc_para01 31 14 {
-	steps: c c r0
-}
-izlude 134 98 moc_para01 31 14 {
-	steps: c c r0
-}
-izlude_in 68 162 moc_para01 31 14 {
-	steps: c c r0
-}
+ayothaya 209 169 moc_para01 31 14 c c r0
+hugel 99 167 moc_para01 31 14 c c r0
+rachel 125 144 moc_para01 31 14 c c r0
+veins 214 122 moc_para01 31 14 c c r0
+alberta_in 75 39 moc_para01 31 14 c c r0
+alberta 27 238 moc_para01 31 14 c c r0
+geffen_in 160 104 moc_para01 31 14 c c r0
+payon_in02 58 58 moc_para01 31 14 c c r0
+izlude 134 98 moc_para01 31 14 c c r0
+izlude_in 68 162 moc_para01 31 14 c c r0
+
 # Eden HQ
-moc_para01 47 39 moc_para01 106 14 {
-	steps: c r0
-}
+moc_para01 47 39 moc_para01 106 14 c r0
 moc_para01 102 92 moc_para01 111 33
 moc_para01 113 32 moc_para01 105 92
 moc_para01 107 12 moc_para01 47 37
@@ -3440,6 +2879,7 @@ moc_para01 158 26 moc_para01 55 27
 # #moc_para01 179 90 moc_para01 41 185
 # moc_paraup 179 90 moc_paraup 41 185
 moc_para01 30 10 prontera 116 72
+
 # Malangdo
 mal_in01 18 161 malangdo 112 167
 malangdo 112 167 mal_in01 17 163
@@ -3487,12 +2927,13 @@ mal_in02 139 35 mal_in02 137 53
 mal_in02 137 53 mal_in02 139 33
 mal_in02 159 61 mal_in02 142 60
 mal_in02 142 60 mal_in02 162 61
+
 #------------------------------
-xmas 139 307 evt_xmas 129 129 {
-	steps: c r1
-}
+xmas 139 307 evt_xmas 129 129 0 c r1
+
 valkyrie 49 72 valkyrie 49 67
 valkyrie 49 67 valkyrie 49 75
+
 yuno_fild12 23 226 yuno_fild11 364 218
 yuno_fild11 364 218 yuno_fild12 26 230
 prt_fild09 383 251 moc_fild01 25 242
@@ -3500,1674 +2941,17 @@ dew_fild01 375 212 dewata 44 252
 dewata 44 252 dew_fild01 373 212
 dew_dun02 305 30 dew_fild01 48 65
 dew_fild01 48 65 dew_dun02 302 30
+
+# Novicegrounds
+new_1-1 148 112 new_1-2 100 9
+new_1-2 100 6 new_1-1 148 112
+new_2-1 148 112 new_2-2 100 9
+new_2-2 100 6 new_2-1 148 112
+new_3-1 148 112 new_3-2 100 9
+new_3-2 100 6 new_3-1 148 112
+new_4-1 148 112 new_4-2 100 9
+new_4-2 100 6 new_4-1 148 112
+new_5-1 148 112 new_5-2 100 9
+new_5-2 100 6 new_5-1 148 112
 moc_para01 100 27 moc_para01 102 92
-moc_para01 49 86 moc_para01 100 27
-lhz_in02 236 219 lhz_in02 210 284
-lhz_in02 210 284 lhz_in02 241 219
-# PvP
-prt_in 52 140 pvp_y_room 51 23 {
-	steps: c r1 c r0
-}
-# morocc room
-pvp_y_room 86 85 pvp_y_8-5 226 234 {
-	steps: r4
-}
-moc_fild02 92 342 moc_fild01 315 25
-prt_maze01 105 114 prt_maze01 85 56
-prt_maze01 114 145 prt_maze01 114 56
-prt_maze01 114 22 prt_maze01 177 71
-prt_maze01 114 56 prt_maze01 107 146
-prt_maze01 114 95 prt_maze01 137 125
-prt_maze01 125 171 prt_maze01 52 45
-prt_maze01 137 125 prt_maze01 22 85
-prt_maze01 137 74 prt_maze01 17 114
-prt_maze01 139 45 prt_maze01 103 25
-prt_maze01 14 45 prt_maze01 57 57
-prt_maze01 142 114 prt_maze01 45 104
-prt_maze01 154 134 prt_maze01 180 144
-prt_maze01 154 181 prt_maze01 17 114
-prt_maze01 154 22 prt_maze01 105 114
-prt_maze01 16 34 prt_maze01 167 63
-prt_maze01 165 22 prt_maze01 18 154
-prt_maze01 166 139 prt_maze01 154 22
-prt_maze01 17 114 prt_maze01 17 57
-prt_maze01 176 34 prt_maze01 137 125
-prt_maze01 176 5 prt_maze01 137 128
-prt_maze01 177 74 prt_maze01 16 34
-prt_maze01 18 154 prt_maze01 74 12
-prt_maze01 194 139 prt_maze01 137 125
-prt_maze01 194 54 prt_maze01 63 125
-prt_maze01 22 85 prt_maze01 137 128
-prt_maze01 23 125 prt_maze01 95 55
-prt_maze01 23 5 prt_maze01 137 125
-prt_maze01 45 104 prt_maze01 5 58
-prt_maze01 45 21 prt_maze01 114 145
-prt_maze01 5 58 prt_maze01 17 114
-prt_maze01 52 45 prt_maze01 14 45
-prt_maze01 54 154 prt_maze01 25 135
-prt_maze01 58 194 prt_maze01 17 114
-prt_maze01 63 114 prt_maze01 48 102
-prt_maze01 63 125 prt_maze01 139 45
-prt_maze01 74 12 prt_maze01 139 45
-prt_maze01 85 174 prt_maze01 74 12
-prt_maze01 85 56 prt_maze01 23 125
-prt_maze01 85 97 prt_maze01 137 125
-prt_maze01 96 45 prt_maze01 55 45
-prt_maze01 99 34 prt_maze01 139 45
-# splendide
-moc_para01 44 19 moc_fild20 342 198 {
-	steps: c r0 c
-	cost: 50000 # recheck
-}
-moc_fild20 368 197 moc_fild22b 175 159 {
-	steps: c r1 c
-}
-moc_fild22b 182 179 mid_camp 210 291 {
-	steps: c c c c r0 c
-}
-mid_camp 13 143 spl_fild02 379 143 {
-	steps: c r0 c
-}
-spl_fild02 289 374 spl_fild01 291 36
 
-# Airplane 
-ra_fild12 295 208 airplane_01 245 60 {
-	type: portal
-	steps: c r0
-	cost: 1200
-}
-hugel 178 142 airplane 224 28 {
-	type: portal
-	steps: c r0
-	cost: 1200
-}
-# hugel 178 142 airplane 224 28 <- TODO: TEXT PORTAL
-airplane 208 53 airplane 239 160
-airplane 245 160 airplane 214 54
-airplane_01 254 54 airplane_01 91 67
-airplane_01 87 67 airplane_01 250 54
-airplane_01 208 53 airplane_01 239 160
-airplane_01 245 160 airplane_01 214 54
-airplane_01 104 199 airplane_01 105 72
-airplane_01 103 72 airplane_01 102 199
-airplane_01 104 176 airplane_01 105 52
-airplane_01 103 52 airplane_01 102 176
-airplane 254 54 airplane 91 67
-airplane 87 67 airplane 250 54
-airplane 243 73 lighthalzen 302 75 {
-	activation_text: Lighthalzen
-}
-airplane 243 73 einbroch 92 278 {
-	activation_text: Einbroch
-}
-airplane 243 73 yuno 92 260 {
-	activation_text: [J|Y]uno
-}
-airplane 243 73 hugel 181 146 {
-	activation_text: Hugel
-}
-airplane_01 243 73 yuno 12 261 {
-	activation_text: [J|Y]uno
-}
-airplane_01 243 73 ra_fild12 292 204 {
-	activation_text: Rachel
-}
-airplane_01 243 73 izlude 200 56 {
-	activation_text: Izlude
-}
-s_atelier 76 128 s_atelier 31 128
-s_atelier 31 128 s_atelier 76 125
-s_atelier 166 72 s_atelier 117 71
-s_atelier 117 71 s_atelier 171 72
-rachel 180 115 s_atelier 130 70
-s_atelier 131 75 rachel 180 118
-yuno 278 67 s_atelier 109 123
-s_atelier 159 130 s_atelier 108 129
-s_atelier 108 129 s_atelier 159 125
-s_atelier 105 123 yuno 275 67
-
-# umbala 140 197 nif_in 68 14 {
-	# type: bungee
-	# return_point: umbala 138 198
-# }
-s_atelier 18 79 lighthalzen 41 52
-lighthalzen 41 52 s_atelier 18 75
-s_atelier 80 66 s_atelier 32 64
-s_atelier 32 64 s_atelier 80 63
-yuno_in04 33 130 yuno 93 180
-yuno 93 180 yuno_in04 33 127
-
-hu_fild01 140 163 tha_scene01 131 220 {
-	steps: c r2 c r0 c
-	cost: 5000
-}
-
-tha_t01 149 228 job3_sha01 71 36
-job3_sha01 71 19 tha_t01 149 224
-
-airport 143 43 airport 148 51 {
-	cost: 1200
-	steps: c r0 c r0
-}
-
-airport 143 49 airport 142 40 {
-	steps: c r0 c r0
-}
-
-alberta 200 151 malangdo 217 85 {
-	steps: c r1 c c r0 c
-	cost: 10000
-}
-
-payon_in01 193 92 payon_in01 146 61
-payon_in01 146 61 payon_in01 193 89
-payon_in01 181 43 payon_in01 181 70
-payon_in01 181 70 payon_in01 181 40
-payon 223 117 payon_in01 172 11
-payon_in01 172 11 payon 220 117
-
-cmd_fild09 106 195 in_rogue 246 25 { # Aragham_Jr
-	steps: c r1 r2 r1 r0 c
-	type: portal
-}
-
-cmd_fild04 304 180 in_rogue 164 106 { # Antonio_Jr
-	steps: c r2 r1 r1 r2 c
-	type: portal
-}
-	
-cmd_fild09 335 143 in_rogue 169 34 { # Holgren_Jr
-	steps: c r0 r2 r4 r0 c
-	type: portal
-}
-
-
-# bRO Odin VIP Kafra Warp - by elvisbks http://forums.openkore.com.br/index.php?/user/899-elvisbks/
-# Dungeon Group 1
-alberta 114 64 mag_dun01 125 71 {
-	steps: r1 c r0 c c
-	vip: 1
-}
-alberta 114 64 mjo_dun02 80 297 {
-	steps: r1 c r1 c c
-	vip: 1
-}
-alberta 114 64 umbala 111 283 {
-	steps: r1 c r2 c c
-	vip: 1
-}
-alberta 114 64 ein_dun01 261 262 {
-	steps: r1 c r3 c c
-	vip: 1
-}
-alberta 114 64 pay_dun03 155 150 {
-	steps: r1 c r4 c c
-	vip: 1
-}
-alberta 114 64 xmas_dun01 133 130 {
-	steps: r1 c r5 c c
-	vip: 1
-}
-alberta 114 64 gl_prison 140 15 {
-	steps: r1 c r6 c c
-	vip: 1
-}
-alberta 114 64 lou_dun03 165 38 {
-	steps: r1 c r7 c c
-	vip: 1
-}
-alberta 114 64 gon_dun02 251 263 {
-	steps: r1 c r8 c c
-	vip: 1
-}
-alberta 114 64 iz_dun02 350 335 {
-	steps: r1 c r9 c c
-	vip: 1
-}
-alberta 114 64 tur_dun02 165 30 {
-	steps: r1 c r10 c c
-	vip: 1
-}
-alberta 114 64 alde_dun03 275 180 {
-	steps: r1 c r11 c c
-	vip: 1
-}
-alberta 114 64 c_tower3 34 42 {
-	steps: r1 c r12 c c
-	vip: 1
-}
-alberta 114 64 gl_sew02 292 295 {
-	steps: r1 c r13 c c
-	vip: 1
-}
-alberta 114 64 in_sphinx4 120 120 {
-	steps: r1 c r14 c c
-	vip: 1
-}
-alberta 114 64 moc_pryd04 195 4 {
-	steps: r1 c r15 c c
-	vip: 1
-}
-alberta 114 64 prt_sewb3 20 175 {
-	steps: r1 c r16 c c
-	vip: 1
-}
-alberta 114 64 ama_dun01 222 144 {
-	steps: r1 c r17 c c
-	vip: 1
-}
-aldebaran 137 119 mag_dun01 125 71 {
-	steps: r1 c r0 c c
-	vip: 1
-}
-aldebaran 137 119 mjo_dun02 80 297 {
-	steps: r1 c r1 c c
-	vip: 1
-}
-aldebaran 137 119 umbala 111 283 {
-	steps: r1 c r2 c c
-	vip: 1
-}
-aldebaran 137 119 ein_dun01 261 262 {
-	steps: r1 c r3 c c
-	vip: 1
-}
-aldebaran 137 119 pay_dun03 155 150 {
-	steps: r1 c r4 c c
-	vip: 1
-}
-aldebaran 137 119 xmas_dun01 133 130 {
-	steps: r1 c r5 c c
-	vip: 1
-}
-aldebaran 137 119 gl_prison 140 15 {
-	steps: r1 c r6 c c
-	vip: 1
-}
-aldebaran 137 119 lou_dun03 165 38 {
-	steps: r1 c r7 c c
-	vip: 1
-}
-aldebaran 137 119 gon_dun02 251 263 {
-	steps: r1 c r8 c c
-	vip: 1
-}
-aldebaran 137 119 iz_dun02 350 335 {
-	steps: r1 c r9 c c
-	vip: 1
-}
-aldebaran 137 119 tur_dun02 165 30 {
-	steps: r1 c r10 c c
-	vip: 1
-}
-aldebaran 137 119 alde_dun03 275 180 {
-	steps: r1 c r11 c c
-	vip: 1
-}
-aldebaran 137 119 c_tower3 34 42 {
-	steps: r1 c r12 c c
-	vip: 1
-}
-aldebaran 137 119 gl_sew02 292 295 {
-	steps: r1 c r13 c c
-	vip: 1
-}
-aldebaran 137 119 in_sphinx4 120 120 {
-	steps: r1 c r14 c c
-	vip: 1
-}
-aldebaran 137 119 moc_pryd04 195 4 {
-	steps: r1 c r15 c c
-	vip: 1
-}
-aldebaran 137 119 prt_sewb3 20 175 {
-	steps: r1 c r16 c c
-	vip: 1
-}
-aldebaran 137 119 ama_dun01 222 144 {
-	steps: r1 c r17 c c
-	vip: 1
-}
-comodo 185 153 mag_dun01 125 71 {
-	steps: r1 c r0 c c
-	vip: 1
-}
-comodo 185 153 mjo_dun02 80 297 {
-	steps: r1 c r1 c c
-	vip: 1
-}
-comodo 185 153 umbala 111 283 {
-	steps: r1 c r2 c c
-	vip: 1
-}
-comodo 185 153 ein_dun01 261 262 {
-	steps: r1 c r3 c c
-	vip: 1
-}
-comodo 185 153 pay_dun03 155 150 {
-	steps: r1 c r4 c c
-	vip: 1
-}
-comodo 185 153 xmas_dun01 133 130 {
-	steps: r1 c r5 c c
-	vip: 1
-}
-comodo 185 153 gl_prison 140 15 {
-	steps: r1 c r6 c c
-	vip: 1
-}
-comodo 185 153 lou_dun03 165 38 {
-	steps: r1 c r7 c c
-	vip: 1
-}
-comodo 185 153 gon_dun02 251 263 {
-	steps: r1 c r8 c c
-	vip: 1
-}
-comodo 185 153 iz_dun02 350 335 {
-	steps: r1 c r9 c c
-	vip: 1
-}
-comodo 185 153 tur_dun02 165 30 {
-	steps: r1 c r10 c c
-	vip: 1
-}
-comodo 185 153 alde_dun03 275 180 {
-	steps: r1 c r11 c c
-	vip: 1
-}
-comodo 185 153 c_tower3 34 42 {
-	steps: r1 c r12 c c
-	vip: 1
-}
-comodo 185 153 gl_sew02 292 295 {
-	steps: r1 c r13 c c
-	vip: 1
-}
-comodo 185 153 in_sphinx4 120 120 {
-	steps: r1 c r14 c c
-	vip: 1
-}
-comodo 185 153 moc_pryd04 195 4 {
-	steps: r1 c r15 c c
-	vip: 1
-}
-comodo 185 153 prt_sewb3 20 175 {
-	steps: r1 c r16 c c
-	vip: 1
-}
-comodo 185 153 ama_dun01 222 144 {
-	steps: r1 c r17 c c
-	vip: 1
-}
-geffen 135 53 mag_dun01 125 71 {
-	steps: r1 c r0 c c
-	vip: 1
-}
-geffen 135 53 mjo_dun02 80 297 {
-	steps: r1 c r1 c c
-	vip: 1
-}
-geffen 135 53 umbala 111 283 {
-	steps: r1 c r2 c c
-	vip: 1
-}
-geffen 135 53 ein_dun01 261 262 {
-	steps: r1 c r3 c c
-	vip: 1
-}
-geffen 135 53 pay_dun03 155 150 {
-	steps: r1 c r4 c c
-	vip: 1
-}
-geffen 135 53 xmas_dun01 133 130 {
-	steps: r1 c r5 c c
-	vip: 1
-}
-geffen 135 53 gl_prison 140 15 {
-	steps: r1 c r6 c c
-	vip: 1
-}
-geffen 135 53 lou_dun03 165 38 {
-	steps: r1 c r7 c c
-	vip: 1
-}
-geffen 135 53 gon_dun02 251 263 {
-	steps: r1 c r8 c c
-	vip: 1
-}
-geffen 135 53 iz_dun02 350 335 {
-	steps: r1 c r9 c c
-	vip: 1
-}
-geffen 135 53 tur_dun02 165 30 {
-	steps: r1 c r10 c c
-	vip: 1
-}
-geffen 135 53 alde_dun03 275 180 {
-	steps: r1 c r11 c c
-	vip: 1
-}
-geffen 135 53 c_tower3 34 42 {
-	steps: r1 c r12 c c
-	vip: 1
-}
-geffen 135 53 gl_sew02 292 295 {
-	steps: r1 c r13 c c
-	vip: 1
-}
-geffen 135 53 in_sphinx4 120 120 {
-	steps: r1 c r14 c c
-	vip: 1
-}
-geffen 135 53 moc_pryd04 195 4 {
-	steps: r1 c r15 c c
-	vip: 1
-}
-geffen 135 53 prt_sewb3 20 175 {
-	steps: r1 c r16 c c
-	vip: 1
-}
-geffen 135 53 ama_dun01 222 144 {
-	steps: r1 c r17 c c
-	vip: 1
-}
-izlude 124 88 mag_dun01 125 71 {
-	steps: r1 c r0 c c
-	vip: 1
-}
-izlude 124 88 mjo_dun02 80 297 {
-	steps: r1 c r1 c c
-	vip: 1
-}
-izlude 124 88 umbala 111 283 {
-	steps: r1 c r2 c c
-	vip: 1
-}
-izlude 124 88 ein_dun01 261 262 {
-	steps: r1 c r3 c c
-	vip: 1
-}
-izlude 124 88 pay_dun03 155 150 {
-	steps: r1 c r4 c c
-	vip: 1
-}
-izlude 124 88 xmas_dun01 133 130 {
-	steps: r1 c r5 c c
-	vip: 1
-}
-izlude 124 88 gl_prison 140 15 {
-	steps: r1 c r6 c c
-	vip: 1
-}
-izlude 124 88 lou_dun03 165 38 {
-	steps: r1 c r7 c c
-	vip: 1
-}
-izlude 124 88 gon_dun02 251 263 {
-	steps: r1 c r8 c c
-	vip: 1
-}
-izlude 124 88 iz_dun02 350 335 {
-	steps: r1 c r9 c c
-	vip: 1
-}
-izlude 124 88 tur_dun02 165 30 {
-	steps: r1 c r10 c c
-	vip: 1
-}
-izlude 124 88 alde_dun03 275 180 {
-	steps: r1 c r11 c c
-	vip: 1
-}
-izlude 124 88 c_tower3 34 42 {
-	steps: r1 c r12 c c
-	vip: 1
-}
-izlude 124 88 gl_sew02 292 295 {
-	steps: r1 c r13 c c
-	vip: 1
-}
-izlude 124 88 in_sphinx4 120 120 {
-	steps: r1 c r14 c c
-	vip: 1
-}
-izlude 124 88 moc_pryd04 195 4 {
-	steps: r1 c r15 c c
-	vip: 1
-}
-izlude 124 88 prt_sewb3 20 175 {
-	steps: r1 c r16 c c
-	vip: 1
-}
-izlude 124 88 ama_dun01 222 144 {
-	steps: r1 c r17 c c
-	vip: 1
-}
-lighthalzen 167 100 mag_dun01 125 71 {
-	steps: r1 c r0 c c
-	vip: 1
-}
-lighthalzen 167 100 mjo_dun02 80 297 {
-	steps: r1 c r1 c c
-	vip: 1
-}
-lighthalzen 167 100 umbala 111 283 {
-	steps: r1 c r2 c c
-	vip: 1
-}
-lighthalzen 167 100 ein_dun01 261 262 {
-	steps: r1 c r3 c c
-	vip: 1
-}
-lighthalzen 167 100 pay_dun03 155 150 {
-	steps: r1 c r4 c c
-	vip: 1
-}
-lighthalzen 167 100 xmas_dun01 133 130 {
-	steps: r1 c r5 c c
-	vip: 1
-}
-lighthalzen 167 100 gl_prison 140 15 {
-	steps: r1 c r6 c c
-	vip: 1
-}
-lighthalzen 167 100 lou_dun03 165 38 {
-	steps: r1 c r7 c c
-	vip: 1
-}
-lighthalzen 167 100 gon_dun02 251 263 {
-	steps: r1 c r8 c c
-	vip: 1
-}
-lighthalzen 167 100 iz_dun02 350 335 {
-	steps: r1 c r9 c c
-	vip: 1
-}
-lighthalzen 167 100 tur_dun02 165 30 {
-	steps: r1 c r10 c c
-	vip: 1
-}
-lighthalzen 167 100 alde_dun03 275 180 {
-	steps: r1 c r11 c c
-	vip: 1
-}
-lighthalzen 167 100 c_tower3 34 42 {
-	steps: r1 c r12 c c
-	vip: 1
-}
-lighthalzen 167 100 gl_sew02 292 295 {
-	steps: r1 c r13 c c
-	vip: 1
-}
-lighthalzen 167 100 in_sphinx4 120 120 {
-	steps: r1 c r14 c c
-	vip: 1
-}
-lighthalzen 167 100 moc_pryd04 195 4 {
-	steps: r1 c r15 c c
-	vip: 1
-}
-lighthalzen 167 100 prt_sewb3 20 175 {
-	steps: r1 c r16 c c
-	vip: 1
-}
-lighthalzen 167 100 ama_dun01 222 144 {
-	steps: r1 c r17 c c
-	vip: 1
-}
-morocc 160 97 mag_dun01 125 71 {
-	steps: r1 c r0 c c
-	vip: 1
-}
-morocc 160 97 mjo_dun02 80 297 {
-	steps: r1 c r1 c c
-	vip: 1
-}
-morocc 160 97 umbala 111 283 {
-	steps: r1 c r2 c c
-	vip: 1
-}
-morocc 160 97 ein_dun01 261 262 {
-	steps: r1 c r3 c c
-	vip: 1
-}
-morocc 160 97 pay_dun03 155 150 {
-	steps: r1 c r4 c c
-	vip: 1
-}
-morocc 160 97 xmas_dun01 133 130 {
-	steps: r1 c r5 c c
-	vip: 1
-}
-morocc 160 97 gl_prison 140 15 {
-	steps: r1 c r6 c c
-	vip: 1
-}
-morocc 160 97 lou_dun03 165 38 {
-	steps: r1 c r7 c c
-	vip: 1
-}
-morocc 160 97 gon_dun02 251 263 {
-	steps: r1 c r8 c c
-	vip: 1
-}
-morocc 160 97 iz_dun02 350 335 {
-	steps: r1 c r9 c c
-	vip: 1
-}
-morocc 160 97 tur_dun02 165 30 {
-	steps: r1 c r10 c c
-	vip: 1
-}
-morocc 160 97 alde_dun03 275 180 {
-	steps: r1 c r11 c c
-	vip: 1
-}
-morocc 160 97 c_tower3 34 42 {
-	steps: r1 c r12 c c
-	vip: 1
-}
-morocc 160 97 gl_sew02 292 295 {
-	steps: r1 c r13 c c
-	vip: 1
-}
-morocc 160 97 in_sphinx4 120 120 {
-	steps: r1 c r14 c c
-	vip: 1
-}
-morocc 160 97 moc_pryd04 195 4 {
-	steps: r1 c r15 c c
-	vip: 1
-}
-morocc 160 97 prt_sewb3 20 175 {
-	steps: r1 c r16 c c
-	vip: 1
-}
-morocc 160 97 ama_dun01 222 144 {
-	steps: r1 c r17 c c
-	vip: 1
-}
-payon 190 104 mag_dun01 125 71 {
-	steps: r1 c r0 c c
-	vip: 1
-}
-payon 190 104 mjo_dun02 80 297 {
-	steps: r1 c r1 c c
-	vip: 1
-}
-payon 190 104 umbala 111 283 {
-	steps: r1 c r2 c c
-	vip: 1
-}
-payon 190 104 ein_dun01 261 262 {
-	steps: r1 c r3 c c
-	vip: 1
-}
-payon 190 104 pay_dun03 155 150 {
-	steps: r1 c r4 c c
-	vip: 1
-}
-payon 190 104 xmas_dun01 133 130 {
-	steps: r1 c r5 c c
-	vip: 1
-}
-payon 190 104 gl_prison 140 15 {
-	steps: r1 c r6 c c
-	vip: 1
-}
-payon 190 104 lou_dun03 165 38 {
-	steps: r1 c r7 c c
-	vip: 1
-}
-payon 190 104 gon_dun02 251 263 {
-	steps: r1 c r8 c c
-	vip: 1
-}
-payon 190 104 iz_dun02 350 335 {
-	steps: r1 c r9 c c
-	vip: 1
-}
-payon 190 104 tur_dun02 165 30 {
-	steps: r1 c r10 c c
-	vip: 1
-}
-payon 190 104 alde_dun03 275 180 {
-	steps: r1 c r11 c c
-	vip: 1
-}
-payon 190 104 c_tower3 34 42 {
-	steps: r1 c r12 c c
-	vip: 1
-}
-payon 190 104 gl_sew02 292 295 {
-	steps: r1 c r13 c c
-	vip: 1
-}
-payon 190 104 in_sphinx4 120 120 {
-	steps: r1 c r14 c c
-	vip: 1
-}
-payon 190 104 moc_pryd04 195 4 {
-	steps: r1 c r15 c c
-	vip: 1
-}
-payon 190 104 prt_sewb3 20 175 {
-	steps: r1 c r16 c c
-	vip: 1
-}
-payon 190 104 ama_dun01 222 144 {
-	steps: r1 c r17 c c
-	vip: 1
-}
-prontera 146 98 mag_dun01 125 71 {
-	steps: r1 c r0 c c
-	vip: 1
-}
-prontera 146 98 mjo_dun02 80 297 {
-	steps: r1 c r1 c c
-	vip: 1
-}
-prontera 146 98 umbala 111 283 {
-	steps: r1 c r2 c c
-	vip: 1
-}
-prontera 146 98 ein_dun01 261 262 {
-	steps: r1 c r3 c c
-	vip: 1
-}
-prontera 146 98 pay_dun03 155 150 {
-	steps: r1 c r4 c c
-	vip: 1
-}
-prontera 146 98 xmas_dun01 133 130 {
-	steps: r1 c r5 c c
-	vip: 1
-}
-prontera 146 98 gl_prison 140 15 {
-	steps: r1 c r6 c c
-	vip: 1
-}
-prontera 146 98 lou_dun03 165 38 {
-	steps: r1 c r7 c c
-	vip: 1
-}
-prontera 146 98 gon_dun02 251 263 {
-	steps: r1 c r8 c c
-	vip: 1
-}
-prontera 146 98 iz_dun02 350 335 {
-	steps: r1 c r9 c c
-	vip: 1
-}
-prontera 146 98 tur_dun02 165 30 {
-	steps: r1 c r10 c c
-	vip: 1
-}
-prontera 146 98 alde_dun03 275 180 {
-	steps: r1 c r11 c c
-	vip: 1
-}
-prontera 146 98 c_tower3 34 42 {
-	steps: r1 c r12 c c
-	vip: 1
-}
-prontera 146 98 gl_sew02 292 295 {
-	steps: r1 c r13 c c
-	vip: 1
-}
-prontera 146 98 in_sphinx4 120 120 {
-	steps: r1 c r14 c c
-	vip: 1
-}
-prontera 146 98 moc_pryd04 195 4 {
-	steps: r1 c r15 c c
-	vip: 1
-}
-prontera 146 98 prt_sewb3 20 175 {
-	steps: r1 c r16 c c
-	vip: 1
-}
-prontera 146 98 ama_dun01 222 144 {
-	steps: r1 c r17 c c
-	vip: 1
-}
-yuno 147 187 mag_dun01 125 71 {
-	steps: r1 c r0 c c
-	vip: 1
-}
-yuno 147 187 mjo_dun02 80 297 {
-	steps: r1 c r1 c c
-	vip: 1
-}
-yuno 147 187 umbala 111 283 {
-	steps: r1 c r2 c c
-	vip: 1
-}
-yuno 147 187 ein_dun01 261 262 {
-	steps: r1 c r3 c c
-	vip: 1
-}
-yuno 147 187 pay_dun03 155 150 {
-	steps: r1 c r4 c c
-	vip: 1
-}
-yuno 147 187 xmas_dun01 133 130 {
-	steps: r1 c r5 c c
-	vip: 1
-}
-yuno 147 187 gl_prison 140 15 {
-	steps: r1 c r6 c c
-	vip: 1
-}
-yuno 147 187 lou_dun03 165 38 {
-	steps: r1 c r7 c c
-	vip: 1
-}
-yuno 147 187 gon_dun02 251 263 {
-	steps: r1 c r8 c c
-	vip: 1
-}
-yuno 147 187 iz_dun02 350 335 {
-	steps: r1 c r9 c c
-	vip: 1
-}
-yuno 147 187 tur_dun02 165 30 {
-	steps: r1 c r10 c c
-	vip: 1
-}
-yuno 147 187 alde_dun03 275 180 {
-	steps: r1 c r11 c c
-	vip: 1
-}
-yuno 147 187 c_tower3 34 42 {
-	steps: r1 c r12 c c
-	vip: 1
-}
-yuno 147 187 gl_sew02 292 295 {
-	steps: r1 c r13 c c
-	vip: 1
-}
-yuno 147 187 in_sphinx4 120 120 {
-	steps: r1 c r14 c c
-	vip: 1
-}
-yuno 147 187 moc_pryd04 195 4 {
-	steps: r1 c r15 c c
-	vip: 1
-}
-yuno 147 187 prt_sewb3 20 175 {
-	steps: r1 c r16 c c
-	vip: 1
-}
-yuno 147 187 ama_dun01 222 144 {
-	steps: r1 c r17 c c
-	vip: 1
-}
-
-# Dungeon Group 2
-alberta 114 64 ice_dun01 46 157 {
-	steps: r2 c r0 c c
-	vip: 1
-}
-alberta 114 64 thor_v01 277 234 {
-	steps: r2 c r1 c c
-	vip: 1
-}
-alberta 114 64 abyss_01 25 30 {
-	steps: r2 c r2 c c
-	vip: 1
-}
-alberta 114 64 hu_fild01 140 157 {
-	steps: r2 c r3 c c
-	vip: 1
-}
-alberta 114 64 ra_temple 119 175 {
-	steps: r2 c r4 c c
-	vip: 1
-}
-alberta 114 64 lighthalzen 311 301 {
-	steps: r2 c r5 c c
-	vip: 1
-}
-alberta 114 64 juperos_01 54 246 {
-	steps: r2 c r6 c c
-	vip: 1
-}
-alberta 114 64 gefenia02 201 34 {
-	steps: r2 c r7 c c
-	vip: 1
-}
-alberta 114 64 yuno_fild08 74 174 {
-	steps: r2 c r8 c c
-	vip: 1
-}
-alberta 114 64 prt_maze03 100 100 {
-	steps: r2 c r9 c c
-	vip: 1
-}
-alberta 114 64 niflheim 23 154 {
-	steps: r2 c r10 c c
-	vip: 1
-}
-alberta 114 64 treasure01 69 32 {
-	steps: r2 c r11 c c
-	vip: 1
-}
-alberta 114 64 ve_fild07 127 131 {
-	steps: r2 c r12 c c
-	vip: 1
-}
-aldebaran 137 119 ice_dun01 46 157 {
-	steps: r2 c r0 c c
-	vip: 1
-}
-aldebaran 137 119 thor_v01 277 234 {
-	steps: r2 c r1 c c
-	vip: 1
-}
-aldebaran 137 119 abyss_01 25 30 {
-	steps: r2 c r2 c c
-	vip: 1
-}
-aldebaran 137 119 hu_fild01 140 157 {
-	steps: r2 c r3 c c
-	vip: 1
-}
-aldebaran 137 119 ra_temple 119 175 {
-	steps: r2 c r4 c c
-	vip: 1
-}
-aldebaran 137 119 lighthalzen 311 301 {
-	steps: r2 c r5 c c
-	vip: 1
-}
-aldebaran 137 119 juperos_01 54 246 {
-	steps: r2 c r6 c c
-	vip: 1
-}
-aldebaran 137 119 gefenia02 201 34 {
-	steps: r2 c r7 c c
-	vip: 1
-}
-aldebaran 137 119 yuno_fild08 74 174 {
-	steps: r2 c r8 c c
-	vip: 1
-}
-aldebaran 137 119 prt_maze03 100 100 {
-	steps: r2 c r9 c c
-	vip: 1
-}
-aldebaran 137 119 niflheim 23 154 {
-	steps: r2 c r10 c c
-	vip: 1
-}
-aldebaran 137 119 treasure01 69 32 {
-	steps: r2 c r11 c c
-	vip: 1
-}
-aldebaran 137 119 ve_fild07 127 131 {
-	steps: r2 c r12 c c
-	vip: 1
-}
-comodo 185 153 ice_dun01 46 157 {
-	steps: r2 c r0 c c
-	vip: 1
-}
-comodo 185 153 thor_v01 277 234 {
-	steps: r2 c r1 c c
-	vip: 1
-}
-comodo 185 153 abyss_01 25 30 {
-	steps: r2 c r2 c c
-	vip: 1
-}
-comodo 185 153 hu_fild01 140 157 {
-	steps: r2 c r3 c c
-	vip: 1
-}
-comodo 185 153 ra_temple 119 175 {
-	steps: r2 c r4 c c
-	vip: 1
-}
-comodo 185 153 lighthalzen 311 301 {
-	steps: r2 c r5 c c
-	vip: 1
-}
-comodo 185 153 juperos_01 54 246 {
-	steps: r2 c r6 c c
-	vip: 1
-}
-comodo 185 153 gefenia02 201 34 {
-	steps: r2 c r7 c c
-	vip: 1
-}
-comodo 185 153 yuno_fild08 74 174 {
-	steps: r2 c r8 c c
-	vip: 1
-}
-comodo 185 153 prt_maze03 100 100 {
-	steps: r2 c r9 c c
-	vip: 1
-}
-comodo 185 153 niflheim 23 154 {
-	steps: r2 c r10 c c
-	vip: 1
-}
-comodo 185 153 treasure01 69 32 {
-	steps: r2 c r11 c c
-	vip: 1
-}
-comodo 185 153 ve_fild07 127 131 {
-	steps: r2 c r12 c c
-	vip: 1
-}
-geffen 135 53 ice_dun01 46 157 {
-	steps: r2 c r0 c c
-	vip: 1
-}
-geffen 135 53 thor_v01 277 234 {
-	steps: r2 c r1 c c
-	vip: 1
-}
-geffen 135 53 abyss_01 25 30 {
-	steps: r2 c r2 c c
-	vip: 1
-}
-geffen 135 53 hu_fild01 140 157 {
-	steps: r2 c r3 c c
-	vip: 1
-}
-geffen 135 53 ra_temple 119 175 {
-	steps: r2 c r4 c c
-	vip: 1
-}
-geffen 135 53 lighthalzen 311 301 {
-	steps: r2 c r5 c c
-	vip: 1
-}
-geffen 135 53 juperos_01 54 246 {
-	steps: r2 c r6 c c
-	vip: 1
-}
-geffen 135 53 gefenia02 201 34 {
-	steps: r2 c r7 c c
-	vip: 1
-}
-geffen 135 53 yuno_fild08 74 174 {
-	steps: r2 c r8 c c
-	vip: 1
-}
-geffen 135 53 prt_maze03 100 100 {
-	steps: r2 c r9 c c
-	vip: 1
-}
-geffen 135 53 niflheim 23 154 {
-	steps: r2 c r10 c c
-	vip: 1
-}
-geffen 135 53 treasure01 69 32 {
-	steps: r2 c r11 c c
-	vip: 1
-}
-geffen 135 53 ve_fild07 127 131 {
-	steps: r2 c r12 c c
-	vip: 1
-}
-izlude 124 88 ice_dun01 46 157 {
-	steps: r2 c r0 c c
-	vip: 1
-}
-izlude 124 88 thor_v01 277 234 {
-	steps: r2 c r1 c c
-	vip: 1
-}
-izlude 124 88 abyss_01 25 30 {
-	steps: r2 c r2 c c
-	vip: 1
-}
-izlude 124 88 hu_fild01 140 157 {
-	steps: r2 c r3 c c
-	vip: 1
-}
-izlude 124 88 ra_temple 119 175 {
-	steps: r2 c r4 c c
-	vip: 1
-}
-izlude 124 88 lighthalzen 311 301 {
-	steps: r2 c r5 c c
-	vip: 1
-}
-izlude 124 88 juperos_01 54 246 {
-	steps: r2 c r6 c c
-	vip: 1
-}
-izlude 124 88 gefenia02 201 34 {
-	steps: r2 c r7 c c
-	vip: 1
-}
-izlude 124 88 yuno_fild08 74 174 {
-	steps: r2 c r8 c c
-	vip: 1
-}
-izlude 124 88 prt_maze03 100 100 {
-	steps: r2 c r9 c c
-	vip: 1
-}
-izlude 124 88 niflheim 23 154 {
-	steps: r2 c r10 c c
-	vip: 1
-}
-izlude 124 88 treasure01 69 32 {
-	steps: r2 c r11 c c
-	vip: 1
-}
-izlude 124 88 ve_fild07 127 131 {
-	steps: r2 c r12 c c
-	vip: 1
-}
-lighthalzen 167 100 ice_dun01 46 157 {
-	steps: r2 c r0 c c
-	vip: 1
-}
-lighthalzen 167 100 thor_v01 277 234 {
-	steps: r2 c r1 c c
-	vip: 1
-}
-lighthalzen 167 100 abyss_01 25 30 {
-	steps: r2 c r2 c c
-	vip: 1
-}
-lighthalzen 167 100 hu_fild01 140 157 {
-	steps: r2 c r3 c c
-	vip: 1
-}
-lighthalzen 167 100 ra_temple 119 175 {
-	steps: r2 c r4 c c
-	vip: 1
-}
-lighthalzen 167 100 lighthalzen 311 301 {
-	steps: r2 c r5 c c
-	vip: 1
-}
-lighthalzen 167 100 juperos_01 54 246 {
-	steps: r2 c r6 c c
-	vip: 1
-}
-lighthalzen 167 100 gefenia02 201 34 {
-	steps: r2 c r7 c c
-	vip: 1
-}
-lighthalzen 167 100 yuno_fild08 74 174 {
-	steps: r2 c r8 c c
-	vip: 1
-}
-lighthalzen 167 100 prt_maze03 100 100 {
-	steps: r2 c r9 c c
-	vip: 1
-}
-lighthalzen 167 100 niflheim 23 154 {
-	steps: r2 c r10 c c
-	vip: 1
-}
-lighthalzen 167 100 treasure01 69 32 {
-	steps: r2 c r11 c c
-	vip: 1
-}
-lighthalzen 167 100 ve_fild07 127 131 {
-	steps: r2 c r12 c c
-	vip: 1
-}
-morocc 160 97 ice_dun01 46 157 {
-	steps: r2 c r0 c c
-	vip: 1
-}
-morocc 160 97 thor_v01 277 234 {
-	steps: r2 c r1 c c
-	vip: 1
-}
-morocc 160 97 abyss_01 25 30 {
-	steps: r2 c r2 c c
-	vip: 1
-}
-morocc 160 97 hu_fild01 140 157 {
-	steps: r2 c r3 c c
-	vip: 1
-}
-morocc 160 97 ra_temple 119 175 {
-	steps: r2 c r4 c c
-	vip: 1
-}
-morocc 160 97 lighthalzen 311 301 {
-	steps: r2 c r5 c c
-	vip: 1
-}
-morocc 160 97 juperos_01 54 246 {
-	steps: r2 c r6 c c
-	vip: 1
-}
-morocc 160 97 gefenia02 201 34 {
-	steps: r2 c r7 c c
-	vip: 1
-}
-morocc 160 97 yuno_fild08 74 174 {
-	steps: r2 c r8 c c
-	vip: 1
-}
-morocc 160 97 prt_maze03 100 100 {
-	steps: r2 c r9 c c
-	vip: 1
-}
-morocc 160 97 niflheim 23 154 {
-	steps: r2 c r10 c c
-	vip: 1
-}
-morocc 160 97 treasure01 69 32 {
-	steps: r2 c r11 c c
-	vip: 1
-}
-morocc 160 97 ve_fild07 127 131 {
-	steps: r2 c r12 c c
-	vip: 1
-}
-payon 190 104 ice_dun01 46 157 {
-	steps: r2 c r0 c c
-	vip: 1
-}
-payon 190 104 thor_v01 277 234 {
-	steps: r2 c r1 c c
-	vip: 1
-}
-payon 190 104 abyss_01 25 30 {
-	steps: r2 c r2 c c
-	vip: 1
-}
-payon 190 104 hu_fild01 140 157 {
-	steps: r2 c r3 c c
-	vip: 1
-}
-payon 190 104 ra_temple 119 175 {
-	steps: r2 c r4 c c
-	vip: 1
-}
-payon 190 104 lighthalzen 311 301 {
-	steps: r2 c r5 c c
-	vip: 1
-}
-payon 190 104 juperos_01 54 246 {
-	steps: r2 c r6 c c
-	vip: 1
-}
-payon 190 104 gefenia02 201 34 {
-	steps: r2 c r7 c c
-	vip: 1
-}
-payon 190 104 yuno_fild08 74 174 {
-	steps: r2 c r8 c c
-	vip: 1
-}
-payon 190 104 prt_maze03 100 100 {
-	steps: r2 c r9 c c
-	vip: 1
-}
-payon 190 104 niflheim 23 154 {
-	steps: r2 c r10 c c
-	vip: 1
-}
-payon 190 104 treasure01 69 32 {
-	steps: r2 c r11 c c
-	vip: 1
-}
-payon 190 104 ve_fild07 127 131 {
-	steps: r2 c r12 c c
-	vip: 1
-}
-prontera 146 98 ice_dun01 46 157 {
-	steps: r2 c r0 c c
-	vip: 1
-}
-prontera 146 98 thor_v01 277 234 {
-	steps: r2 c r1 c c
-	vip: 1
-}
-prontera 146 98 abyss_01 25 30 {
-	steps: r2 c r2 c c
-	vip: 1
-}
-prontera 146 98 hu_fild01 140 157 {
-	steps: r2 c r3 c c
-	vip: 1
-}
-prontera 146 98 ra_temple 119 175 {
-	steps: r2 c r4 c c
-	vip: 1
-}
-prontera 146 98 lighthalzen 311 301 {
-	steps: r2 c r5 c c
-	vip: 1
-}
-prontera 146 98 juperos_01 54 246 {
-	steps: r2 c r6 c c
-	vip: 1
-}
-prontera 146 98 gefenia02 201 34 {
-	steps: r2 c r7 c c
-	vip: 1
-}
-prontera 146 98 yuno_fild08 74 174 {
-	steps: r2 c r8 c c
-	vip: 1
-}
-prontera 146 98 prt_maze03 100 100 {
-	steps: r2 c r9 c c
-	vip: 1
-}
-prontera 146 98 niflheim 23 154 {
-	steps: r2 c r10 c c
-	vip: 1
-}
-prontera 146 98 treasure01 69 32 {
-	steps: r2 c r11 c c
-	vip: 1
-}
-prontera 146 98 ve_fild07 127 131 {
-	steps: r2 c r12 c c
-	vip: 1
-}
-yuno 147 187 ice_dun01 46 157 {
-	steps: r2 c r0 c c
-	vip: 1
-}
-yuno 147 187 thor_v01 277 234 {
-	steps: r2 c r1 c c
-	vip: 1
-}
-yuno 147 187 abyss_01 25 30 {
-	steps: r2 c r2 c c
-	vip: 1
-}
-yuno 147 187 hu_fild01 140 157 {
-	steps: r2 c r3 c c
-	vip: 1
-}
-yuno 147 187 ra_temple 119 175 {
-	steps: r2 c r4 c c
-	vip: 1
-}
-yuno 147 187 lighthalzen 311 301 {
-	steps: r2 c r5 c c
-	vip: 1
-}
-yuno 147 187 juperos_01 54 246 {
-	steps: r2 c r6 c c
-	vip: 1
-}
-yuno 147 187 gefenia02 201 34 {
-	steps: r2 c r7 c c
-	vip: 1
-}
-yuno 147 187 yuno_fild08 74 174 {
-	steps: r2 c r8 c c
-	vip: 1
-}
-yuno 147 187 prt_maze03 100 100 {
-	steps: r2 c r9 c c
-	vip: 1
-}
-yuno 147 187 niflheim 23 154 {
-	steps: r2 c r10 c c
-	vip: 1
-}
-yuno 147 187 treasure01 69 32 {
-	steps: r2 c r11 c c
-	vip: 1
-}
-yuno 147 187 ve_fild07 127 131 {
-	steps: r2 c r12 c c
-	vip: 1
-}
-
-# WoE Warpers
-
-alberta 114 64 prt_castle 159 25 {
-	steps: r0 c r0 c c
-	vip: 1
-}
-alberta 114 64 gef_fild13 41 366 {
-	steps: r0 c r1 c c
-	vip: 1
-}
-alberta 114 64 pay_gld 367 149 {
-	steps: r0 c r2 c c
-	vip: 1
-}
-alberta 114 64 alde_gld 277 160 {
-	steps: r0 c r3 c c
-	vip: 1
-}
-alberta 114 64 sch_gld 344 89 {
-	steps: r0 c r4 c c
-	vip: 1
-}
-alberta 114 64 aru_gld 195 358 {
-	steps: r0 c r5 c c
-	vip: 1
-}
-aldebaran 137 119 prt_castle 159 25 {
-	steps: r0 c r0 c c
-	vip: 1
-}
-aldebaran 137 119 gef_fild13 41 366 {
-	steps: r0 c r1 c c
-	vip: 1
-}
-aldebaran 137 119 pay_gld 367 149 {
-	steps: r0 c r2 c c
-	vip: 1
-}
-aldebaran 137 119 alde_gld 277 160 {
-	steps: r0 c r3 c c
-	vip: 1
-}
-aldebaran 137 119 sch_gld 344 89 {
-	steps: r0 c r4 c c
-	vip: 1
-}
-aldebaran 137 119 aru_gld 195 358 {
-	steps: r0 c r5 c c
-	vip: 1
-}
-comodo 185 153 prt_castle 159 25 {
-	steps: r0 c r0 c c
-	vip: 1
-}
-comodo 185 153 gef_fild13 41 366 {
-	steps: r0 c r1 c c
-	vip: 1
-}
-comodo 185 153 pay_gld 367 149 {
-	steps: r0 c r2 c c
-	vip: 1
-}
-comodo 185 153 alde_gld 277 160 {
-	steps: r0 c r3 c c
-	vip: 1
-}
-comodo 185 153 sch_gld 344 89 {
-	steps: r0 c r4 c c
-	vip: 1
-}
-comodo 185 153 aru_gld 195 358 {
-	steps: r0 c r5 c c
-	vip: 1
-}
-geffen 135 53 prt_castle 159 25 {
-	steps: r0 c r0 c c
-	vip: 1
-}
-geffen 135 53 gef_fild13 41 366 {
-	steps: r0 c r1 c c
-	vip: 1
-}
-geffen 135 53 pay_gld 367 149 {
-	steps: r0 c r2 c c
-	vip: 1
-}
-geffen 135 53 alde_gld 277 160 {
-	steps: r0 c r3 c c
-	vip: 1
-}
-geffen 135 53 sch_gld 344 89 {
-	steps: r0 c r4 c c
-	vip: 1
-}
-geffen 135 53 aru_gld 195 358 {
-	steps: r0 c r5 c c
-	vip: 1
-}
-izlude 124 88 prt_castle 159 25 {
-	steps: r0 c r0 c c
-	vip: 1
-}
-izlude 124 88 gef_fild13 41 366 {
-	steps: r0 c r1 c c
-	vip: 1
-}
-izlude 124 88 pay_gld 367 149 {
-	steps: r0 c r2 c c
-	vip: 1
-}
-izlude 124 88 alde_gld 277 160 {
-	steps: r0 c r3 c c
-	vip: 1
-}
-izlude 124 88 sch_gld 344 89 {
-	steps: r0 c r4 c c
-	vip: 1
-}
-izlude 124 88 aru_gld 195 358 {
-	steps: r0 c r5 c c
-	vip: 1
-}
-lighthalzen 167 100 prt_castle 159 25 {
-	steps: r0 c r0 c c
-	vip: 1
-}
-lighthalzen 167 100 gef_fild13 41 366 {
-	steps: r0 c r1 c c
-	vip: 1
-}
-lighthalzen 167 100 pay_gld 367 149 {
-	steps: r0 c r2 c c
-	vip: 1
-}
-lighthalzen 167 100 alde_gld 277 160 {
-	steps: r0 c r3 c c
-	vip: 1
-}
-lighthalzen 167 100 sch_gld 344 89 {
-	steps: r0 c r4 c c
-	vip: 1
-}
-lighthalzen 167 100 aru_gld 195 358 {
-	steps: r0 c r5 c c
-	vip: 1
-}
-morocc 160 97 prt_castle 159 25 {
-	steps: r0 c r0 c c
-	vip: 1
-}
-morocc 160 97 gef_fild13 41 366 {
-	steps: r0 c r1 c c
-	vip: 1
-}
-morocc 160 97 pay_gld 367 149 {
-	steps: r0 c r2 c c
-	vip: 1
-}
-morocc 160 97 alde_gld 277 160 {
-	steps: r0 c r3 c c
-	vip: 1
-}
-morocc 160 97 sch_gld 344 89 {
-	steps: r0 c r4 c c
-	vip: 1
-}
-morocc 160 97 aru_gld 195 358 {
-	steps: r0 c r5 c c
-	vip: 1
-}
-payon 190 104 prt_castle 159 25 {
-	steps: r0 c r0 c c
-	vip: 1
-}
-payon 190 104 gef_fild13 41 366 {
-	steps: r0 c r1 c c
-	vip: 1
-}
-payon 190 104 pay_gld 367 149 {
-	steps: r0 c r2 c c
-	vip: 1
-}
-payon 190 104 alde_gld 277 160 {
-	steps: r0 c r3 c c
-	vip: 1
-}
-payon 190 104 sch_gld 344 89 {
-	steps: r0 c r4 c c
-	vip: 1
-}
-payon 190 104 aru_gld 195 358 {
-	steps: r0 c r5 c c
-	vip: 1
-}
-prontera 146 98 prt_castle 159 25 {
-	steps: r0 c r0 c c
-	vip: 1
-}
-prontera 146 98 gef_fild13 41 366 {
-	steps: r0 c r1 c c
-	vip: 1
-}
-prontera 146 98 pay_gld 367 149 {
-	steps: r0 c r2 c c
-	vip: 1
-}
-prontera 146 98 alde_gld 277 160 {
-	steps: r0 c r3 c c
-	vip: 1
-}
-prontera 146 98 sch_gld 344 89 {
-	steps: r0 c r4 c c
-	vip: 1
-}
-prontera 146 98 aru_gld 195 358 {
-	steps: r0 c r5 c c
-	vip: 1
-}
-yuno 147 187 prt_castle 159 25 {
-	steps: r0 c r0 c c
-	vip: 1
-}
-yuno 147 187 gef_fild13 41 366 {
-	steps: r0 c r1 c c
-	vip: 1
-}
-yuno 147 187 pay_gld 367 149 {
-	steps: r0 c r2 c c
-	vip: 1
-}
-yuno 147 187 alde_gld 277 160 {
-	steps: r0 c r3 c c
-	vip: 1
-}
-yuno 147 187 sch_gld 344 89 {
-	steps: r0 c r4 c c
-	vip: 1
-}
-yuno 147 187 aru_gld 195 358 {
-	steps: r0 c r5 c c
-	vip: 1
-}
-
-	

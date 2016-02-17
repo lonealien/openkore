@@ -174,15 +174,14 @@ sub selfCheck {
 sub shutdown {
 	Plugins::unloadAll();
 	# Translation Comment: Kore's exit message
-	$interface->title(TF("Exiting - %s", $Settings::NAME));
-	Log::message(T("Bye!\n"));
 	Log::message($Settings::versionText);
-	
+
 	if (DEBUG && open(F, ">:utf8", "benchmark-results.txt")) {
 		print F Benchmark::results("mainLoop");
 		close F;
 		print "Benchmark results saved to benchmark-results.txt\n";
 	}
+		$interface->errorDialog(T("Bye!\n")) if $config{dcPause};
 }
 
 if (!defined($ENV{INTERPRETER}) && !$ENV{NO_AUTOSTART}) {

@@ -8,8 +8,8 @@
 #  also distribute the source code.
 #  See http://www.gnu.org/licenses/gpl.html for the full license.
 #
-#  $Revision: 8754 $
-#  $Id: Globals.pm 8754 2013-11-30 19:57:50Z marcelofoxes $
+#  $Revision: 8894 $
+#  $Id: Globals.pm 8894 2014-08-21 16:47:22Z allanon $
 #
 #########################################################################
 ##
@@ -26,12 +26,12 @@ use Modules 'register';
 # Do not use any other Kore modules here. It will create circular dependancies.
 
 our %EXPORT_TAGS = (
-	config  => [qw(%arrowcraft_items %avoid @chatResponses %cities_lut %config %consoleColors %directions_lut %equipTypes_lut %equipSlot_rlut %equipSlot_lut %haircolors @headgears_lut @msgTable %items_control %items_lut %items_sellable %itemSlotCount_lut %itemsDesc_lut %itemTypes_lut %jobs_lut %maps_lut %masterServers %monsters_lut %npcs_lut %packetDescriptions %portals_lut %responses %sex_lut %shop %skillsDesc_lut %lookHandle %skillsArea %skillsEncore %spells_lut %emotions_lut %timeout $char %mon_control %priority %routeWeights %pickupitems %rpackets %itemSlots_lut %statusHandle %statusName %effectName %portals_los %stateHandle %ailmentHandle %mapTypeHandle %mapPropertyTypeHandle %mapPropertyInfoHandle %elements_lut %mapAlias_lut %quests_lut)],
+	config  => [qw(%arrowcraft_items %avoid @chatResponses %cities_lut %config %consoleColors %directions_lut %equipTypes_lut %equipSlot_rlut %equipSlot_lut %haircolors @headgears_lut @msgTable %items_control %items_lut %itemSlotCount_lut %itemsDesc_lut %itemTypes_lut %jobs_lut %maps_lut %masterServers %monsters_lut %npcs_lut %packetDescriptions %portals_lut %responses %sex_lut %shop %skillsDesc_lut %lookHandle %skillsArea %skillsEncore %spells_lut %emotions_lut %timeout $char %mon_control %priority %routeWeights %pickupitems %rpackets %itemSlots_lut %statusHandle %statusName %effectName %portals_los %stateHandle %ailmentHandle %mapTypeHandle %mapPropertyTypeHandle %mapPropertyInfoHandle %elements_lut %mapAlias_lut %quests_lut)],
 	ai      => [qw(@ai_seq @ai_seq_args %ai_v $AI $AI_forcedOff %targetTimeout)],
 	state   => [qw($accountID $cardMergeIndex @cardMergeItemsID $charID @chars @chars_old %cart @friendsID %friends %incomingFriend $field %homunculus $itemsList @itemsID %items $monstersList @monstersID %monsters @npcsID %npcs $npcsList @playersID %players @portalsID @portalsID_old %portals %portals_old $portalsList @storeList $currentChatRoom @currentChatRoomUsers @chatRoomsID %createdChatRoom %chatRooms @skillsID %storage @storageID $storageTitle @arrowCraftID %guild %incomingGuild @spellsID %spells @unknownPlayers @unknownNPCs $useArrowCraft %currentDeal %incomingDeal %outgoingDeal @identifyID @partyUsersID %incomingParty @petsID %pets @venderItemList $venderID $venderCID @venderListsID @buyerItemList @selfBuyerItemList $buyerID $buyingStoreID @buyerListsID @articles $articles %venderLists %buyerLists %monsters_old @monstersID_old %npcs_old %items_old %players_old @playersID_old @servers $sessionID $sessionID2 $accountSex $accountSex2 $map_ip $map_port $KoreStartTime $secureLoginKey $initSync $lastConfChangeTime $petsList $playersList $portalsList @playerNameCacheIDs %playerNameCache %pet $pvp @cashList $slavesList @slavesID %slaves %cashShop)],
 	network => [qw($remote_socket $net $messageSender $charServer $conState $conState_tries $encryptVal $ipc $bus $masterServer $lastSwitch $packetParser $clientPacketHandler $bytesSent $incomingMessages $outgoingClientMessages $enc_val1 $enc_val2 $captcha_state)],
 	interface => [qw($interface)],
-	misc    => [qw($eventsManager $quit $reconnectCount @lastpm %lastpm @privMsgUsers %timeout_ex $shopstarted $dmgpsec $totalelasped $elasped $totaldmg %overallAuth %responseVars %talk $startTime_EXP $startingzeny @monsters_Killed $bExpSwitch $jExpSwitch $totalBaseExp $totalJobExp $shopEarned %itemChange $XKore_dontRedirect $monkilltime $monstarttime $startedattack $firstLoginMap $sentWelcomeMessage $versionSearch $monsterBaseExp $monsterJobExp %descriptions %flags %damageTaken $logAppend @sellList $userSeed $taskManager $repairList $mailList $auctionList $questList $hotkeyList $devotionList $cookingList %charSvrSet)],
+	misc    => [qw($quit $reconnectCount @lastpm %lastpm @privMsgUsers %timeout_ex $shopstarted $dmgpsec $totalelasped $elasped $totaldmg %overallAuth %responseVars %talk $startTime_EXP $startingzeny @monsters_Killed $bExpSwitch $jExpSwitch $totalBaseExp $totalJobExp $shopEarned %itemChange $XKore_dontRedirect $monkilltime $monstarttime $startedattack $firstLoginMap $sentWelcomeMessage $versionSearch $monsterBaseExp $monsterJobExp %descriptions %flags %damageTaken $logAppend @sellList $userSeed $taskManager $repairList $mailList $auctionList $questList $hotkeyList $devotionList $cookingList %charSvrSet @deadTime)],
 	syncs => [qw($syncSync $syncMapSync)],
 	cmdqueue => [qw($cmdQueue @cmdQueueList $cmdQueueStartTime $cmdQueueTime @cmdQueuePriority)],
 );
@@ -86,7 +86,7 @@ our %equipSlot_lut = (
 );
 our %equipSlot_rlut = (
 	( map { $equipSlot_lut{$_} => $_ } keys %equipSlot_lut ),
-	'arrow'          => '' #arrow seems not to have any ID
+	'arrow' => '',    #arrow seems not to have any ID
 );
 our %elements_lut;
 our %directions_lut;
@@ -95,7 +95,6 @@ our @headgears_lut;
 our @msgTable;
 our %items_control;
 our %items_lut;
-our %items_sellable;
 our %itemSlotCount_lut;
 our %itemsDesc_lut;
 our %itemTypes_lut;
@@ -494,7 +493,6 @@ our $enc_val2;
 our $interface;
 
 # Misc
-our $eventsManager;
 our $quit;
 our $reconnectCount;
 our @lastpm;
@@ -562,6 +560,7 @@ our $captcha_state = 0;
 
 our %quests_lut;
 
+our @deadTime;
 
 END {
 	undef $interface if defined $interface;

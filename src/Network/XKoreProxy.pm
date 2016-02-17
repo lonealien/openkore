@@ -8,8 +8,8 @@
 #  also distribute the source code.
 #  See http://www.gnu.org/licenses/gpl.html for the full license.
 #
-#  $Revision: 8678 $
-#  $Id: XKoreProxy.pm 8678 2013-09-08 21:15:50Z ya4ept $
+#  $Revision: 9016 $
+#  $Id: XKoreProxy.pm 9016 2016-02-15 16:45:35Z windhamwong $
 #
 #########################################################################
 # Note: the difference between XKore2 and XKoreProxy is that XKore2 can
@@ -24,7 +24,7 @@ use base qw(Exporter);
 use Exporter;
 use IO::Socket::INET;
 use Time::HiRes qw(time usleep);
-use encoding 'utf8';
+use utf8;
 
 use Modules 'register';
 use Globals;
@@ -294,7 +294,7 @@ sub checkProxy {
 			$self->serverDisconnect();
 		}
 
-		close($self->{proxy});
+		close $self->{proxy} if $self->{proxy};
 		$self->{waitClientDC} = undef;
 		debug "Removing pending packet from queue\n" if (defined $self->{packetPending});
 		$self->{packetPending} = '';

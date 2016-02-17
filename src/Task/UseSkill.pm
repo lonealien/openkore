@@ -160,7 +160,6 @@ sub new {
 		# official servers send lone skill_cast packet
 		['packet/shop_skill' => $workaround_skill_use->('MC_VENDING')],
 		
-		['packet_no_teleport', \&onTeleportFail, \@holder],
 		['packet_skillfail', \&onSkillFail, \@holder],
 		['packet_castCancelled', \&onSkillCancelled, \@holder],
 		['Network::Receive::map_changed', \&onMapChanged, \@holder],
@@ -233,26 +232,13 @@ sub onSkillCancelled {
 	}
 }
 
-# Called when teleport has failed.
-sub onTeleportFail {
-	my (undef, $args, $holder) = @_;
-	my $self = $holder->[0];
-	if ($self->getStatus() == Task::RUNNING && $self->{skill}->getIDN() == 26) {
-		$self->{castingError} = {
-			type => $args->{failType}+512, # differ from skill_use_failed code
-			message => $args->{failMessage}
-		};
-	}
-}
-
 # Called when map changed (maybe teleported)
 sub onMapChanged {
 	my (undef, $args, $holder) = @_;
 	my $self = $holder->[0];
 	if ($self->getStatus() == Task::RUNNING && $self->{skill}->getHandle eq 'AL_TELEPORT') {
-		# $self->setDone();
-		$self->{mapchanged} = 1;
-		# debug "UseSkill - Done (Teleport).\n", "Task::UseSkill" if DEBUG;
+		$self->setDone();
+		debug "UseSkill - Done (Teleport).\n", "Task::UseSkill" if DEBUG;
 	}
 }
 
@@ -330,11 +316,8 @@ sub iterate {
 		debug "UseSkill - No such skill.\n", "Task::UseSkill" if DEBUG;
 		return;
 	}
-	if ($self->{mapchanged}) {
-		debug "UseSkill - Done (Teleport).\n", "Task::UseSkill" if DEBUG;
-		$self->setDone();
-	
-	} elsif ($self->{state} == PREPARING) {
+
+	if ($self->{state} == PREPARING) {
 		if (!$self->getSubtask()) {
 			my $task = new Task::Chained(tasks => [
 				# TODO: equip here (merge with AI::CoreLogic::processSkillUse)

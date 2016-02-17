@@ -9,8 +9,8 @@
 #  also distribute the source code.
 #  See http://www.gnu.org/licenses/gpl.html for the full license.
 #
-#  $Revision: 8568 $
-#  $Id: Settings.pm 8568 2013-05-13 23:39:09Z farrainbow $
+#  $Revision: 8874 $
+#  $Id: Settings.pm 8874 2014-06-15 22:00:44Z windhamwong $
 #
 #########################################################################
 ##
@@ -74,11 +74,11 @@ use enum qw(CONTROL_FILE_TYPE TABLE_FILE_TYPE);
 # The version number of this program.
 
 # Translation Comment: Strings for the name and version of the application
-our $NAME = 'BetaKore';
-our $VERSION = 'undefined';
+our $NAME = 'OpenKore';
+our $VERSION = 'what-will-become-2.1';
 # Translation Comment: Version String
 #our $SVN = T(" (SVN Version) ");
-our $WEBSITE = 'http://betakore.googlecode.com/';
+our $WEBSITE = 'http://www.openkore.com/';
 # Translation Comment: Version String
 our $versionText = "*** $NAME ${VERSION} ( r" . (getSVNRevision() || '?') . ' ) - ' . T("Custom Ragnarok Online client") . " ***\n***   $WEBSITE   ***\n";
 our $welcomeText = TF("Welcome to %s.", $NAME);
@@ -110,6 +110,7 @@ our $shop_log_file;
 our $sys_file;
 our $monster_log_file;
 our $item_log_file;
+our $dead_log_file;
 
 our $interface;
 our $lockdown;
@@ -156,9 +157,6 @@ sub parseArguments {
 	undef $sys_file;
 	undef $interface;
 	undef $lockdown;
-	
-	my $chat_log_folder;
-	my $storage_log_folder;
 
 	local $SIG{__WARN__} = sub {
 		ArgumentException->throw($_[0]);
@@ -175,8 +173,8 @@ sub parseArguments {
 		'mon_control=s',      \$mon_control_file,
 		'items_control=s',    \$items_control_file,
 		'shop=s',             \$shop_file,
-		'chat-log=s',         \$chat_log_folder,
-		'storage-log=s',      \$storage_log_folder,
+		'chat-log=s',         \$chat_log_file,
+		'storage-log=s',      \$storage_log_file,
 		'sys=s',              \$sys_file,
 
 		'interface=s',        \$interface,
@@ -205,15 +203,12 @@ sub parseArguments {
 	$fields_folder = "fields" if (!defined $fields_folder);
 	$logs_folder = "logs" if (!defined $logs_folder);
 	$maps_folder = "map" unless defined $maps_folder;
-	
-	$chat_log_folder ||= $logs_folder;
-	$storage_log_folder ||= $logs_folder;
-	
-	$chat_log_file = File::Spec->catfile($chat_log_folder, "chat.txt");
-	$storage_log_file = File::Spec->catfile($storage_log_folder, "storage.txt");
+	$chat_log_file = File::Spec->catfile($logs_folder, "chat.txt");
+	$storage_log_file = File::Spec->catfile($logs_folder, "storage.txt");
 	$shop_log_file = File::Spec->catfile($logs_folder, "shop_log.txt");
 	$monster_log_file = File::Spec->catfile($logs_folder, "monster_log.txt");
 	$item_log_file = File::Spec->catfile($logs_folder, "item_log.txt");
+	$dead_log_file = File::Spec->catfile($logs_folder, "dead_log.txt");
 	if (!defined $interface) {
 		if ($ENV{OPENKORE_DEFAULT_INTERFACE} && $ENV{OPENKORE_DEFAULT_INTERFACE} ne "") {
 			$interface = $ENV{OPENKORE_DEFAULT_INTERFACE};
@@ -223,15 +218,12 @@ sub parseArguments {
 	}
 
 	return 0 if ($options{help});
-	foreach my $folder ($logs_folder, $chat_log_folder, $storage_log_folder) {
-		if (! -d $folder) {
-			#if (!mkdir($logs_folder)) {
-			if (! make_path($folder)) {
-				IOException->throw("Unable to create folder $folder ($!)");
-			}
+	if (! -d $logs_folder) {
+		#if (!mkdir($logs_folder)) {
+		if (! make_path($logs_folder)) {
+			IOException->throw("Unable to create folder $logs_folder ($!)");
 		}
 	}
-	
 	return 1;
 }
 

@@ -14,8 +14,8 @@
 #  GNU General Public License for more details.
 #
 #
-#  $Revision: 7742 $
-#  $Id: Win32.pm 7742 2011-05-26 14:56:17Z windhamwong $
+#  $Revision: 9016 $
+#  $Id: Win32.pm 9016 2016-02-15 16:45:35Z windhamwong $
 #
 #########################################################################
 ##
@@ -36,7 +36,7 @@ use Time::HiRes qw/time sleep/;
 use Text::Wrap;
 use Win32::Console;
 use Utils::Win32;
-use encoding 'utf8';
+use utf8;
 use Encode;
 use I18N qw(stringToBytes);
 use Translation qw(T);

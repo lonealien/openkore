@@ -13,60 +13,51 @@ sub checkSkillOwnership { $_[1]->getOwnerType == Skill::OWNER_HOMUN }
 
 sub iterate {
 	my $slave = shift;
-	
+
 	# homunculus is in rest
 	if ($slave->{state} & 2) {
-	# homunculus is dead
+
+	# homunculus is dead / not present
 	} elsif ($slave->{state} & 4) {
+
 	# homunculus is alive
 	} elsif ($slave->{appear_time} && $field->baseName eq $slave->{map}) {
 		# auto-feed homunculus
 		$config{homunculus_intimacyMax} = 999 if (!$config{homunculus_intimacyMax});
 		$config{homunculus_intimacyMin} = 911 if (!$config{homunculus_intimacyMin});
-		$config{homunculus_hungerTimeoutMax} = 60 if (!$config{homunculus_hungerTimeoutMax});
-		$config{homunculus_hungerTimeoutMin} = 10 if (!$config{homunculus_hungerTimeoutMin});
-		$config{homunculus_hungerMin} = 11 if (!$config{homunculus_hungerMin});
-		$config{homunculus_hungerMax} = 24 if (!$config{homunculus_hungerMax});
+		# We don't need random and feeding limit. They don't prevent from banning or being suspicious.
+		$config{homunculus_hunger} = 15 if (!$config{homunculus_hunger} || $config{homunculus_return} > $config{homunculus_hunger}); #Fix value instead of random
+		$config{homunculus_return} = 11 if (!$config{homunculus_return} || $config{homunculus_hunger} < $config{homunculus_return}); #Fix value instead of random
+		$timeout{ai_homunFeed}{timeout} = 60 if (!$timeout{ai_homunFeed}{timeout}); #Timeout value : Default 60sec
 
 		# Stop feeding when homunculus reaches 999~1000 intimacy, its useless to keep feeding from this point on
 		# you can starve it till it gets 911 hunger (actually you can starve it till 1 but we wanna keep its intimacy loyal).
 		if (($slave->{intimacy} >= $config{homunculus_intimacyMax}) && $slave->{feed}) {
-			$slave->{feed} = 0
+			$slave->{feed} = 0;
+			message "stop feeding\n";
 		} elsif (($slave->{intimacy} <= $config{homunculus_intimacyMin}) && !$slave->{feed}) {
 			$slave->{feed} = 1
 		}
 
-		if ($slave->{hungerThreshold} 
-			&& $slave->{hunger} ne '' 
-			&& $slave->{hunger} <= $slave->{hungerThreshold} 
-			&& timeOut($slave->{feed_time}, $slave->{feed_timeout})
-			&& $slave->{feed}
-			&& $config{homunculus_autoFeed} 
+		if (timeOut($timeout{ai_homunFeed})
+			#&& $slave->{feed}
+			&& $slave->{hunger} <= $config{homunculus_hunger}
+			&& $config{homunculus_autoFeed}
 			&& (existsInList($config{homunculus_autoFeedAllowedMaps}, $field->baseName) || !$config{homunculus_autoFeedAllowedMaps})) {
-			
-			$slave->processFeeding();
+			$timeout{ai_homunFeed}{time} = time;
 			message TF("Auto-feeding %s (%d hunger).\n", $slave, $slave->{hunger}), 'slave';
 			$messageSender->sendHomunculusCommand(1);
-			message TF("Next feeding at: %d hunger.\n", $slave->{hungerThreshold}), 'slave';
-		
-		# No random value at initial start of Kore, lets make a few =)
-		} elsif ($slave->{actorType} eq 'Homunculus' && !$slave->{hungerThreshold}) {
-			$slave->processFeeding();
-		
+
+		} elsif (timeOut($timeout{ai_homunFeed}) && $slave->{hunger} <= $config{homunculus_return}) {
+			message TF("Homunculus hunger reaches the return value.\n", 'slave');
+			my $skill = new Skill(handle => 'AM_REST');
+			AI::ai_skillUse2($skill, $char->{skills}{AM_REST}{lv}, 1, 0, $char, "AM_REST");
+			$timeout{ai_homunFeed}{time} = time; #timeout trick
+
 		} else {
 			$slave->SUPER::iterate;
 		}
 	}
-}
-
-sub processFeeding {
-	my $slave = shift;
-	
-	# Homun loses intimacy if you let hunger fall lower than 11 and if you feed it above 75 (?)
-	$slave->{hungerThreshold} = $config{homunculus_hungerMin}+ int(rand($config{homunculus_hungerMax} - $config{homunculus_hungerMin}));
-	# Make a random timeout, to appear more humanlike when we have to feed our homun more than once in a row.
-	$slave->{feed_timeout} = int(rand(($config{homunculus_hungerTimeoutMax})-$config{homunculus_hungerTimeoutMin}))+$config{homunculus_hungerTimeoutMin};
-	$slave->{feed_time} = time;
 }
 
 1;

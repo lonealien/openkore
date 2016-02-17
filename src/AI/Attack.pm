@@ -164,7 +164,7 @@ sub finishAttacking {
 	AI::dequeue;
 	if ($monsters_old{$ID} && $monsters_old{$ID}{dead}) {
 		message T("Target died\n"), "ai_attack";
-		Plugins::callHook("target_died");
+		Plugins::callHook("target_died", {monster => $monsters_old{$ID}});
 		monKilled();
 
 		# Pickup loot when monster's dead
@@ -291,7 +291,8 @@ sub main {
 			next;
 		}
 
-		if (Skill->new(auto => $config{"attackComboSlot_${i}_afterSkill"})->getIDN == $char->{last_skill_used}
+		if ($config{"attackComboSlot_${i}_afterSkill"}
+		 && Skill->new(auto => $config{"attackComboSlot_${i}_afterSkill"})->getIDN == $char->{last_skill_used}
 		 && ( !$config{"attackComboSlot_${i}_maxUses"} || $args->{attackComboSlot_uses}{$i} < $config{"attackComboSlot_${i}_maxUses"} )
 		 && ( !$config{"attackComboSlot_${i}_autoCombo"} || ($char->{combo_packet} && $config{"attackComboSlot_${i}_autoCombo"}) )
 		 && ( !defined($args->{ID}) || $args->{ID} eq $char->{last_skill_target} || !$config{"attackComboSlot_${i}_isSelfSkill"})
@@ -522,13 +523,6 @@ sub main {
 		my $dist = sprintf("%.1f", $monsterDist);
 		debug "Target distance $dist is >$args->{attackMethod}{maxDistance}; moving to target: " .
 			"from ($myPos->{x},$myPos->{y}) to ($pos->{x},$pos->{y})\n", "ai_attack";
-			
-		if ($field->isWalkable($pos->{x},$pos->{y})) {
-			debug "Walkable spot\n", "ai_attack";
-		} else {
-			debug "NON Walkable spot\n", "ai_attack";
-			giveUp();
-		}
 
 		my $result = $char->route(undef, @{$pos}{qw(x y)},
 			maxRouteTime => $config{'attackMaxRouteTime'},

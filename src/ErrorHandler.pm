@@ -23,7 +23,7 @@ use strict;
 use Carp;
 use Scalar::Util;
 use Globals;
-use encoding 'utf8';
+use utf8;
 use Translation;
 
 sub showError {
@@ -56,10 +56,15 @@ sub errorHandler {
 	$errorMessage =~ s/[\r\n]+$//s;
 
 	# Create the message to be displayed to the user.
-	my $display = TF("This program has encountered an unexpected problem. This is expected to happen\n" .
-					 "while using BetaKore. Please, report this at the following address:\n" .
-					 "https://code.google.com/p/betakore/issues/list\n".
-					 "Please check for logs inside errors.txt and post them too.\n".
+	my $display = TF("This program has encountered an unexpected problem. This is probably because\n" .
+	                 "of a recent server update, a bug in this program, or in one of the plugins.\n" .
+	                 "We apologize for this problem. You may get support from IRC or the forums.\n\n" .
+	                 "A detailed error report has been saved to errors.txt. Before posting a bug\n" . 
+	                 "report, please try out the SVN version first. If you are already using the SVN\n" . 
+	                 "version, search the forums first to see if your problem had already been solved,\n" . 
+	                 "or has already been reported. If you truly believe you have encountered a bug in\n" .
+	                 "the program, please include the contents of the errors.txt in your bug report,\n" .
+	                 "or we may not be able to help you!\n\n" .
 	                 "The error message is:\n" .
 	                 "%s",
 	                 $errorMessage);
@@ -67,7 +72,7 @@ sub errorHandler {
 	# Create the errors.txt error log.
 	my $log = '';
 	$log .= "$Settings::NAME version ${Settings::VERSION}${Settings::SVN}\n" if (defined $Settings::VERSION);
-	$log .= "\@ai_seq = @Globals::ai_seq\n" if (defined @Globals::ai_seq);
+	$log .= "\@ai_seq = @Globals::ai_seq\n" if (@Globals::ai_seq);
 	$log .= "Network state = $Globals::conState\n" if (defined $Globals::conState);
 	$log .= "Network handler = " . Scalar::Util::blessed($Globals::net) . "\n" if ($Globals::net);
 	my $revision = defined(&Settings::getSVNRevision) ? Settings::getSVNRevision() : undef;
@@ -76,7 +81,7 @@ sub errorHandler {
 	} else {
 		$log .= "SVN revision: unknown\n";
 	}
-	if (defined @Plugins::plugins) {
+	if (@Plugins::plugins) {
 		$log .= "Loaded plugins:\n";
 		foreach my $plugin (@Plugins::plugins) {
 			next if (!defined $plugin);

@@ -1,4 +1,4 @@
-#######################################################
+﻿#######################################################
 # 新增完成日期為 2010/12/2 ,最後修改日期為 2011/2/23  #
 # 新增海洞6                                           #
 # Try71023僅發表於月光論壇                            #
@@ -6,6 +6,7 @@
 # 最後修改日期為 2012/3/1                             #
 # 新增綿綿島路徑.飛空艇路徑                           #
 #######################################################
+
 #飛空艇(國內線)
 airplane 208 53 airplane 245 160
 airplane 245 160 airplane 208 53
@@ -31,19 +32,11 @@ yuno 53 214 y_airport 143 16
 y_airport 143 16 yuno 53 214
 yuno 96 261 airplane 243 29
 yuno 6 261 airplane_01 244 58
-y_airport 143 43 y_airport 148 51 {
-	steps: c r0 c r0
-}
-y_airport 143 49 y_airport 142 40 {
-	steps: c r0 c r0
-}
-y_airport 140 63 yuno 47 244 {
-	steps: c r0
-}
+y_airport 143 43 y_airport 148 51 0 c r0 c r0
+y_airport 143 49 y_airport 142 40 0 c r0 c r0
+y_airport 140 63 yuno 47 244 0 c r0
 yuno 47 240 y_airport 143 54
-y_airport 145 63 yuno 59 244 {
-	steps: c r0
-}
+y_airport 145 63 yuno 59 244 0 c r0
 yuno 59 240 y_airport 143 54
 #毀葛
 hugel 178 142 airplane 243 73
@@ -52,12 +45,8 @@ ra_fild12 295 208 airplane_01 245 60
 #艾音布羅克 機場
 einbroch 64 207 airport 143 14
 airport 143 14 einbroch 64 207
-airport 143 43 airport 148 51 {
-	steps: c r0 c r0
-}
-airport 143 49 airport 142 40 {
-	steps: c r0 c r0
-}
+airport 143 43 airport 148 51 0 c r0 c r0
+airport 143 49 airport 142 40 0 c r0 c r0
 airport 142 61 einbroch 64 234
 einbroch 64 234 airport 142 61
 einbroch 92 281 airplane 224 64
@@ -68,12 +57,8 @@ airport 161 13 airport 47 18
 #里希塔樂鎮 機場
 lighthalzen 267 75 lhz_airport 142 13
 lhz_airport 142 13 lighthalzen 267 75
-lhz_airport 143 43 lhz_airport 148 51 {
-	steps: c r0 c r0
-}
-lhz_airport 143 49 lhz_airport 142 40 {
-	steps: c r0 c r0
-}
+lhz_airport 143 43 lhz_airport 148 51 0 c r0 c r0
+lhz_airport 143 49 lhz_airport 142 40 0 c r0 c r0
 lighthalzen 294 76 lhz_airport 142 60
 lhz_airport 142 60 lighthalzen 294 76
 lhz_airport 125 13 lhz_airport 19 18
@@ -82,458 +67,152 @@ lhz_airport 47 18 lhz_airport 160 13
 lhz_airport 160 13 lhz_airport 47 18
 lighthalzen 308 76 airplane 244 58
 #伊斯
-izlude 202 75 airplane_01 244 58 {
-	cost: 1200
-	steps: c r0 c r0
-}
+izlude 202 75 airplane_01 244 58 1200 c r0 c r0
 ########################################
 #[各地船夫 傳送服務]
 #依斯魯得島
-izlude 197 205 izlu2dun 107 50 {
-	cost: 150
-	steps: c r0 n
-}
-izlude 197 205 alberta 188 169 {
-	cost: 500
-	steps: c r1 n
-}
-izlude 180 224 jawaii 239 112 {
-	steps: c r1 n
-}
-izlude 182 218 malangdo 217 85 {
-	cost: 1000
-	steps: c r1 c c r0 c
-}
-izlude 198 213 cmd_fild07 92 129 {
-	cost: 2800
-	steps: c r0 c
-}
+izlude 197 205 izlu2dun 107 50 150 c r0 n
+izlude 197 205 alberta 188 169 500 c r1 n
+izlude 180 224 jawaii 239 112 0 c r1 n
+izlude 182 218 malangdo 217 85 1000 c r1 c c r0 c
+izlude 198 213 cmd_fild07 92 129 2800 c r0 c
 #崑崙原野
-gon_fild01 255 79 alberta 243 67 {
-	steps: c r0 n
-}
+gon_fild01 255 79 alberta 243 67 0 c r0 n
 #島柏伊亞嵐島
-izlu2dun 108 27 izlude 176 182 {
-	steps: c r0 n
-}
+izlu2dun 108 27 izlude 176 182 0 c r0 n
 #毀葛
-hugel 209 109 odin_tem01 100 146 {
-	steps: c r1 n
-}
+hugel 209 109 odin_tem01 100 146 0 c r1 n
 #奧丁神殿
-odin_tem01 93 146 hugel 206 109 {
-	steps: c r1 n
-}
+odin_tem01 93 146 hugel 206 109 0 c r1 n
 #天津
-amatsu 194 79 alberta 243 91 {
-	steps: c r0 n
-}
+amatsu 194 79 alberta 243 91 0 c r0 n
 #莫斯科比亞
-moscovia 166 53 alberta 243 67 {
-	steps: c r0 n
-}
+moscovia 166 53 alberta 243 67 0 c r0 n
 #龍之城 原野
-lou_fild01 190 100 alberta 235 45 {
-	steps: c r0 n
-}
+lou_fild01 190 100 alberta 235 45 0 c r0 n
 #哎喲泰雅
-ayothaya 152 68 alberta 235 45 {
-	steps: c r0 n
-}
+ayothaya 152 68 alberta 235 45 0 c r0 n
 #巴西
-brasilis 316 57 alberta 244 115 {
-	steps: c r0 n
-}
+brasilis 316 57 alberta 244 115 0 c r0 n
 #沉船附近的島嶼
-alb2trea 39 50 alberta 192 169 {
-	steps: r0 n
-}
+alb2trea 39 50 alberta 192 169 0 r0 n
 #蜜月島 爪哇咿
-jawaii 239 112 izlude 171 185 {
-	steps: c c r0 n
-}
-jawaii 122 263 alberta 192 157 {
-	steps: c c r0 n
-}
+jawaii 239 112 izlude 171 185 0 c c r0 n
+jawaii 122 263 alberta 192 157 0 c c r0 n
 #烏龜島
-tur_dun01 165 29 alberta 241 115 {
-	steps: c r0 c c n
-}
+tur_dun01 165 29 alberta 241 115 0 c r0 c c n
 #艾爾貝塔
-alberta 195 151 alb2trea 62 69 {
-	steps: c c r0 n
-}
-alberta 189 151 alb2trea 43 53 {
-	steps: c r0 n
-}
-alberta 189 151 izlude 176 182 {
-	cost: 500
-	steps: c r1 n
-}
-alberta 247 122 tur_dun01 157 39 {
-	steps: c r1 c r0 c c c n
-}
-alberta 245 45 lou_fild01 190 101 {
-	steps: c r1 c c r0 n
-}
-alberta 247 42 ayothaya 149 71 {
-	steps: c r1 c c r0 n
-}
-alberta 247 115 brasilis 314 60 {
-	steps: c c r0 n
-}
-alberta 245 69 gon_fild01 258 82 {
-	steps: c r1 c c r0 n
-}
-alberta 245 93 amatsu 194 83 {
-	steps: c r1 c c c r0 n
-}
-alberta 245 66 moscovia 163 55 {
-	steps: c r1 c c r0 n
-}
+alberta 195 151 alb2trea 62 69 0 c c r0 n
+alberta 189 151 alb2trea 43 53 0 c r0 n
+alberta 189 151 izlude 176 182 500 c r1 n
+alberta 247 122 tur_dun01 157 39 0 c r1 c r0 c c c n
+alberta 245 45 lou_fild01 190 101 0 c r1 c c r0 n
+alberta 247 42 ayothaya 149 71 0 c r1 c c r0 n
+alberta 247 115 brasilis 314 60 0 c c r0 n
+alberta 245 69 gon_fild01 258 82 0 c r1 c c r0 n
+alberta 245 93 amatsu 194 83 0 c r1 c c c r0 n
+alberta 245 66 moscovia 163 55 0 c r1 c c r0 n
 #發樂斯 燈塔島
 #cmd_fild07 299 83 alberta 192 169 600 c r0 n
 #cmd_fild07 299 83 izlude 176 182 800 c r1 n
-cmd_fild07 94 134 alberta 192 169 {
-	cost: 600
-	steps: c r0 n
-}
-cmd_fild07 94 134 izlude 176 182 {
-	cost: 800
-	steps: c r1 n
-}
+cmd_fild07 94 134 alberta 192 169 600 c r0 n
+cmd_fild07 94 134 izlude 176 182 800 c r1 n
 ##############################################################
 #[各地卡普拉,准它,宣傳人員 傳送服務]
 #普隆德拉
-prontera 146 89 izlude 94 103 {
-	cost: 600
-	steps: c r2 c r0 n
-}
-prontera 146 89 geffen 120 39 {
-	cost: 1200
-	steps: c r2 c r1 n
-}
-prontera 146 89 payon 161 58 {
-	cost: 1200
-	steps: c r2 c r2 n
-}
-prontera 146 89 morocc 156 46 {
-	cost: 1200
-	steps: c r2 c r3 n
-}
-prontera 146 89 gef_fild10 52 326 {
-	cost: 1700
-	steps: c r2 c r4 n
-}
-prontera 146 89 alberta 117 56 {
-	cost: 1800
-	steps: c r2 c r5 n
-}
-prontera 151 29 izlude 94 103 {
-	cost: 600
-	steps: c r2 c r0 n
-}
-prontera 151 29 geffen 120 39 {
-	cost: 1200
-	steps: c r2 c r1 n
-}
-prontera 151 29 payon 161 58 {
-	cost: 1200
-	steps: c r2 c r2 n
-}
-prontera 151 29 morocc 156 46 {
-	cost: 1200
-	steps: c r2 c r3 n
-}
-prontera 151 29 gef_fild10 52 326 {
-	cost: 1700
-	steps: c r2 c r4 n
-}
-prontera 151 29 alberta 117 56 {
-	cost: 1800
-	steps: c r2 c r5 n
-}
-prontera 29 207 izlude 94 103 {
-	cost: 600
-	steps: c r2 c r0 n
-}
-prontera 29 207 geffen 120 39 {
-	cost: 1200
-	steps: c r2 c r1 n
-}
-prontera 29 207 payon 161 58 {
-	cost: 1200
-	steps: c r2 c r2 n
-}
-prontera 29 207 morocc 156 46 {
-	cost: 1200
-	steps: c r2 c r3 n
-}
-prontera 29 207 gef_fild10 52 326 {
-	cost: 1700
-	steps: c r2 c r4 n
-}
-prontera 29 207 alberta 117 56 {
-	cost: 1800
-	steps: c r2 c r5 n
-}
-prontera 282 200 izlude 94 103 {
-	cost: 600
-	steps: c r2 c r0 n
-}
-prontera 282 200 geffen 120 39 {
-	cost: 1200
-	steps: c r2 c r1 n
-}
-prontera 282 200 payon 161 58 {
-	cost: 1200
-	steps: c r2 c r2 n
-}
-prontera 282 200 morocc 156 46 {
-	cost: 1200
-	steps: c r2 c r3 n
-}
-prontera 282 200 gef_fild10 52 326 {
-	cost: 1700
-	steps: c r2 c r4 n
-}
-prontera 282 200 alberta 117 56 {
-	cost: 1800
-	steps: c r2 c r5 n
-}
-prontera 248 42 izlude 94 103 {
-	cost: 600
-	steps: c r0 n
-}
+prontera 146 89 izlude 94 103 600 c r2 c r0 n
+prontera 146 89 geffen 120 39 1200 c r2 c r1 n
+prontera 146 89 payon 161 58 1200 c r2 c r2 n
+prontera 146 89 morocc 156 46 1200 c r2 c r3 n
+prontera 146 89 gef_fild10 52 326 1700 c r2 c r4 n
+prontera 146 89 alberta 117 56 1800 c r2 c r5 n
+prontera 151 29 izlude 94 103 600 c r2 c r0 n
+prontera 151 29 geffen 120 39 1200 c r2 c r1 n
+prontera 151 29 payon 161 58 1200 c r2 c r2 n
+prontera 151 29 morocc 156 46 1200 c r2 c r3 n
+prontera 151 29 gef_fild10 52 326 1700 c r2 c r4 n
+prontera 151 29 alberta 117 56 1800 c r2 c r5 n
+prontera 29 207 izlude 94 103 600 c r2 c r0 n
+prontera 29 207 geffen 120 39 1200 c r2 c r1 n
+prontera 29 207 payon 161 58 1200 c r2 c r2 n
+prontera 29 207 morocc 156 46 1200 c r2 c r3 n
+prontera 29 207 gef_fild10 52 326 1700 c r2 c r4 n
+prontera 29 207 alberta 117 56 1800 c r2 c r5 n
+prontera 282 200 izlude 94 103 600 c r2 c r0 n
+prontera 282 200 geffen 120 39 1200 c r2 c r1 n
+prontera 282 200 payon 161 58 1200 c r2 c r2 n
+prontera 282 200 morocc 156 46 1200 c r2 c r3 n
+prontera 282 200 gef_fild10 52 326 1700 c r2 c r4 n
+prontera 282 200 alberta 117 56 1800 c r2 c r5 n
+prontera 248 42 izlude 94 103 600 c r0 n
 #克魔島
-comodo 195 150 morocc 156 46 {
-	cost: 1800
-	steps: c c r2 c r0 n
-}
-comodo 195 150 cmd_fild07 127 134 {
-	cost: 1200
-	steps: c c r2 c r1 n
-}
-comodo 195 150 umbala 100 154 {
-	cost: 1800
-	steps: c c r2 c r2 n
-}
+comodo 195 150 morocc 156 46 1800 c c r2 c r0 n
+comodo 195 150 cmd_fild07 127 134 1200 c c r2 c r1 n
+comodo 195 150 umbala 100 154 1800 c c r2 c r2 n
 #燈塔島
-cmd_fild07 136 134 morocc 156 46 {
-	cost: 1200
-	steps: c c r2 c r0 n
-}
-cmd_fild07 136 134 comodo 209 143 {
-	cost: 1200
-	steps: c c r2 c r1 n
-}
+cmd_fild07 136 134 morocc 156 46 1200 c c r2 c r0 n
+cmd_fild07 136 134 comodo 209 143 1200 c c r2 c r1 n
 #汶巴拉
-umbala 87 160 comodo 209 143 {
-	cost: 1800
-	steps: c r2 c r0 n
-}
+umbala 87 160 comodo 209 143 1800 c r2 c r0 n
 #艾爾帕蘭
-aldebaran 143 119 geffen 120 39 {
-	cost: 1200
-	steps: c r2 c r0 n
-}
-aldebaran 143 119 yuno 158 125 {
-	cost: 1200
-	steps: c r2 c r1 n
-}
-aldebaran 143 119 izlude 94 103 {
-	cost: 1800
-	steps: c r2 c r2 n
-}
-aldebaran 143 119 mjolnir_02 99 351 {
-	cost: 1700
-	steps: c r2 c r3 n
-}
+aldebaran 143 119 geffen 120 39 1200 c r2 c r0 n
+aldebaran 143 119 yuno 158 125 1200 c r2 c r1 n
+aldebaran 143 119 izlude 94 103 1800 c r2 c r2 n
+aldebaran 143 119 mjolnir_02 99 351 1700 c r2 c r3 n
 #吉芬
-geffen 120 62 prontera 116 72 {
-	cost: 1200
-	steps: c r2 c r0 n
-}
-geffen 120 62 aldebaran 168 112 {
-	cost: 1200
-	steps: c r2 c r1 n
-}
-geffen 120 62 gef_fild10 52 326 {
-	cost: 1700
-	steps: c r2 c r2 n
-}
-geffen 120 62 mjolnir_02 99 351 {
-	cost: 1700
-	steps: c r2 c r3 n
-}
-geffen 203 123 prontera 116 72 {
-	cost: 1200
-	steps: c r2 c r0 n
-}
-geffen 203 123 aldebaran 168 112 {
-	cost: 1200
-	steps: c r2 c r1 n
-}
-geffen 203 123 gef_fild10 52 326 {
-	cost: 1700
-	steps: c r2 c r2 n
-}
-geffen 203 123 mjolnir_02 99 351 {
-	cost: 1700
-	steps: c r2 c r3 n
-}
+geffen 120 62 prontera 116 72 1200 c r2 c r0 n
+geffen 120 62 aldebaran 168 112 1200 c r2 c r1 n
+geffen 120 62 gef_fild10 52 326 1700 c r2 c r2 n
+geffen 120 62 mjolnir_02 99 351 1700 c r2 c r3 n
+geffen 203 123 prontera 116 72 1200 c r2 c r0 n
+geffen 203 123 aldebaran 168 112 1200 c r2 c r1 n
+geffen 203 123 gef_fild10 52 326 1700 c r2 c r2 n
+geffen 203 123 mjolnir_02 99 351 1700 c r2 c r3 n
 #斐揚
-payon 181 104 prontera 116 72 {
-	cost: 1200
-	steps: c r2 c r0 n
-}
-payon 181 104 alberta 117 56 {
-	cost: 1200
-	steps: c r2 c r1 n
-}
-payon 181 104 morocc 156 46 {
-	cost: 1200
-	steps: c r2 c r2 n
-}
-payon 175 226 prontera 116 72 {
-	cost: 1200
-	steps: c r2 c r0 n
-}
-payon 175 226 alberta 117 56 {
-	cost: 1200
-	steps: c r2 c r1 n
-}
-payon 175 226 morocc 156 46 {
-	cost: 1200
-	steps: c r2 c r2 n
-}
+payon 181 104 prontera 116 72 1200 c r2 c r0 n
+payon 181 104 alberta 117 56 1200 c r2 c r1 n
+payon 181 104 morocc 156 46 1200 c r2 c r2 n
+payon 175 226 prontera 116 72 1200 c r2 c r0 n
+payon 175 226 alberta 117 56 1200 c r2 c r1 n
+payon 175 226 morocc 156 46 1200 c r2 c r2 n
 #艾爾貝塔
-alberta 113 60 payon 161 58 {
-	cost: 1200
-	steps: c r2 c r0 n
-}
-alberta 113 60 morocc 156 46 {
-	cost: 1800
-	steps: c r2 c r1 n
-}
-alberta 113 60 prontera 116 72 {
-	cost: 1800
-	steps: c r2 c r2 n
-}
-alberta 28 229 payon 161 58 {
-	cost: 1200
-	steps: c r2 c r0 n
-}
-alberta 28 229 morocc 156 46 {
-	cost: 1800
-	steps: c r2 c r1 n
-}
-alberta 28 229 prontera 116 72 {
-	cost: 1800
-	steps: c r2 c r2 n
-}
+alberta 113 60 payon 161 58 1200 c r2 c r0 n
+alberta 113 60 morocc 156 46 1800 c r2 c r1 n
+alberta 113 60 prontera 116 72 1800 c r2 c r2 n
+alberta 28 229 payon 161 58 1200 c r2 c r0 n
+alberta 28 229 morocc 156 46 1800 c r2 c r1 n
+alberta 28 229 prontera 116 72 1800 c r2 c r2 n
 #夢羅克
-morocc 156 97 prontera 116 72 {
-	cost: 1200
-	steps: c r2 c r0 n
-}
-morocc 156 97 payon 161 58 {
-	cost: 1200
-	steps: c r2 c r1 n
-}
-morocc 156 97 alberta 117 56 {
-	cost: 1800
-	steps: c r2 c r2 n
-}
-morocc 156 97 comodo 209 143 {
-	cost: 1800
-	steps: c r2 c r3 n
-}
-morocc 156 97 cmd_fild07 127 134 {
-	cost: 1200
-	steps: c r2 c r4 n
-}
-morocc 160 258 prontera 116 72 {
-	cost: 1200
-	steps: c r2 c r0 n
-}
-morocc 160 258 payon 161 58 {
-	cost: 1200
-	steps: c r2 c r1 n
-}
-morocc 160 258 alberta 117 56 {
-	cost: 1800
-	steps: c r2 c r2 n
-}
-morocc 160 258 comodo 209 143 {
-	cost: 1800
-	steps: c r2 c r3 n
-}
-morocc 160 258 cmd_fild07 127 134 {
-	cost: 1200
-	steps: c r2 c r4 n
-}
+morocc 156 97 prontera 116 72 1200 c r2 c r0 n
+morocc 156 97 payon 161 58 1200 c r2 c r1 n
+morocc 156 97 alberta 117 56 1800 c r2 c r2 n
+morocc 156 97 comodo 209 143 1800 c r2 c r3 n
+morocc 156 97 cmd_fild07 127 134 1200 c r2 c r4 n
+morocc 160 258 prontera 116 72 1200 c r2 c r0 n
+morocc 160 258 payon 161 58 1200 c r2 c r1 n
+morocc 160 258 alberta 117 56 1800 c r2 c r2 n
+morocc 160 258 comodo 209 143 1800 c r2 c r3 n
+morocc 160 258 cmd_fild07 127 134 1200 c r2 c r4 n
 #朱諾
-yuno 152 187 aldebaran 168 112 {
-	cost: 1200
-	steps: c r2 c r0 n
-}
-yuno 327 108 aldebaran 168 112 {
-	cost: 1200
-	steps: c r2 c r0 n
-}
-yuno 277 221 aldebaran 168 112 {
-	cost: 1200
-	steps: c r2 c r0 n
-}
+yuno 152 187 aldebaran 168 112 1200 c r2 c r0 n
+yuno 327 108 aldebaran 168 112 1200 c r2 c r0 n
+yuno 277 221 aldebaran 168 112 1200 c r2 c r0 n
 #朱諾飛空挺宣傳人員傳送
-yuno 142 183 prontera 116 72 {
-	cost: 1800
-	steps: c c c c c r0 n
-}
-yuno 142 183 izlude 94 103 {
-	cost: 1800
-	steps: c c c c c r1 n
-}
-yuno 142 183 geffen 120 39 {
-	cost: 1800
-	steps: c c c c c r2 n
-}
-yuno 142 183 morocc 156 47 {
-	cost: 1800
-	steps: c c c c c r3 n
-}
-yuno 142 183 payon 161 58 {
-	cost: 1800
-	steps: c c c c c r4 n
-}
-yuno 142 183 alberta 117 56 {
-	cost: 1800
-	steps: c c c c c r5 n
-}
-yuno 142 183 comodo 209 143 {
-	cost: 1800
-	steps: c c c c c r6 n
-}
-yuno 277 221 aldebaran 168 112 {
-	cost: 1200
-	steps: c r2 c r0 n
-}
+yuno 142 183 prontera 116 72 1800 c c c c c r0 n
+yuno 142 183 izlude 94 103 1800 c c c c c r1 n
+yuno 142 183 geffen 120 39 1800 c c c c c r2 n
+yuno 142 183 morocc 156 47 1800 c c c c c r3 n
+yuno 142 183 payon 161 58 1800 c c c c c r4 n
+yuno 142 183 alberta 117 56 1800 c c c c c r5 n
+yuno 142 183 comodo 209 143 1800 c c c c c r6 n
+yuno 277 221 aldebaran 168 112 1200 c r2 c r0 n
 #拉赫
-rachel 109 138 veins 208 128 {
-	cost: 2200
-	steps: c r2 c r0 n
-}
+rachel 109 138 veins 208 128 2200 c r2 c r0 n
 #菲音斯
-veins 208 128 rachel 109 138 {
-	cost: 2200
-	steps: c r2 c r0 n
-}
+veins 208 128 rachel 109 138 2200 c r2 c r0 n
 ##############################################################
 #盧恩米德加茲王國首都-普隆德拉
-prontera 161 192 mid_camp 210 291 {
-	steps: c c r0 n
-}
+prontera 161 192 mid_camp 210 291 0 c c r0 n
 prontera 45 346 prt_in 80 113
 prontera 156 360 prt_castle 102 16
 prontera 22 203 prt_fild05 373 205
@@ -592,12 +271,8 @@ prt_church 109 81 prt_church 168 19
 prt_church 168 19 prt_church 109 81
 prt_church 115 122 prt_church 166 106
 prt_church 166 106 prt_church 115 122
-prt_church 177 113 prt_church 21 91 {
-	steps: n
-}
-prt_church 23 89 prt_church 178 111 {
-	steps: c r0 c n
-}
+prt_church 177 113 prt_church 21 91 0 n
+prt_church 23 89 prt_church 178 111 0 c r0 c n
 prt_castle 102 16 prontera 156 360
 prt_castle 82 29 prt_castle 59 29
 prt_castle 59 29 prt_castle 82 29
@@ -693,12 +368,8 @@ prt_fild11 302 301 gef_fild03 312 16
 prt_fild11 17 281 gef_fild11 377 293
 prt_fild11 362 111 prt_fild10 20 122
 #普隆德拉 地下水道
-prt_in 88 105 prt_fild05 274 208 {
-	steps: c r0 n
-}
-prt_fild05 270 212 prt_sewb1 131 247 {
-	steps: c r0 n
-}
+prt_in 88 105 prt_fild05 274 208 0 c r0 n
+prt_fild05 270 212 prt_sewb1 131 247 0 c r0 n
 prt_sewb1 135 248 prt_fild05 270 212
 prt_sewb1 188 247 prt_sewb2 19 12
 prt_sewb2 19 12 prt_sewb1 188 247
@@ -734,22 +405,10 @@ monk_test 272 125 monk_test 298 127
 monk_test 298 127 monk_test 272 125
 ##############################################################
 #依斯魯得島
-izlude 128 148 geffen 120 39 {
-	cost: 1200
-	steps: c r2 c r0 n
-}
-izlude 128 148 payon 161 58 {
-	cost: 1200
-	steps: c r2 c r1 n
-}
-izlude 128 148 morocc 156 46 {
-	cost: 1200
-	steps: c r2 c r2 n
-}
-izlude 128 148 aldebaran 168 112 {
-	cost: 1800
-	steps: c r2 c r3 n
-}
+izlude 128 148 geffen 120 39 1200 c r2 c r0 n
+izlude 128 148 payon 161 58 1200 c r2 c r1 n
+izlude 128 148 morocc 156 46 1200 c r2 c r2 n
+izlude 128 148 aldebaran 168 112 1800 c r2 c r3 n
 izlude 110 182 izlude_in 65 87
 izlude 52 172 izlude_in 74 161
 izlude_in 65 84 izlude 112 179
@@ -773,13 +432,8 @@ iz_dun02 339 331 iz_dun03 29 63
 iz_dun03 29 63 iz_dun02 339 331
 iz_dun03 264 245 iz_dun04 26 24
 iz_dun04 26 24 iz_dun03 264 245
-iz_dun04 130 234 iz_dun05 141 187 {
-	cost: 100000
-	steps: c c c c r1
-}
-iz_dun05 142 190 iz_dun04 130 234 {
-	steps: c r1 c r1
-}
+iz_dun04 130 234 iz_dun05 141 187 100000 c c c c r1
+iz_dun05 142 190 iz_dun04 130 234 0 c r1 c r1
 ##############################################################
 #沙漠之都-夢羅克
 morocc 160 17 moc_fild12 159 381
@@ -870,9 +524,7 @@ moc_fild11 212 29 moc_fild17 218 369
 moc_fild12 118 30 moc_fild18 158 382
 moc_fild12 289 168 moc_fild11 26 161
 moc_fild12 159 381 morocc 160 17
-moc_fild12 35 303 cmd_fild08 331 319 {
-	steps: c r0 n
-}
+moc_fild12 35 303 cmd_fild08 331 319 0 c r0 n
 moc_fild13 308 49 moc_fild03 17 37
 moc_fild13 298 370 moc_fild02 228 29
 moc_fild13 146 368 moc_fild02 71 18
@@ -1241,9 +893,7 @@ alb_ship 68 99 alb_ship 37 174
 alb_ship 26 166 alberta 170 170
 ########################################
 #運河之都 艾爾帕蘭
-aldebaran 168 168 xmas_fild01 84 48 {
-	steps: c r1 c c n
-}
+aldebaran 168 168 xmas_fild01 84 48 0 c r1 c c n
 aldebaran 139 135 c_tower1 200 157
 aldebaran 197 70 aldeba_in 94 41
 aldebaran 225 54 aldeba_in 149 123
@@ -1315,9 +965,7 @@ c_tower3 42 41 alde_dun02 122 169
 c_tower3 163 252 alde_dun02 262 41
 c_tower3 212 159 alde_dun03 276 53
 c_tower3 146 8 c_tower1 235 223
-c_tower3 10 249 c_tower4 185 44 {
-	steps: c r2 n
-}
+c_tower3 10 249 c_tower4 185 44 0 c r2 n
 c_tower4 204 57 c_tower4 65 77
 c_tower4 198 59 c_tower4 152 98
 c_tower4 133 202 c_tower4 140 149
@@ -1338,9 +986,7 @@ alde_dun03 191 31 c_tower3 212 159
 alde_dun03 12 267 alde_dun02 279 250
 alde_dun03 130 125 alde_dun03 171 127
 alde_dun03 171 127 alde_dun03 130 125
-alde_dun03 264 16 alde_dun04 79 267 {
-	steps: c r2 n
-}
+alde_dun03 264 16 alde_dun04 79 267 0 c r2 n
 alde_dun04 272 74 alde_dun04 204 62
 alde_dun04 208 58 alde_dun04 268 74
 alde_dun04 207 225 c_tower3 7 34
@@ -1568,7 +1214,7 @@ yuno 278 67 s_atelier 105 123
 yuno 342 203 yuno_in04 29 58
 yuno 273 141 kh_rossi 15 92
 yuno 323 284 yuno_in03 167 19
-yuno 278 293 yuno_in03 25 11
+yuno 278 293  yuno_in03 25 11
 yuno 284 366 yuno_in03 224 19
 yuno 157 322 yuno_pre 69 10
 yuno 87 321 yuno_in02 172 61
@@ -1589,9 +1235,7 @@ yuno_in01 88 36 yuno_in01 176 34
 yuno_in01 176 34 yuno_in01 88 36
 yuno_in01 116 40 yuno 120 138
 yuno_in02 172 61 yuno 87 321
-yuno_in02 93 207 valkyrie 48 8 {
-	steps: c c r1 n
-}
+yuno_in02 93 207 valkyrie 48 8 0 c c r1 n
 yuno_in02 82 14 yuno_in05 196 194
 yuno_in03 223 167 yuno_in03 96 62
 yuno_in03 96 62 yuno_in03 223 167
@@ -1719,9 +1363,7 @@ yuno_fild02 287 16 yuno_fild08 285 385
 yuno_fild02 69 23 yuno_fild08 75 375
 yuno_fild02 19 340 yuno_fild03 382 331
 yuno_fild02 117 375 hu_fild04 122 27
-yuno_fild02 75 218 kh_vila 188 18 {
-	steps: c r0 n
-}
+yuno_fild02 75 218 kh_vila 188 18 0 c r0 n
 kh_vila 191 18 yuno_fild02 74 215
 kh_vila 22 167 kh_vila 32 128
 kh_vila 32 128 kh_vila 22 167
@@ -1766,12 +1408,8 @@ yuno_fild08 24 275 yuno_fild07 352 292
 yuno_fild08 285 385 yuno_fild02 287 16
 yuno_fild08 375 194 yuno_fild09 20 193
 yuno_fild08 31 58 yuno_fild07 360 72
-yuno_fild08 158 194 kh_school 71 155 {
-	steps: n
-}
-yuno_fild08 158 185 kh_school 71 155 {
-	steps: n
-}
+yuno_fild08 158 194 kh_school 71 155 0 n
+yuno_fild08 158 185 kh_school 71 155 0 n
 kh_school 35 176 kh_school 153 56
 kh_school 153 56 kh_school 35 176
 kh_school 153 16 kh_school 35 133
@@ -1784,9 +1422,7 @@ kh_school 71 74 kh_school 30 185
 kh_school 30 185 kh_school 71 74
 kh_school 76 156 yuno_fild08 155 189
 #機械人型工廠
-yuno_fild08 71 170 kh_dun01 3 230 {
-	steps: c r0 c r0 n
-}
+yuno_fild08 71 170 kh_dun01 3 230 0 c r0 c r0 n
 kh_dun01 3 234 yuno_fild08 71 170
 kh_dun01 4 235 yuno_fild08 71 170
 kh_dun01 232 176 kh_dun01 63 7
@@ -1827,12 +1463,8 @@ jupe_gate 28 14 jupe_area1 103 222
 jupe_gate 71 144 jupe_area2 60 222
 jupe_area1 103 222 jupe_gate 28 14
 jupe_area2 60 222 jupe_gate 71 144
-jupe_gate 50 171 juperos_02 130 149 {
-	steps: c r0 c n
-}
-juperos_01 100 91 juperos_02 128 277 {
-	steps: c r0 c n
-}
+jupe_gate 50 171 juperos_02 130 149 0 c r0 c n
+juperos_01 100 91 juperos_02 128 277 0 c r0 c n
 juperos_02 33 59 juperos_01 120 72
 ########################################
 #天水之國-天津町
@@ -1871,17 +1503,13 @@ ama_in02 59 160 ama_in02 215 152
 ama_in02 215 149 ama_in02 59 156
 ama_in02 222 161 ama_in02 129 164
 ama_in02 126 164 ama_in02 219 161
-ama_in02 115 177 ama_dun01 229 10 {
-	steps: c r1 c r0 n
-}
+ama_in02 115 177 ama_dun01 229 10 0 c r1 c r0 n
 #天津町原野
 ama_fild01 75 30 amatsu 248 292
 ama_fild01 174 331 ama_in01 175 171
 ama_fild01 330 141 ama_in01 174 121
 #榻榻米 迷宮
-ama_dun01 229 7 ama_in02 119 181 {
-	steps: c r0 n
-}
+ama_dun01 229 7 ama_in02 119 181 0 c r0 n
 ama_dun01 235 144 ama_dun02 30 40
 #地下森 戰場
 ama_dun02 30 40 ama_dun01 235 144
@@ -1941,9 +1569,7 @@ gon_dun02 251 268 gon_dun03 68 9
 gon_dun03 68 6 gon_dun02 251 268
 ########################################
 #古都-龍之城(洛陽)
-louyang 84 254 louyang 133 245 {
-	steps: c r0 n
-}
+louyang 84 254 louyang 133 245 0 c r0 n
 louyang 218 19 lou_fild01 233 356
 louyang 130 63 lou_in02 72 28
 louyang 309 80 lou_in02 189 74
@@ -1963,9 +1589,7 @@ lou_in01 50 141 lou_in01 79 141
 lou_in01 125 141 lou_in01 153 141
 lou_in01 153 141 lou_in01 125 141
 lou_in01 28 19 louyang 133 245
-lou_in01 25 23 lou_in01 17 19 {
-	steps: c r1 c n
-}
+lou_in01 25 23 lou_in01 17 19 0 c r1 c n
 lou_in01 14 18 louyang 90 254
 lou_in02 72 28 louyang 130 63
 lou_in02 189 74 louyang 309 80
@@ -1985,9 +1609,7 @@ lou_in02 126 165 louyang 145 174
 #龍之城 原野
 lou_fild01 233 356 louyang 218 19
 #lou_fild01 195 177 lou_fild01 180 170 0 c r0 n
-lou_fild01 175 173 lou_fild01 200 174 {
-	steps: c r1 n
-}
+lou_fild01 175 173 lou_fild01 200 174 0 c r1 n
 #王陵
 lou_dun01 221 195 louyang 37 271
 lou_dun01 40 201 lou_dun02 288 18
@@ -1996,22 +1618,10 @@ lou_dun02 165 269 lou_dun03 165 35
 lou_dun03 165 35 lou_dun02 165 269
 ########################################
 #蜜月島-爪哇咿
-jawaii 141 200 jawaii_in 113 61 {
-	cost: 1000
-	steps: c c c r0 n
-}
-jawaii 108 199 jawaii_in 132 107 {
-	cost: 1000
-	steps: c c c r0 n
-}
-jawaii 107 189 jawaii_in 89 117 {
-	cost: 1000
-	steps: c c r0 n
-}
-jawaii 112 173 jawaii_in 90 78 {
-	cost: 1000
-	steps: c c c r0 n
-}
+jawaii 141 200 jawaii_in 113 61 1000 c c c r0 n
+jawaii 108 199 jawaii_in 132 107 1000 c c c r0 n
+jawaii 107 189 jawaii_in 89 117 1000 c c r0 n
+jawaii 112 173 jawaii_in 90 78 1000 c c c r0 n
 jawaii 192 215 jawaii_in 27 91
 jawaii_in 27 91 jawaii 192 215
 jawaii_in 113 61 jawaii 141 200
@@ -2059,18 +1669,12 @@ ayo_in01 23 176 ayothaya 129 86
 ayo_in02 100 148 ayothaya 208 283
 #哎喲泰雅 原野
 ayo_fild01 32 240 ayothaya 276 176
-ayo_fild01 129 197 ayo_fild02 25 154 {
-	steps: c c c c c r0 c c c n
-}
-ayo_fild02 25 154 ayo_fild01 129 197 {
-	steps: c r0 c n
-}
+ayo_fild01 129 197 ayo_fild02 25 154 0 c c c c c r0 c c c n
+ayo_fild02 25 154 ayo_fild01 129 197 0 c r0 c n
 ayo_fild02 285 149 ayo_dun01 274 14
 #古代神殿 迷宮
 ayo_dun01 274 14 ayo_fild02 285 149
-ayo_dun01 24 283 ayo_dun02 276 22 {
-	steps: n
-}
+ayo_dun01 24 283 ayo_dun02 276 22 0 n
 ayo_dun02 276 22 ayo_dun01 24 283
 ayo_dun02 24 22 ayo_dun01 24 283
 ########################################
@@ -2092,25 +1696,11 @@ einbroch 179 73 ein_in01 81 198
 einbroch 132 79 ein_in01 13 213
 einbroch 150 25 ein_fild08 164 380
 einbroch 137 199 que_ng 130 166
-einbroch 173 229 einbroch 181 196 {
-	cost: 10
-	steps: c c c c r0 n
-}
-einbroch 173 229 einbroch 181 196 {
-	cost: 20
-	steps: c c c c r1 n
-}
-einbroch 176 172 einbroch 181 196 {
-	cost: 10
-	steps: c c c c r0 n
-}
-einbroch 176 172 einbroch 181 196 {
-	cost: 20
-	steps: c c c c r1 n
-}
-einbroch 175 196 einbroch 216 188 {
-	steps: c c r0 n
-}
+einbroch 173 229 einbroch 181 196 10 c c c c r0 n
+einbroch 173 229 einbroch 181 196 20 c c c c r1 n
+einbroch 176 172 einbroch 181 196 10 c c c c r0 n
+einbroch 176 172 einbroch 181 196 20 c c c c r1 n
+einbroch 175 196 einbroch 216 188 0 c c r0 n
 que_ng 130 166 einbroch 137 199
 que_ng 178 162 que_ng 170 85
 que_ng 170 85 que_ng 178 162
@@ -2208,20 +1798,14 @@ lighthalzen 93 110 lhz_in02 108 26
 lighthalzen 52 132 job3_gen01 49 49
 lighthalzen 50 86 lhz_in03 50 31
 lighthalzen 41 52 s_atelier 18 79
-lighthalzen 267 200 lighthalzen 303 229 {
-	steps: n
-}
-lighthalzen 294 223 lighthalzen 206 199 {
-	steps: n
-}
+lighthalzen 267 200 lighthalzen 303 229 0 n
+lighthalzen 294 223 lighthalzen 206 199 0 n
 lighthalzen 345 231 lhz_in03 188 11
 lighthalzen 340 240 lhz_in03 180 90
 lighthalzen 347 261 lhz_in03 10 216
 lighthalzen 324 301 lhz_in03 237 100
 lighthalzen 324 322 lhz_in03 12 162
-lighthalzen 313 301 lhz_cube 231 12 {
-	steps: c c r0 n
-}
+lighthalzen 313 301 lhz_cube 231 12 0 c c r0 n
 s_atelier 18 79 lighthalzen 41 52
 s_atelier 32 64 s_atelier 80 66
 s_atelier 80 66 s_atelier 32 64
@@ -2230,15 +1814,13 @@ job3_gen01 71 56 job3_gen01 7 59
 job3_gen01 49 49 lighthalzen 52 132
 lhz_in01 43 144 lhz_in01 278 157
 lhz_in01 278 157 lhz_in01 43 144
-lhz_in01 35 226 lhz_in01 37 225 {
-	steps: n
-}
+lhz_in01 35 226 lhz_in01 37 225 0 n
 lhz_in01 40 224 lhz_in01 15 129
 lhz_in01 43 114 lhz_in01 278 132
 lhz_in01 278 132 lhz_in01 43 114
 lhz_in01 58 129 lhz_in01 191 127
 lhz_in01 191 127 lhz_in01 58 129
-lhz_in01 15 129 lhz_in01 35 226
+lhz_in01 15 129 lhz_in01 35 226 
 lhz_in01 106 15 lhz_in01 88 215
 lhz_in01 88 215 lhz_in01 106 15
 lhz_in01 149 179 lhz_in01 11 24
@@ -2346,9 +1928,7 @@ lhz_cube 177 96 lighthalzen 310 302
 lhz_cube 231 12 lighthalzen 313 301
 lhz_cube 231 96 lhz_dun02 224 6
 #生體試驗 研究所
-lhz_in01 24 140 lhz_dun01 149 285 {
-	steps: c r0 n
-}
+lhz_in01 24 140 lhz_dun01 149 285 0 c r0 n
 lhz_dun01 149 9 lhz_dun02 146 19
 lhz_dun01 18 145 lhz_dun02 17 156
 lhz_dun01 281 150 lhz_dun02 282 161
@@ -2425,15 +2005,11 @@ hu_in01 268 123 hu_in01 265 42
 hu_in01 265 42 hu_in01 268 123
 #魔物賽跑 競賽場
 #單人
-p_track01 76 36 hugel 63 73 {
-	steps: c c r0 n
-}
+p_track01 76 36 hugel 63 73 0 c c r0 n
 #hugel 58 72 p_track01 75 41 0 c r1 c c r0 n
 #hugel 58 72 p_track01 75 41 0 c r1 c c r0 c r0 n
 #雙人
-p_track02 76 36 hugel 63 73 {
-	steps: c c r0 n
-}
+p_track02 76 36 hugel 63 73 0 c c r0 n
 #hugel 62 69 p_track02 75 41 0 c r1 c c r0 n
 #hugel 62 69 p_track02 75 41 0 c r1 c c r0 c r0 n
 #賓果遊戲 競賽場
@@ -2454,17 +2030,13 @@ odin_tem03 247 34 odin_tem02 261 377
 #達納托斯 塔台
 hu_fild01 141 36 yuno_fild06 151 370
 hu_fild01 366 185 hu_fild02 17 168
-hu_fild01 140 163 tha_scene01 131 220 {
-	steps: c r2 c r0 c r0 n
-}
+hu_fild01 140 163 tha_scene01 131 220 0 c r2 c r0 c r0 n
 tha_scene01 144 198 tha_t01 149 33
 #達納托斯 塔台 下層部
 tha_t01 149 33 hu_fild01 140 158
 tha_t01 150 150 tha_t02 149 125
 tha_t02 149 125 tha_t01 150 150
-tha_t02 231 161 tha_t02 227 163 {
-	steps: c r0 c c n
-}
+tha_t02 231 161 tha_t02 227 163 c r0 c c n
 tha_t02 227 163 tha_t03 217 165
 tha_t03 217 165 tha_t02 227 163
 tha_t03 59 140 tha_t04 60 137
@@ -2485,13 +2057,9 @@ hu_fild06 28 119 hu_fild05 353 126
 hu_fild06 200 372 hugel 95 33
 # 毀葛-深淵湖水 地下洞穴 1F~3F
 # 每次進入消耗 龍牙x 1 龍鱗x 1 龍尾x 1 
-hu_fild05 168 304 abyss_01 275 280 {
-	steps: c r0 c c c n
-}
+hu_fild05 168 304 abyss_01 275 280 0 c r0 c c c n
 #跟石頭對話去湖中央
-hu_fild05 171 211 hu_fild05 169 305 {
-	steps: c r0 c c c c n
-}
+hu_fild05 171 211 hu_fild05 169 305 0 c r0 c c c c n
 #離開湖中央
 hu_fild05 184 204 hu_fild05 196 210
 hu_fild05 196 210 abyss_01 265 274
@@ -2582,9 +2150,7 @@ ra_temin 206 93 ra_temin 312 253
 ra_temin 134 131 ra_temin 275 243
 ra_temin 275 243 ra_temin 134 131
 ra_temin 275 226 ra_temsky 99 8
-ra_temin 73 126 ra_temin 74 136 {
-	steps: c r0 n
-}
+ra_temin 73 126 ra_temin 74 136 0 c r0 n
 ra_temsky 99 8 ra_temin 275 226
 ra_temin 28 319 ra_san01 139 139
 #任務 菲依雅 大神殿
@@ -2703,9 +2269,7 @@ que_thor 69 56 thor_v02 146 84
 thor_v03 30 262 thor_v02 192 60
 ########################################
 #莫斯科比亞
-moscovia 136 46 mosk_fild01 95 93 {
-	steps: c c r0 c c c c
-}
+moscovia 136 46 mosk_fild01 95 93 0 c c r0 c c c c
 moscovia 256 179 mosk_in 211 111
 moscovia 223 174 mosk_in 11 246
 moscovia 203 171 mosk_in 89 180
@@ -2729,47 +2293,23 @@ mosk_in 211 111 moscovia 256 179
 mosk_in 222 128 mosk_in 288 116
 mosk_in 288 116 mosk_in 222 128
 #莫斯科比亞 原野
-mosk_fild01 86 104 mosk_fild02 204 54 {
-	steps: c c r2 c c c r1 c n
-}
-mosk_fild02 198 53 moscovia 140 54 {
-	steps: c r0 n
-}
+mosk_fild01 86 104 mosk_fild02 204 54 0 c c r2 c c c r1 c n
+mosk_fild02 198 53 moscovia 140 54 0 c r0 n
 mosk_fild02 190 257 mosk_dun01 189 42
 #森林洞穴
 mosk_dun01 189 42 mosk_fild02 190 254
-mosk_dun01 207 276 mosk_dun02 165 30 {
-	steps: c c r0 n
-}
-mosk_dun01 264 191 mosk_dun03 117 36 {
-	steps: c c r0 n
-}
-mosk_dun02 168 28 mosk_dun01 201 269 {
-	steps: c c r0 n
-}
-mosk_dun02 268 117 mosk_dun03 32 135 {
-	steps: c c r0 n
-}
-mosk_dun03 27 131 mosk_dun02 262 118 {
-	steps: c c r0 n
-}
-mosk_dun03 119 46 mosk_dun01 257 190 {
-	steps: c c r0 n
-}
+mosk_dun01 207 276 mosk_dun02 165 30 0 c c r0 n
+mosk_dun01 264 191 mosk_dun03 117 36 0 c c r0 n
+mosk_dun02 168 28 mosk_dun01 201 269 0 c c r0 n
+mosk_dun02 268 117 mosk_dun03 32 135 0 c c r0 n
+mosk_dun03 27 131 mosk_dun02 262 118 0 c c r0 n
+mosk_dun03 119 46 mosk_dun01 257 190 0 c c r0 n
 ########################################
 #米德加爾特聯合營地
-mid_camp 213 286 moc_fild20 342 179 {
-	steps: c c r0 n
-}
-mid_camp 9 215 spl_fild02 380 217 {
-	steps: c r0 n
-}
-mid_camp 13 143 spl_fild02 379 143 {
-	steps: c r0 n
-}
-mid_camp 336 171 man_fild01 36 235 {
-	steps: c r0 n
-}
+mid_camp 213 286 moc_fild20 342 179 0 c c r0 n
+mid_camp 9 215 spl_fild02 380 217 0 c r0 n
+mid_camp 13 143 spl_fild02 379 143 0 c r0 n
+mid_camp 336 171 man_fild01 36 235 0 c r0 n
 mid_camp 163 231 mid_campin 376 136
 mid_camp 196 204 mid_campin 223 109
 mid_camp 205 211 mid_campin 232 123
@@ -2903,12 +2443,8 @@ spl_fild02 293 379 spl_fild01 289 28
 spl_fild03 306 379 spl_fild02 310 10
 spl_fild03 99 373 spl_fild02 103 30
 #粗暴者的傷口
-spl_fild01 375 109 nyd_dun01 72 125 {
-	steps: c r0 n
-}
-nyd_dun01 62 233 spl_fild01 376 65 {
-	steps: c r0 n
-}
+spl_fild01 375 109 nyd_dun01 72 125 0 c r0 n
+nyd_dun01 62 233 spl_fild01 376 65 0 c r0 n
 nyd_dun01 255 142 nyd_dun02 61 265
 nyd_dun02 56 264 nyd_dun01 249 143
 ########################################
@@ -2937,16 +2473,10 @@ bra_fild01 72 34 brasilis 308 336
 #瀑布內的洞窟
 bra_in01 12 185 bra_in01 138 176
 bra_in01 138 174 bra_in01 12 183
-bra_in01 144 187 bra_in01 206 98 {
-	steps: c r0 n
-}
+bra_in01 144 187 bra_in01 206 98 0 c r0 n
 bra_in01 206 98 bra_in01 138 176
-bra_in01 206 188 bra_dun01 87 47 {
-	steps: n
-}
-bra_dun01 87 43 bra_in01 206 188 {
-	steps: n
-}
+bra_in01 206 188 bra_dun01 87 47 0 n
+bra_dun01 87 43 bra_in01 206 188 0 n
 bra_dun01 199 35 bra_dun02 261 265
 bra_dun02 261 265 bra_dun01 199 35
 ########################################
@@ -3023,6 +2553,7 @@ gl_in01 106 125 glast_01 220 360
 gl_in01 83 174 glast_01 179 360
 gl_in01 81 68 glast_01 162 330
 #########################################
+T#r#y#7#1#0#2#3#僅#發#表#於#月#光#論#壇 
 #妙勒尼山脈
 mjolnir_01 284 18 gef_fild04 261 362
 mjolnir_01 381 256 mjolnir_02 28 258
@@ -3252,13 +2783,8 @@ treasure02 102 103 treasure02 102 120
 treasure02 102 118 treasure02 102 101
 ########################################
 #神秘島
-e_tower 81 105 alberta 223 36 {
-	steps: c r2 n
-}
-alberta 214 77 e_tower 70 114 {
-	cost: 10000
-	steps: c r1 n
-}
+e_tower 81 105 alberta 223 36 0 c r2 n
+alberta 214 77 e_tower 70 114 10000 c r1 n
 ########################################
 #尼它堆(朱諾)
 sch_gld 354 89 yuno 13 126
@@ -3652,6 +3178,7 @@ payg_cas05 56 255 payg_cas05 219 256
 payg_cas05 39 264 payg_cas05 237 227
 payg_cas05 237 227 payg_cas05 39 264
 #########################################
+
 #新手訓練場
 prt_fild08 148 112 new_zone02 100 9
 new_zone02 126 106 new_zone02 160 171
@@ -3660,12 +3187,13 @@ new_zone01 148 112 new_zone02 100 6
 new_zone02 100 6 new_zone01 148 112
 new_zone02 73 106 new_zone02 46 172
 new_zone02 46 172 new_zone02 73 106
-new_zone03 103 50 new_zone03 96 21 {
-	steps: c c c r0 n
-}
-new_zone03 103 50 new_zone03 96 21 {
-	steps: c c c r1 n
-}
+new_zone03 103 50 new_zone03 96 21 0 c c c r0 n
+new_zone03 103 50 new_zone03 96 21 0 c c c r1 n
+new_zone03 prontera 150 50 0 c c r1 c r0 n
+new_zone03 morocc 155 110 0 c c r1 c r0 n
+new_zone03 payon 166 67 0 c c r1 c r0 n
+new_zone03 alberta 114 58 0 c c r1 c r0 n
+new_zone03 geffen 122 65 0 c c r1 c r0 n
 #########################################
 #無名島(白天)
 nameless_i 228 232 nameless_in 12 172
@@ -3679,12 +3207,8 @@ nameless_in 86 159 nameless_i 78 246
 nameless_i 75 251 nameless_in 82 159
 nameless_in 96 177 nameless_i 99 255
 #無名島(晚上)
-ve_fild07 125 128 nameless_n 259 218 {
-	steps: c r0 n
-}
-nameless_n 259 218 ve_fild07 130 130 {
-	steps: c r0 n
-}
+ve_fild07 125 128 nameless_n 259 218 0 c r0 n
+nameless_n 259 218 ve_fild07 130 130 0 c r0 n
 nameless_n 157 184 abbey01 51 10
 #修道院
 abbey01 51 10 nameless_n 157 184
@@ -3697,58 +3221,37 @@ abbey03 119 6 abbey02 149 290
 ########################################
 #伊甸園NPC
 #中央
-prontera 124 76 moc_para01 30 10 {
-	steps: c c r0 n
-}
+prontera 124 76 moc_para01 30 10 0 c c r0 n
 #moc_para01 30 10 prontera 116 72
 #吉芬
-geffen 132 66 moc_para01 30 10 {
-	steps: c c r0 n
-}
+geffen 132 66 moc_para01 30 10 0 c c r0 n
 #moc_para01 30 10 geffen 120 39
 #艾爾帕蘭
-aldebaran 133 119 moc_para01 30 10 {
-	steps: c c r0 n
-}
+aldebaran 133 119 moc_para01 30 10 0 c c r0 n
 #moc_para01 30 10 aldebaran 168 112
-izlude_in 68 162 moc_para01 30 10 {
-	steps: c c r0 n
-}
+伊斯魯劍士村 劍士轉職所
+izlude_in 68 162 moc_para01 30 10 0 c c r0 n
 #moc_para01 30 10 izlude_in 68 162
 #艾爾貝塔
-alberta 124 67 moc_para01 30 10 {
-	steps: c c r0 n
-}
+alberta 124 67 moc_para01 30 10 0 c c r0 n
 #moc_para01 30 10 alberta 117 56
 #斐楊
-payon 177 111 moc_para01 30 10 {
-	steps: c c r0 n
-}
+payon 177 111 moc_para01 30 10 0 c c r0 n
 #moc_para01 30 10 payon 161 58 
 #夢-金字塔外
-moc_ruins 68 164 moc_para01 30 10 {
-	steps: c c r0 n
-}
+moc_ruins 68 164 moc_para01 30 10 0 c c r0 n
 #moc_para01 30 10 moc_ruins 64 161
 #朱諾
-yuno 144 189 moc_para01 30 10 {
-	steps: c c r0 n
-}
+yuno 144 189 moc_para01 30 10 0 c c r0 n
 #moc_para01 30 10 yuno 158 125
 #天津忍者轉職所
-que_ng 33 73 moc_para01 30 10 {
-	steps: c c r0 n
-}
+que_ng 33 73 moc_para01 30 10 0 c c r0 n
 #moc_para01 30 10 que_ng 33 63
 #拉赫
-rachel 125 144 moc_para01 30 10 {
-	steps: c c r0 n
-}
+rachel 125 144 moc_para01 30 10 0 c c r0 n
 #moc_para01 30 10 rachel 115 125
 #伊甸園地圖
-moc_para01 47 39 moc_para01 107 12 {
-	steps: c r0 n
-}
+moc_para01 47 39 moc_para01 107 12 0 c r0 n
 moc_para01 48 16 moc_para01 48 164
 moc_para01 47 161 moc_para01 47 18
 moc_para01 57 27 moc_para01 162 26
@@ -3764,49 +3267,28 @@ moc_para01 102 92 moc_para01 111 33
 #時空裂縫(建議低等級或掛周邊地圖時打上#關掉傳點)
 morocc 299 207 moc_fild20 36 177
 moc_fild11 377 197 moc_fild20 36 177
-moc_ruins 137 89 moc_fild22b 49 195 {
-	steps: c c c c c c c r0 n
-}
+moc_ruins 137 89 moc_fild22b 49 195 0 c c c c c c c r0 n
 #prt_fild09 246 17 moc_fild20 208 207 0 c c r1 c n
 #prt_fild09 95 19 moc_fild20 208 207 0 c c r1 c n
 #prt_fild10 263 23 moc_fild20 208 207 0 c c r1 c n
 #moc_fild01 84 19 moc_fild20 208 207 0 c c r1 c n
-moc_fild07 380 202 moc_fild20 208 207 {
-	steps: c c r1 c n
-}
+moc_fild07 380 202 moc_fild20 208 207 0 c c r1 c n
 #moc_fild11 189 360 moc_fild20 208 207 0 c c r1 c n
 #moc_fild13 32 171 moc_fild20 208 207 0 c c r1 c n
 #moc_fild16 333 380 moc_fild20 208 207 0 c c r1 c n
 #moc_fild16 124 381 moc_fild20 208 207 0 c c r1 c n
-moc_fild20 349 179 moc_fild22b 37 196 {
-	steps: c c c r0 n
-}
-moc_fild20 354 183 morocc 160 61 {
-	steps: c r1 c c c c c r1 c c r1 n
-}
-moc_fild20 354 174 morocc 160 61 {
-	steps: c r1 c c c c c r1 c c r1 n
-}
-moc_fild20 38 174 morocc 160 61 {
-	steps: c r1 c c c c c r1 c c r1 n
-}
-moc_fild20 38 183 morocc 160 61 {
-	steps: c r1 c c c c c r1 c c r1 n
-}
-moc_fild20 203 336 morocc 160 61 {
-	steps: c r1 c c c c c r1 c c r1 n
-}
-moc_fild20 215 336 morocc 160 61 {
-	steps: c r1 c c c c c r1 c c r1 n
-}
-moc_fild22b 37 196 moc_fild20 349 179 {
-	steps: c c c r0 n
-}
-moc_fild22b 230 197 mid_camp 210 291 {
-	steps: c r0 c c n
-}
+moc_fild20 349 179 moc_fild22b 37 196 0 c c c r0 n
+moc_fild20 354 183 morocc 160 61 0 c r1 c c c c c r1 c c r1 n
+moc_fild20 354 174 morocc 160 61 0 c r1 c c c c c r1 c c r1 n
+moc_fild20 38 174 morocc 160 61 0 c r1 c c c c c r1 c c r1 n
+moc_fild20 38 183 morocc 160 61 0 c r1 c c c c c r1 c c r1 n
+moc_fild20 203 336 morocc 160 61 0 c r1 c c c c c r1 c c r1 n
+moc_fild20 215 336 morocc 160 61 0 c r1 c c c c c r1 c c r1 n
+moc_fild22b 37 196 moc_fild20 349 179 0 c c c r0 n
+moc_fild22b 230 197 mid_camp 210 291 0 c r0 c c n
 ##############################################################
 #自動新增未分類列表
+
 mal_in01 38 217 malangdo 119 137
 malangdo 119 137 mal_in01 36 216
 mal_in01 75 222 mal_in01 11 218
@@ -3859,20 +3341,12 @@ dew_dun02 305 30 dew_fild01 48 65
 dew_fild01 48 65 dew_dun02 302 30
 dew_in01 16 31 dew_fild01 57 273
 dew_fild01 57 273 dew_in01 15 33
-alberta 240 47 dewata 232 53 {
-	steps: c r0 n
-}
-dewata 229 49 alberta 235 45 {
-	steps: c r0 n
-}
+alberta 240 47 dewata 232 53 0 c r0 n
+dewata 229 49 alberta 235 45 0 c r0 n
 #甲蟲隧道
 dic_fild01 24 79 dic_dun01 366 45
-dic_dun01 30 216 manuk 326 180 {
-	steps: c r0 n
-}
-manuk 321 182 dic_dun01 33 212 {
-	steps: c r0 n
-}
+dic_dun01 30 216 manuk 326 180 0 c r0 n
+manuk 321 182 dic_dun01 33 212 0 c r0 n
 dic_dun01 87 212 dic_dun01 169 227
 dic_dun01 371 228 dic_dun01 32 156
 dic_dun01 371 172 dic_dun01 32 100
@@ -3882,29 +3356,15 @@ dic_dun01 29 43 dic_dun01 367 100
 dic_dun01 28 100 dic_dun01 367 172
 dic_dun01 28 156 dic_dun01 367 228
 dic_dun01 165 227 dic_dun01 83 212
-dic_fild01 153 281 dicastes01 199 41 {
-	steps: c r0 n
-}
+dic_fild01 153 281 dicastes01 199 41 0 c r0 n
 dicastes01 136 103 dic_in01 26 98
-dic_in01 44 116 dic_in01 260 115 {
-	steps: r3
-}
-dic_in01 261 115 dic_in01 42 115 {
-	steps: r0
-}
+dic_in01 44 116 dic_in01 260 115 0 r3
+dic_in01 261 115 dic_in01 42 115 0 r0
 dic_in01 26 96 dicastes01 137 106
 dicastes01 199 34 dic_fild01 149 279
-dic_dun01 294 106 dic_dun02 101 142 {
-	steps: c r0 n
-}
+dic_dun01 294 106 dic_dun02 101 142 0 c r0 n
 dic_dun02 102 148 dic_dun01 290 99
 #綿綿島
-malangdo 219 86 izlude 194 180 {
-	steps: c c r0
-}
-malangdo 219 86 alberta 192 150 {
-	steps: c c r1
-}
-alberta 200 151 malangdo 217 85 {
-	steps: c r1 c c r0
-}
+malangdo 219 86 izlude 194 180 0 c c r0
+malangdo 219 86 alberta 192 150 0 c c r1
+alberta 200 151 malangdo 217 85 0 c r1 c c r0

@@ -9,8 +9,8 @@
 #  also distribute the source code.
 #  See http://www.gnu.org/licenses/gpl.html for the full license.
 #
-#  $Revision: 5284 $
-#  $Id: Messages.pm 5284 2007-01-01 17:26:40Z vcl_kore $
+#  $Revision: 9016 $
+#  $Id: Messages.pm 9016 2016-02-15 16:45:35Z windhamwong $
 #
 #########################################################################
 ##
@@ -308,7 +308,7 @@ sub dataToValue {
 }
 
 # sub testPerformance {
-# 	use encoding 'utf8';
+# 	use utf8;
 # 	use Time::HiRes qw(time);
 # 
 # 	my $begin = time;
@@ -327,7 +327,7 @@ sub dataToValue {
 # }
 # 
 # sub testCorrectness {
-# 	use encoding 'utf8';
+# 	use utf8;
 # 	no warnings;
 # 	my $data = serialize("foo", { hello => "world", foo => "bar", int => 1234567 });
 # 	my $ID;
